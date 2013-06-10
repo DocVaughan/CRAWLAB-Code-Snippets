@@ -24,7 +24,7 @@ import socket
 import sys
 from time import sleep
 
-HOST, PORT = "10.0.1.111", 2390
+HOST, PORT = "10.0.1.112", 2390
 # data = " ".join(sys.argv[1:])
 data = "hello"
 
