@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 #
-# requires pdftops (part of the popler package)
+# requires pdftops (part of the poppler package)
 # recommended install via homebrew via  >brew install poppler
 #
 # example use to convert all pdfs in the current directory to eps
