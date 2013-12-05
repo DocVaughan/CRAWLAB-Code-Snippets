@@ -81,7 +81,14 @@ def xd(t, L, StartTime):
     defines the input to the system
     """
     
-    xd = 0.5*L * (t >= StartTime) + 0.5*L * (t >= StartTime+0.5)
+    # Pick your input as one of the xd definitions below
+    
+    # For an unshaped input
+    xd = L * (t >= StartTime)
+    
+    # For a ZV shaped input, designed for 1HZ and no damping 
+    # xd = 0.5 * L * (t >= StartTime) + 0.5 * L * (t >= StartTime+0.5)
+    
     return xd
     
 

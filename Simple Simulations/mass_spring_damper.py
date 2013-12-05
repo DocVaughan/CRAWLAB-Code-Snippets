@@ -59,11 +59,17 @@ def eq_of_motion(w, t, p):
 
 def xd(t, L, StartTime):
     """
-    Defines the input to the system
+    defines the input to the system
     """
     
-    # xd is a step of amplitude L at time StartTime
+    # Pick your input as one of the xd definitions below
+    
+    # For an unshaped input
     xd = L * (t >= StartTime)
+    
+    # For a ZV shaped input, designed for 1HZ and no damping 
+    # xd = 0.5 * L * (t >= StartTime) + 0.5 * L * (t >= StartTime+0.5)
+    
     return xd
     
 
