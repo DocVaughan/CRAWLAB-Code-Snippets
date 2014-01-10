@@ -1,4 +1,5 @@
 import SocketServer
+import pickle
 
 class MyUDPHandler(SocketServer.BaseRequestHandler):
     """
@@ -10,10 +11,13 @@ class MyUDPHandler(SocketServer.BaseRequestHandler):
 
     def handle(self):
         data = self.request[0].strip()
+        
+        data_unpickled = pickle.loads(data)
+        
         socket = self.request[1]
         print "{} wrote:".format(self.client_address[0])
-        print data
-        socket.sendto(data.upper(), self.client_address)
+        print data_unpickled
+        #socket.sendto(data.upper(), self.client_address)
 
 if __name__ == "__main__":
     HOST, PORT = '192.168.0.110', 2390

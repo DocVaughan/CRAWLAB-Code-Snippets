@@ -11,11 +11,11 @@ class MyUDPHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         data = self.request[0].strip()
         socket = self.request[1]
-        print "{} wrote:".format(self.client_address[0])
-        print data
+        string_to_print = "Velocity from {}: ".format(self.client_address[0]) + data
+        print string_to_print
         socket.sendto(data.upper(), self.client_address)
 
 if __name__ == "__main__":
-    HOST, PORT = '192.168.0.110', 2390
+    HOST, PORT = '130.70.157.125', 2390
     server = SocketServer.UDPServer((HOST, PORT), MyUDPHandler)
     server.serve_forever()
