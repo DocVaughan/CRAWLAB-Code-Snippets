@@ -1,7 +1,7 @@
 #! /usr/bin/env python 
 
 ##########################################################################################
-# mass_spring_damper.py
+# mass_spring_damper_odeint.py
 #
 # Script to a simulate a spring-mass-damper system with an ode solver
 #

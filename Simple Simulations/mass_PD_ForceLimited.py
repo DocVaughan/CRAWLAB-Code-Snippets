@@ -1,9 +1,9 @@
 #! /usr/bin/env python 
 
 ##########################################################################################
-# mass_PD.py
+# mass_PD_ForceLimited.py
 #
-# Script to a simulate a PD position control of a mass system with an ode solver
+# Script to a simulate a force-limited PD position control of a mass system with an ode solver
 #
 # NOTE: Plotting is set up for output, not viewing on screen.
 #       So, it will likely be ugly on screen. The saved PDFs should look
