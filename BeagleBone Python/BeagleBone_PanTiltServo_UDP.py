@@ -2,9 +2,33 @@ import socket
 import threading
 import SocketServer
 import time
+import Adafruit_BBIO.PWM as PWM
 
 # TODO: Fix this nasty global variable hack
-x_data, y_data = None, None
+x_data = 0.
+y_data = 0.
+
+class Servo():
+    def __init__(self, servo_pin):
+        # Define duty cycle parameters for all servos
+        self.duty_min = 3.
+        self.duty_max = 14.5
+        self.duty_span = self.duty_max - self.duty_min
+        self.duty_mid = ((90.0 / 180) * self.duty_span + self.duty_min)
+        self.servo_pin = servo_pin
+    
+    def start_servo(self):
+        PWM.start(self.servo_pin, self.duty_mid, 60.0)
+
+    def set_servo_angle(self, angle):
+        angle_f = float(angle)
+        duty = ((angle_f / 180) * self.duty_span + self.duty_min)
+        PWM.set_duty_cycle(self.servo_pin, duty)
+
+    def close_servo(self):
+        PWM.stop(self.servo_pin)
+        PWM.cleanup()
+
 
 class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
     """
@@ -25,21 +49,9 @@ class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
         x_data = float(x)
         y_data = float(y)
         
-
-        
         #socket.sendto(data.upper(), self.client_address)
         self.data = data
-
-# Streaming?... change above to SocketServer.StreamRequestHandler
-#     def handle(self):
-#         # self.rfile is a file-like object created by the handler;
-#         # we can now use e.g. readline() instead of raw recv() calls
-#         self.data = self.rfile.readline().strip()
-#         print "{} wrote:".format(self.client_address[0])
-#         print self.data
-#         # Likewise, self.wfile is a file-like object used to write back
-#         # to the client
-#         self.wfile.write(self.data.upper())
+        
         
 
 class ThreadedUDPServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer):
@@ -49,8 +61,16 @@ class ThreadedUDPServer(SocketServer.ThreadingMixIn, SocketServer.UDPServer):
 if __name__ == "__main__":
     global x_data
     global y_data
+    
+    # Start Servos
+    servo1 = Servo('P8_13')
+    servo2 = Servo('P8_19')
+    
+    servo1.start_servo()
+    servo2.start_servo()
+
     # Port 0 means to select an arbitrary unused port
-    HOST, PORT = "10.0.1.108", 2390
+    HOST, PORT = "10.0.1.118", 2390
     
     server = ThreadedUDPServer((HOST, PORT), ThreadedUDPRequestHandler)
     ip, port = server.server_address
@@ -64,10 +84,18 @@ if __name__ == "__main__":
     server_thread.start()
     print "Server loop running in thread:", server_thread.name
     
-    # we can now count and receive UDP packets at the same time
     try:
         while True:
-            print x_data, y_data
-            time.sleep(1)
-    except (KeyboardInterrupt, SystemExit): 
-        print 'Closing...'
+            # convert (-100,100) range of UDP data to 0-180deg servo angle
+            angle1 = 0.9 * x_data + 90.
+            servo1.set_servo_angle(angle1)
+            
+            # convert (-100,100) range of UDP data to 0-180deg servo angle
+            angle2 = 0.9 * y_data + 90.
+            servo2.set_servo_angle(angle2)
+            
+    except (KeyboardInterrupt, SystemExit): # when you press ctrl+c
+        servo1.close_servo()
+        servo2.close_servo()
+        
+    print "Done.\nExiting."    
