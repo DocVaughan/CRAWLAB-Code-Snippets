@@ -25,8 +25,6 @@ class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
         x_data = float(x)
         y_data = float(y)
         
-
-        
         #socket.sendto(data.upper(), self.client_address)
         self.data = data
 

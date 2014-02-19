@@ -22,8 +22,9 @@ class MyScene (Scene):
 		self.velocity = Point(x=0, y=0)
 
 		# set up UDP socket - IP address and socket to send to
-		#self.HOST, self.PORT = '130.70.157.125', 2390
-		self.HOST, self.PORT = '10.0.1.106', 2390
+		self.HOST, self.PORT = '192.168.1.11', 2390
+		# self.HOST, self.PORT = '130.70.157.125', 2390
+		# self.HOST, self.PORT = '10.0.1.118', 2390
 		
 
 		# SOCK_DGRAM is the socket type to use for UDP sockets

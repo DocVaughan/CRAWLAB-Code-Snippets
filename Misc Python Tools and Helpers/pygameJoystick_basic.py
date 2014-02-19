@@ -33,6 +33,7 @@ while 1:
 		else:
 			print 0., 0.
 		time.sleep(0.1)
+		
 	except utils.TimeoutError:
                 continue
 	except KeyboardInterrupt:

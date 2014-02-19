@@ -27,6 +27,6 @@ class MyUDPHandler(SocketServer.BaseRequestHandler):
 #         self.wfile.write(self.data.upper())
 
 if __name__ == "__main__":
-    HOST, PORT = '130.70.157.125', 2390
+    HOST, PORT = '192.168.0.101', 2390
     server = SocketServer.UDPServer((HOST, PORT), MyUDPHandler)
     server.serve_forever()
