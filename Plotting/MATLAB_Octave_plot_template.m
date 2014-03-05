@@ -26,7 +26,8 @@
 %       - removed top and right axes borders
 %       - adjusted page margins to better fill the page. NOTE: These often 
 %         need to be adjusted based on the data
-%       - more explicit suggestion of what needs to be changed
+%       - more explicit suggestion of what needs to be changed for each
+%         plot
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

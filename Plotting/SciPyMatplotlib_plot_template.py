@@ -77,6 +77,9 @@ leg = legend(loc='upper right', fancybox=True)
 ltext  = leg.get_texts() 
 setp(ltext,family='CMU Serif',fontsize=16)
 
+# Adjust the page layout filling the page using the new tight_layout command
+tight_layout(pad=0.5)
+
 # save the figure as a high-res pdf in the current folder
 savefig('plot_filename.pdf',dpi=600)
 
