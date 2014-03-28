@@ -176,9 +176,11 @@ def CRAWLAB_fft(data,time,plotflag):
         show()
     
     # Uncomment below to find and print the frequency at which the highest peak occurs
-    freq_index = np.argmax(2.0/n * np.abs(fft_mag[0:n/2]))
-    print '\nHighest magnitude peak occurs at: ' + str(fft_freq[freq_index]) + ' Hz.'
+#     freq_index = np.argmax(2.0/n * np.abs(fft_mag[0:n/2]))
+#     print '\nHighest magnitude peak occurs at: ' + str(fft_freq[freq_index]) + ' Hz.'
+    
     return fft_freq, fft_mag
+
 
 
 
