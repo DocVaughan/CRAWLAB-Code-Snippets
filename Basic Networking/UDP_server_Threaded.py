@@ -21,11 +21,11 @@ class ThreadedUDPRequestHandler(SocketServer.BaseRequestHandler):
         socket = self.request[1]
         string_to_print = "Data from {}: ".format(self.client_address[0]) + data
         
-        x,sep,y = data.partition(',')
-        x_data = float(x)
-        y_data = float(y)
+#         x,sep,y = data.partition(',')
+#         x_data = float(x)
+#         y_data = float(y)
         
-        #socket.sendto(data.upper(), self.client_address)
+        socket.sendto(string_to_print, self.client_address)
         self.data = data
 
 # Streaming?... change above to SocketServer.StreamRequestHandler
@@ -48,7 +48,7 @@ if __name__ == "__main__":
     global x_data
     global y_data
     # Port 0 means to select an arbitrary unused port
-    HOST, PORT = "10.0.1.108", 2390
+    HOST, PORT = "10.0.1.114", 2390
     
     server = ThreadedUDPServer((HOST, PORT), ThreadedUDPRequestHandler)
     ip, port = server.server_address

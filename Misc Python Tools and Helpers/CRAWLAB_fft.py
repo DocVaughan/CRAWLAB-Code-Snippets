@@ -33,6 +33,9 @@ def CRAWLAB_fft(data,time,plotflag):
     fft_mag = fft((data - offset)*np.hanning(len(data)))
     fft_freq = np.linspace(0.0, 1.0/(2.0*sample_time), n/2)
     
+    # Only return the "useful" part of the fft
+    fft_mag = 2.0/n * np.abs(fft_mag[0:n/2])
+    
     if plotflag:
         # Plot the relationshiop
         #   Many of these setting could also be made default by the .matplotlibrc file
@@ -51,13 +54,14 @@ def CRAWLAB_fft(data,time,plotflag):
         xlabel('Frequency (Hz)',fontsize=22,labelpad=8)
         ylabel('FFT magnitude',fontsize=22,labelpad=10)
     
-        plot(fft_freq, 2.0/n * np.abs(fft_mag[0:n/2]), linewidth=2, linestyle='-')
+        plot(fft_freq, fft_mag, linewidth=2, linestyle='-')
         
         # Adjust the page layout filling the page using the new tight_layout command
         tight_layout(pad=0.5)
         show()
     
     # Uncomment below to find and print the frequency at which the highest peak occurs
-    # freq_index = np.argmax(2.0/n * np.abs(fft_mag[0:n/2]))
-    # print fft_freq[freq_index]
+#     freq_index = np.argmax(2.0/n * np.abs(fft_mag[0:n/2]))
+#     print '\nHighest magnitude peak occurs at: ' + str(fft_freq[freq_index]) + ' Hz.'
+    
     return fft_freq, fft_mag
