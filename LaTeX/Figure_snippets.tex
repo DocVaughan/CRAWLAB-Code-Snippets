@@ -1,0 +1,81 @@
+% These all assume that you are using the suggested file structure:
+%
+% http://crawlab.org/wiki/index.php?title=LaTeX_Folders_and_Filenames
+%
+% This means that they expect your figures to be in a figures folder
+% 
+% All have a \vspace{-0.2in} after the figure. This may need to be removed 
+% some templates.
+
+
+% Standard Figure - Change width as necessary
+%
+\begin{figure}[tb]
+\begin{center}
+\includegraphics[width = 3in]{figures/figure_filename}
+\caption{Caption}
+\label{fig:descriptive_label}
+\end{center}
+\vspace{-0.2in}
+\end{figure}
+%
+
+
+% Minipage environment to place figures side-by-side.
+% Each figure gets its own caption.
+%
+\begin{figure}[tb]
+\begin{center}
+\begin{minipage}{0.45\textwidth}
+\begin{center}
+\includegraphics[width = \columnwidth]{figures/figure_filename_1}
+\caption{Caption 1}
+\label{fig:label_1}
+\end{center}
+\end{minipage}
+\hspace{0.07\textwidth}
+\begin{minipage}{0.45\textwidth}
+\begin{center}
+\includegraphics[width = \columnwidth]{figures/figure_filename_2}
+\caption{Caption 2}
+\label{fig:label_2}
+\end{center}
+\end{minipage}
+\end{center}
+\vspace{-0.2in}
+\end{figure}
+%
+
+
+% The subfigure environment also places figures side-by-side or 
+% one on top of the other, but give each subfigure a secondary label
+% such as a. b. c. The entire group also gets a caption. This arrangement
+% is best for figures that a very closely related.
+%
+% Only two subfigures are included in this snippet. Additional subplots
+% could be added
+% 
+% To use, we need to include the subfigure package. It is included in the 
+% CRAWLAB_OneColumn.tex template.
+%
+\usepackage{subfigure}
+
+\begin{figure}[tb]
+\begin{center}
+\subfigure[Caption 1]
+{
+	\includegraphics[width=3in]{figures/figure_filename_1}
+	\label{fig:label_1}
+}
+\subfigure[Caption 2]
+{
+	\includegraphics[width=3in]{figures/figure_filename_2}
+	\label{fig:label_2}
+}
+\vspace{-0.125in}
+\caption{Total Caption}
+\label{fig:total_label}
+\end{center}
+\vspace{-0.2in}
+\end{figure}
+%
