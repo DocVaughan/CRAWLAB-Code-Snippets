@@ -6,7 +6,7 @@
 # Script to a simulate a spring-mass-damper system with an ode solver
 #
 # NOTE: Plotting is set up for output, not viewing on screen.
-#       So, it will likely be ugly on screen. The saved PDFs should look
+#       So, it will likely be ugly on screen. The saved PDFs should ` look
 #       better.
 # 
 # Created: 11/27/13 
@@ -53,7 +53,7 @@ def eq_of_motion(w, t, p):
     # Create sysODE = (x',y_dot')
     #  We ignore the xd_dot term, as it is only an impulse as the start of the step
     sysODE = [x_dot,
-         c/m * (-x_dot) + k/m * (xd(t,L,StartTime) - x)]
+              c/m * (-x_dot) + k/m * (xd(t,L,StartTime) - x)]
     return sysODE
 
 

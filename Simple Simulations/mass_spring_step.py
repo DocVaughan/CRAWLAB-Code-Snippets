@@ -38,19 +38,19 @@ import control                  # import the control system functions
 # from matplotlib import rc
 # rc('text',usetex=True)
 
-m = 1.;             # kg
-k = (2.*np.pi)**2;     # N/m (Selected to give an undamped wn of 1Hz)
-wn = np.sqrt(k/m)      # Natural Frequency (rad/s)
+m = 1.0                 # kg
+k = (2.0*np.pi)**2      # N/m (Selected to give an undamped wn of 1Hz)
+wn = np.sqrt(k/m)       # Natural Frequency (rad/s)
 
-z = 0.25;           # Define a desired damping ratio
-c = 2*z*wn*m;       # calculate the damping coeff. to create it (N/(m/s))
+z = 0.25                # Define a desired damping ratio
+c = 2*z*wn*m            # calculate the damping coeff. to create it (N/(m/s))
 
 
 # Define the system to use in simulation - in transfer function form here
-num = [2.*z*wn,wn**2];
-den = [1,2.*z*wn,wn**2];
+num = [2.*z*wn, wn**2]
+den = [1, 2.*z*wn, wn**2]
 
-sys = control.tf(num,den);
+sys = control.tf(num,den)
        
 
 # Set up simulation parameters
