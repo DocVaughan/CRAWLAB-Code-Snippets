@@ -58,6 +58,12 @@
     .warning{
         color: rgb( 240, 20, 20 )
         }  
+    
+    .ui-wrapper {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    
 </style>
 <script>
     MathJax.Hub.Config({
