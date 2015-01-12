@@ -19,50 +19,66 @@
         font-style: oblique;
         src: url('http://9dbb143991406a7c655e-aa5fcb0a5a4ec34cff238a2d56ca4144.r56.cf5.rackcdn.com/cmunso.otf');
     }
+    
     div.cell{
-        width:800px;
-        margin-left:16% !important;
+        max-width:1100px;
+        margin-left:auto;
         margin-right:auto;
     }
+    
     h1 {
-        font-family: Computer Modern, serif;
+        font-family: Computer Modern;
     }
+    
     h4{
         margin-top:12px;
         margin-bottom: 3px;
        }
+
     div.text_cell_render{
         font-family: Computer Modern, "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
         line-height: 145%;
         font-size: 130%;
-        width:800px;
+        max-width:1100px;
         margin-left:auto;
         margin-right:auto;
     }
+    
     .CodeMirror{
             font-family: "Source Code Pro", source-code-pro, Consolas, monospace;
-    }
-    .prompt{
-        display: None;
-    }
-    .text_cell_render h5 {
-        font-weight: 300;
-        font-size: 22pt;
-        color: #4057A1;
-        font-style: italic;
-        margin-bottom: .5em;
-        margin-top: 0.5em;
-        display: block;
     }
     
     .warning{
         color: rgb( 240, 20, 20 )
         }  
     
+    hr.style-end {
+    border: 0;
+    height: 1px;
+    text-align: center;
+    background: #333;
+    background-image: -webkit-linear-gradient(left, #ccc, #333, #ccc); 
+    background-image:    -moz-linear-gradient(left, #ccc, #333, #ccc); 
+    background-image:     -ms-linear-gradient(left, #ccc, #333, #ccc); 
+    background-image:      -o-linear-gradient(left, #ccc, #333, #ccc); 
+    }
+
+    hr.style-end:after {
+    content: "⚜";
+    display: inline-block;
+    position: relative; 
+    top: -0.5em;  
+    font-size: 1.5em;
+    padding: 0 0.25em;
+    background: white;
+    }
+    
+/*  Center figures, etc
     .ui-wrapper {
         margin-left: auto !important;
         margin-right: auto !important;
     }
+ */
     
 </style>
 <script>
