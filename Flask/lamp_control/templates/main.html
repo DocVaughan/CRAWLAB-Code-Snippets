@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+   <head>
+    <title>{{ title }}</title>
+    <style type="text/css">
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .large_button {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1000%;
+
+        }
+        #on {
+            background-color: #fbf09a;
+            color: rgb(223, 204, 103);
+            text-shadow: 1px 1px 10px #5C4E17;
+        }
+        #off {
+            background-color: #1e170b;
+            top: 50%;
+            color: rgb(83, 71, 48);
+            text-shadow: 1px 1px 10px #000000;
+        }
+    </style>
+    </head>
+    <body>
+        <h1>
+            <a href="/{{ location }}/on" id="on" class="large_button">ON</a>
+        </h1>
+        <h1>
+            <a href="/{{ location }}/off" id="off" class="large_button">OFF</a>
+        </h1>
+    </body>
+</html>
+
