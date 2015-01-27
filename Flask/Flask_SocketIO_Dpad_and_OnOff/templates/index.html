@@ -14,14 +14,34 @@
         <meta name="generator" content="BBEdit 11.0" />
         <link rel="stylesheet" href="../static/css/normalize.min.css">
         <link rel="stylesheet" href="../static/css/main.css">
+        <link rel="stylesheet" href="../static/css/JoyStick.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <script src="../static/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 
 </head>
 <body>
-    <h1>Flask-SocketIO Test</h1>
-    <h2>Receive:</h2>
-    <div id="log"></div>
+    <h1 style="text-align: center;">Flask-SocketIO Dpad</h1>
     
+    <div class="dpad">
+        <button type="submit" class="button left" id="left">
+            <i class="fa fa-arrow-left icon-large""></i>
+        </button>
+        
+        <button type="submit" class="button up" id="up">
+            <i class="fa fa-arrow-up icon-large""></i>
+        </button>
+        
+        <div class="middle"></div>
+        
+        <button type="submit" class="button down" id="down">
+            <i class="fa fa-arrow-down icon-large""></i>
+        </button>
+        
+        <button type="submit" class="button right" id="right">
+            <i class="fa fa-arrow-right icon-large""></i>
+        </button>
+    </div>
+        
     <!-- Try to get jquery from Google's CDN, else fallback on local version -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.1.min.js"><\/script>')</script>

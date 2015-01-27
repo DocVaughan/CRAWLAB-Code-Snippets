@@ -51,33 +51,29 @@ $(document).ready(function(){
         return false;
     });
     
-    tester = $('#tester');
-tester.draggable();
+    var timeout, button = $('#up');
 
-JoyStick('#joystick1', 120, function(magnitude, theta, ximpulse, yimpulse) {
-    vec.x = ximpulse;
-    vec.y = yimpulse;
+    $('#up').mousedown(function () {
+        socket.emit('my broadcast event', {data: 'button down'});
+        timeout = setInterval(function () {
+            socket.emit('my broadcast event', {data: 'button down'});
+        }, 500);
+
+        return false;
+    });
+    $('#up').mouseup(function () {
+        clearInterval(timeout);
+        return false;
+    });
+    $('#up').mouseout(function () {
+        clearInterval(timeout);
+        return false;
+    });
     
-    console.log(vec.x, vec.y)
-    
-    // Limit output to between -100 and 100
-    if (vec.x > 100){
-        vec.x = 100;
-    }
-    else if (vec.x < -100){
-        vec.x = -100;
-    }
-    
-    if (vec.y > 100){
-        vec.y = 100;
-    }
-    else if (vec.y < -100){
-        vec.y = -100;
-    }
 });
 
 // Send the data over a websocket 10 times per second (1000/100)
-iid = setInterval(function() {
-    // Emit the data over the websocket
-    socket.emit('my broadcast event', {data: [vec.x, vec.y]});}, 1000/100);
-});
+// iid = setInterval(function() {
+//     Emit the data over the websocket
+//     socket.emit('my broadcast event', {data: [vec.x, vec.y]});}, 1000/100);
+// });
