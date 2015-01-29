@@ -22,6 +22,15 @@
 ##########################################################################################
 
 import paho.mqtt.client as mqtt
+import time
+
+
+## Eclipse
+HOST = 'iot.eclipse.org'
+PORT = 1883
+USERNAME = None
+PASSWORD = None
+
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -33,13 +42,17 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
+    print(msg.topic + ' Recieved at: ' + str(time.time()) + ' Sent at: ' + str(msg.payload) + ' Latency: {:0.4f}'.format(time.time() - float(msg.payload)))
 
 client = mqtt.Client()
+
+if USERNAME is not None:
+    client.username_pw_set(USERNAME, PASSWORD)
+
 client.on_connect = on_connect
 client.on_message = on_message
 
-client.connect("iot.eclipse.org", 1883, 60)
+client.connect(HOST, PORT, 60)
 
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
