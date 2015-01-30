@@ -176,22 +176,38 @@ nav a:hover {
     font-size: 4em;
 }
 
-.middle{
-    position: absolute;
-    top: 80px;
-    left: 80px;
 
-	width: 79px;
-	height: 79px;
-	background-image: url("../img/fleur_de_lis.png");
+.middle {
+    z-index: 100;
+    position: absolute;
+
+    top: 79px;
+    left: 79px;
+	width: 78px;
+	height: 78px;
+	
+	border: 1px solid black;
+	background-image: -moz-linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%), -moz-linear-gradient(-0deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
+	background-image: -o-linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%), -o-linear-gradient(-0deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
+	background-image: -ms-linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%), -ms-linear-gradient(-0deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
+	background-image: -webkit-linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%), -webkit-linear-gradient(-0deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
+	background-image: linear-gradient(0deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%), linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
+
+    
+/* 
+    background-image: url("../img/fleur_de_lis.png");
 	background-size: 75px 75px;
 	background-position: center;
 	background-repeat: no-repeat;
+ */
+
+    background-blend-mode: hard-light;
 }
+
 
 .up {
     position: absolute;
-    left: 80px;
+    left: 79px;
     
 	width: 80px;
 	height: 80px;
@@ -211,8 +227,8 @@ nav a:hover {
 
 .right {
     position: absolute;
-    top: 80px;
-    left: 160px;
+    top: 79px;
+    left: 158px;
     
 	width: 80px;
 	height: 80px;
@@ -232,7 +248,7 @@ nav a:hover {
 
 .left {
     position: absolute;
-    top: 80px;
+    top: 79px;
     
 	width: 80px;
 	height: 80px;
@@ -253,8 +269,8 @@ nav a:hover {
 
 .down {
     position: absolute;
-    top: 160px;
-    left:80px;
+    top: 158px;
+    left:79px;
     
 	width: 80px;
 	height: 80px;
