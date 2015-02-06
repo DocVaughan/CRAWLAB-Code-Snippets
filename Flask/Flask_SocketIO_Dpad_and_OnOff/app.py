@@ -22,7 +22,7 @@ def background_thread():
         count += 1
         socketio.emit('my response',
                       {'data': 'Server generated event', 'count': count},
-                      namespace='/test')
+                      namespace='/CRAWLAB')
 
 
 @app.route('/')
@@ -37,7 +37,7 @@ def index():
 def receive():
     return render_template('receive.html')
 
-@socketio.on('my event', namespace='/test')
+@socketio.on('my event', namespace='/CRAWLAB')
 def test_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response',
@@ -45,16 +45,18 @@ def test_message(message):
 
 
 
-@socketio.on('my broadcast event', namespace='/test')
+@socketio.on('my broadcast event', namespace='/CRAWLAB')
 def test_broadcast_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
+    
     print message['data']
+    
     emit('my response',
          {'data': message['data'], 'count': session['receive_count']},
          broadcast=True)
 
 
-@socketio.on('join', namespace='/test')
+@socketio.on('join', namespace='/CRAWLAB')
 def join(message):
     join_room(message['room'])
     session['receive_count'] = session.get('receive_count', 0) + 1
@@ -63,7 +65,7 @@ def join(message):
           'count': session['receive_count']})
 
 
-@socketio.on('leave', namespace='/test')
+@socketio.on('leave', namespace='/CRAWLAB')
 def leave(message):
     leave_room(message['room'])
     session['receive_count'] = session.get('receive_count', 0) + 1
@@ -72,7 +74,7 @@ def leave(message):
           'count': session['receive_count']})
 
 
-@socketio.on('close room', namespace='/test')
+@socketio.on('close room', namespace='/CRAWLAB')
 def close(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response', {'data': 'Room ' + message['room'] + ' is closing.',
@@ -81,7 +83,7 @@ def close(message):
     close_room(message['room'])
 
 
-@socketio.on('my room event', namespace='/test')
+@socketio.on('my room event', namespace='/CRAWLAB')
 def send_room_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response',
@@ -89,7 +91,7 @@ def send_room_message(message):
          room=message['room'])
 
 
-@socketio.on('disconnect request', namespace='/test')
+@socketio.on('disconnect request', namespace='/CRAWLAB')
 def disconnect_request():
     session['receive_count'] = session.get('receive_count', 0) + 1
     emit('my response',
@@ -97,12 +99,12 @@ def disconnect_request():
     disconnect()
 
 
-@socketio.on('connect', namespace='/test')
+@socketio.on('connect', namespace='/CRAWLAB')
 def test_connect():
     emit('my response', {'data': 'Connected', 'count': 0})
 
 
-@socketio.on('disconnect', namespace='/test')
+@socketio.on('disconnect', namespace='/CRAWLAB')
 def test_disconnect():
     print('Client disconnected')
 

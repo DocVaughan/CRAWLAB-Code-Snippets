@@ -1,17 +1,18 @@
 #! /usr/bin/env python
 
-###############################################################################
-# BBB_BasicMotorControl.py
+##########################################################################################
+# BBB_MotorInterrupts.py
 #
-# Basic test of motor control using the SparkFun TB6612FNG breakout board
-# 
+# Basic use of interrupts on the Beagle Bone Black to start/stop a motor
+#
 # Requires - Adafruit BeagleBone IO Python library
+#
 #
 # NOTE: Any plotting is set up for output, not viewing on screen.
 #       So, it will likely be ugly on screen. The saved PDFs should look
 #       better.
 #
-# Created: 01/09/15
+# Created: 02/05/15
 #   - Joshua Vaughan
 #   - joshua.vaughan@louisiana.edu
 #   - http://www.ucs.louisiana.edu/~jev9637
@@ -19,12 +20,12 @@
 # Modified:
 #   *
 #
-###############################################################################
+##########################################################################################
 
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
+
 import time
-import math
 
 class motor(object):
     """ Convenience class for controlling a motor
@@ -134,8 +135,6 @@ class motor(object):
         self.currentSpeed = newSpeed
 
 
-
-
 if __name__ == '__main__':
     # Demonstrates the use of this class
     
@@ -144,60 +143,53 @@ if __name__ == '__main__':
     A01 = 'P8_7'        # A01 pin on board, controls direction along with A02
     A02 = 'P8_8'        # A02 pin on board, controls direction along with A01
     PWMA = 'P8_13'      # PWMA pin on board, controls the speed of Motor A
+    ONswitch = 'P8_12'  # Pin of the swtich to turn the motor on
+    OFFswitch = 'P8_14' # pin of the switch to turn the motor off
     
     # Create the motorA instance of the class
     motorA = motor(A01, A02, PWMA, STBY)
     
-    # We can check if it's running
-    if motorA.isRunning:
-        print 'Motor A is currently running.'
-    else:
-        print 'Motor A is not currently running.'
-
-
-    # Now, let's run it for 2s, off for 2s, on for 2s... for 5 times
-    # let's print that it's running each time too, using our inRunning attribute
-    for index in range(2):
-        motorA.start(100,'CCW')
-
-         # We can check if it's running
+    # GPIO P8_12 and P8_14
+    GPIO.setup(ONswitch, GPIO.IN)
+    GPIO.setup(OFFswitch, GPIO.IN)
+  
+    # now we'll define the threaded callback function  
+    # this will run in another thread when our event is detected  
+    def ONswitch_callback(channel):  
         if motorA.isRunning:
-            print 'Motor A is spinning {} at {}% of maximum speed.'.format(motorA.currentDirection, motorA.currentSpeed)
+            print 'Motor is already running...'            
+        else:
+            print 'Starting the motor...'
+            motorA.start(100,'CCW')
 
-        time.sleep(2)
-        print 'This is a hard stop. It effectively brakes.\n'
-        motorA.hard_stop()
-        time.sleep(2)
-        
-        motorA.start(100,'CW')
 
-        # We can check if it's running
+    # now we'll define the threaded callback function  
+    # this will run in another thread when our event is detected  
+    def OFFswitch_callback(channel):  
         if motorA.isRunning:
-            print 'Motor A is spinning {} at {}% of maximum speed.'.format(motorA.currentDirection, motorA.currentSpeed)
-
-        time.sleep(2)
-
-        print 'This is a soft stop. It coasts to stop.\n'
-        motorA.stop()
-        time.sleep(2)
+            print 'Stopping the motor...'
+            motorA.stop()
+                       
+        else:
+            print 'Motor is not currently running...' 
 
 
-    # Let's vary the speed - we'll get fancy and use a sinusoidal variance
-    motorA.start(75,'CW')
-    lastTime = time.time()
-    startTime = time.time()
+    # The GPIO.add_event_detect() line below set things up so that  
+    # when a rising edge is detected, regardless of whatever   
+    # else is happening in the program, the function 'my_callback' will be run  
+    # It will happen even while the program is waiting for  
+    # a falling edge on the other button.  
+    GPIO.add_event_detect(ONswitch, GPIO.RISING, callback=ONswitch_callback, bouncetime=200)  
+    GPIO.add_event_detect(OFFswitch, GPIO.RISING, callback=OFFswitch_callback, bouncetime=200)  
 
-    while time.time()-startTime < 30:
-        speed = 75 + 25 * math.sin(0.25 * 2 * math.pi * (time.time()-startTime))
-        motorA.set_speed(speed)
-        
-        if time.time() - lastTime > 1:
-            print 'Motor A is spinning {} at {:>6.2f}% of maximum speed.'.format(motorA.currentDirection, motorA.currentSpeed)
-            lastTime = time.time()
-            
-        time.sleep(0.01)
+    try:  
+        print 'Waiting for button pushes...'  
+        while True:
+            time.sleep(0.01)
+            pass
+  
+    except KeyboardInterrupt:  
+        GPIO.cleanup()       # clean up GPIO on CTRL+C exit  
     
-    motorA.stop()
     
-    # We can still access pins and "raw" Adafruit library functions if needed
-    GPIO.output(motorA.STBYpin, GPIO.LOW)
+    GPIO.cleanup()           # clean up GPIO on normal exit  

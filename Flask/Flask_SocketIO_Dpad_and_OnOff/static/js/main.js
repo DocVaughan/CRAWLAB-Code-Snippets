@@ -5,7 +5,7 @@ $(document).ready(function(){
     y: 0
     });
 
-    namespace = '/test'; // change to an empty string to use the global namespace
+    namespace = '/CRAWLAB'; // change to an empty string to use the global namespace
 
     // the socket.io documentation recommends sending an explicit package upon connection
     // this is specially important when using the global namespace
@@ -51,29 +51,107 @@ $(document).ready(function(){
         return false;
     });
     
-    var timeout, button = $('#up');
+    // Read and send the Dpad button states over a websocket
+    var dpad = 0000;
+    var timeout_up = $('#up');
+    var timeout_down = $('#down');
+    var timeout_right = $('#right');
+    var timeout_left = $('#left');    
 
     $('#up').mousedown(function () {
-        socket.emit('my broadcast event', {data: 'button down'});
-        timeout = setInterval(function () {
-            socket.emit('my broadcast event', {data: 'button down'});
-        }, 500);
+        dpad = 1000;
+//         timeout_up = setInterval(function () { 
+//         }, 100);
 
         return false;
     });
     $('#up').mouseup(function () {
-        clearInterval(timeout);
+        dpad = 0000;
+//         clearInterval(timeout_up);
         return false;
+
     });
     $('#up').mouseout(function () {
-        clearInterval(timeout);
+        dpad = 0000;
+//         clearInterval(timeout_up);
+        return false;
+
+    });
+    
+    // right Button    
+    $('#right').mousedown(function () {
+        dpad = 0100;
+        timeout_right = setInterval(function () { 
+        }, 100);
+
+        return false;
+    });
+    $('#right').mouseup(function () {
+        dpad = 0000;
+        clearInterval(timeout_right);
+        return false;
+    });
+    $('#right').mouseout(function () {
+        dpad = 0000;
+        clearInterval(timeout_right);
         return false;
     });
     
+    
+    // Down Button    
+    $('#down').mousedown(function () {
+        dpad = 0010;
+        timeout_down = setInterval(function () { 
+        }, 100);
+
+        return false;
+    });
+    $('#down').mouseup(function () {
+        dpad = 0000;
+        clearInterval(timeout_down);
+        return false;
+    });
+    $('#down').mouseout(function () {
+        dpad = 0000;
+        clearInterval(timeout_down);
+        return false;
+    });
+    
+    // Left Button    
+    $('#left').mousedown(function () {
+        dpad = 0001;
+        timeout_left = setInterval(function () { 
+        }, 100);
+
+        return false;
+    });
+    $('#left').mouseup(function () {
+        dpad = 0000;
+        clearInterval(timeout_left);
+        return false;
+    });
+    $('#left').mouseout(function () {
+        dpad = 0000;
+        clearInterval(timeout_left);
+        return false;
+    });
+    
+//     Send the data over a websocket 10 times per second (1000/100)
+//     iid = setInterval(function() {
+//         socket.emit('my broadcast event', {data: dpad});
+//         }, 100);  
+
+        
+//     setTimout(send_data_at_interval, 1);
+    
+    // Send the data over a websocket 10 times per second (100ms)
+    (function send_data_at_interval() {
+        socket.emit('my broadcast event', {data: dpad});
+        setTimeout(send_data_at_interval, 100);
+        })();  
+
 });
 
-// Send the data over a websocket 10 times per second (1000/100)
-// iid = setInterval(function() {
-//     Emit the data over the websocket
-//     socket.emit('my broadcast event', {data: [vec.x, vec.y]});}, 1000/100);
-// });
+ 
+
+

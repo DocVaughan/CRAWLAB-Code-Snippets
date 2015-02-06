@@ -170,10 +170,12 @@ nav a:hover {
     margin: 0 auto;
     height: 240px;
     width: 240px;
+    
     }
 
 .button {
     font-size: 4em;
+    text-shadow: 0px 1px white, 0px -2px #444;
 }
 
 
