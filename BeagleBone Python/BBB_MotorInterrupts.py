@@ -43,11 +43,12 @@ class motor(object):
                   =None if the motor is not currently moving
                   
     """
-    def __init__(self, ControlPin1, ControlPin2, PWMpin, STBYpin):
+    def __init__(self, ControlPin1, ControlPin2, PWMpin, STBYpin, PWMfreq = 2000):
         self.ControlPin1 = ControlPin1
         self.ControlPin2 = ControlPin2
         self.PWMpin = PWMpin
         self.STBYpin = STBYpin
+        self.PWMfreq = PWMfreq
         self.isRunning = False
         self.currentDirection = None
         self.currentSpeed = 0
@@ -82,7 +83,7 @@ class motor(object):
         # Start the motor
         # PWM.start(channel, duty, freq=2000, polarity=0)
         if 0 <= speed <= 100:
-            PWM.start(self.PWMpin, speed)
+            PWM.start(self.PWMpin, speed, self.PWMfreq)
         else:
             raise ValueError("Please enter speed between 0 and 100, \
                               representing a percentage of the maximum \
@@ -133,7 +134,6 @@ class motor(object):
         
         PWM.set_duty_cycle(self.PWMpin, newSpeed)
         self.currentSpeed = newSpeed
-
 
 if __name__ == '__main__':
     # Demonstrates the use of this class

@@ -33,6 +33,11 @@ def index():
         thread.start()
     return render_template('index.html')
 
+
+@app.route('/full')
+def full():
+    return render_template('full_site.html')
+
 @app.route('/receive')
 def receive():
     return render_template('receive.html')

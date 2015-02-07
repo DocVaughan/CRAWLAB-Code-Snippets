@@ -64,7 +64,7 @@ textarea {
    ========================================================================== */
 
 body {
-    font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    font: 18px/26px Avenir, Helvetica Neue, Arial;
 }
 
 .wrapper {
@@ -102,12 +102,13 @@ body {
 nav ul {
     margin: 0;
     padding: 0;
+    
 }
 
 nav a {
     display: block;
     margin-bottom: 10px;
-    padding: 15px 0;
+    padding: 15px 0px;
 
     text-align: center;
     text-decoration: none;
@@ -159,18 +160,21 @@ nav a:hover {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-
 .title {
-    font-family: 'Fugaz One';
-    font-style: cursive;
-}
+    font-size: 3em;
+/* 
+    margin-bottom: 15px;
+    margin-top: 15px;
+ */
+    text-align: center;
+    margin: 15px auto;
+    }
 
 .dpad {
     position: relative;
     margin: 0 auto;
     height: 240px;
     width: 240px;
-    
     }
 
 .button {
@@ -194,15 +198,6 @@ nav a:hover {
 	background-image: -ms-linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%), -ms-linear-gradient(-0deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
 	background-image: -webkit-linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%), -webkit-linear-gradient(-0deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
 	background-image: linear-gradient(0deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%), linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
-
-    
-/* 
-    background-image: url("../img/fleur_de_lis.png");
-	background-size: 75px 75px;
-	background-position: center;
-	background-repeat: no-repeat;
- */
-
     background-blend-mode: hard-light;
 }
 
@@ -328,19 +323,19 @@ nav a:hover {
    ==================== */
 
     nav a {
-        float: left;
+        float: right;
         width: 27%;
         margin: 0 1.7%;
-        padding: 25px 2%;
+        padding: 10px 2%;
         margin-bottom: 0;
     }
 
     nav li:first-child a {
-        margin-left: 0;
+        margin-right: 0;
     }
 
     nav li:last-child a {
-        margin-right: 0;
+        margin-left: 0;
     }
 
 /* ========================
@@ -372,22 +367,33 @@ nav a:hover {
 /* ============
     WIDE: Menu
    ============ */
-
     .title {
         float: left;
+        margin-bottom: 0px;
+        margin-top: 25px;
     }
 
     nav {
         float: right;
         width: 38%;
     }
+    
+    nav a {
+        margin: 0 1.7%;
+        padding: 20px 2%;
+        }
+
+    
+
+
 
 /* ============
     WIDE: Main
    ============ */
 
     .main article {
-        float: left;
+/*         float: left; */
+        text-align: center
         width: 57%;
     }
 
@@ -395,6 +401,7 @@ nav a:hover {
         float: right;
         width: 28%;
     }
+
 }
 
 @media only screen and (min-width: 1140px) {

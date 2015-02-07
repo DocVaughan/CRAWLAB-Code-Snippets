@@ -43,11 +43,12 @@ class motor(object):
                   =None if the motor is not currently moving
                   
     """
-    def __init__(self, ControlPin1, ControlPin2, PWMpin, STBYpin):
+    def __init__(self, ControlPin1, ControlPin2, PWMpin, STBYpin, PWMfreq = 2000):
         self.ControlPin1 = ControlPin1
         self.ControlPin2 = ControlPin2
         self.PWMpin = PWMpin
         self.STBYpin = STBYpin
+        self.PWMfreq = PWMfreq
         self.isRunning = False
         self.currentDirection = None
         self.currentSpeed = 0
@@ -82,7 +83,7 @@ class motor(object):
         # Start the motor
         # PWM.start(channel, duty, freq=2000, polarity=0)
         if 0 <= speed <= 100:
-            PWM.start(self.PWMpin, speed)
+            PWM.start(self.PWMpin, speed, self.PWMfreq)
         else:
             raise ValueError("Please enter speed between 0 and 100, \
                               representing a percentage of the maximum \
@@ -145,9 +146,10 @@ if __name__ == '__main__':
     PWMA = 'P8_13'      # PWMA pin on board, controls the speed of Motor A
     CWswitch = 'P8_12'  # Pin of the swtich to turn the motor on
     CCWswitch = 'P8_14' # pin of the switch to turn the motor off
+    PWMfreq = 2000      # PWM frequency Hz
     
     # Create the motorA instance of the class
-    motorA = motor(A01, A02, PWMA, STBY)
+    motorA = motor(A01, A02, PWMA, STBY, PWMfreq)
     
     # GPIO P8_12 and P8_14
     GPIO.setup(CWswitch, GPIO.IN)
@@ -159,7 +161,7 @@ if __name__ == '__main__':
         if motorA.isRunning:
             print 'Motor is already running...'            
         else:
-            print 'Starting the motor...'
+            print 'Starting the motor CW...'
             motorA.start(100,'CW')
 
             # Note that this is blocking
@@ -167,8 +169,7 @@ if __name__ == '__main__':
             while GPIO.input(CWswitch):
                 # Motor is still running
                 # print 'Still running CW...'
-                # time.sleep(0.01)
-                pass
+                time.sleep(0.1)
             else:
                 print 'Stopping CW motor.'
                 motorA.stop()
@@ -188,8 +189,7 @@ if __name__ == '__main__':
             while GPIO.input(CCWswitch):
                 # Motor is still running
                 # print 'Still running CCW...'
-                # time.sleep(0.01)
-                pass
+                time.sleep(0.1)
             else:
                 print 'Stopping CCW motor.'
                 motorA.stop()

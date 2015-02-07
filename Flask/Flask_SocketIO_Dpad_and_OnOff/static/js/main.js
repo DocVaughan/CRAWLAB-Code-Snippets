@@ -136,14 +136,6 @@ $(document).ready(function(){
         return false;
     });
     
-//     Send the data over a websocket 10 times per second (1000/100)
-//     iid = setInterval(function() {
-//         socket.emit('my broadcast event', {data: dpad});
-//         }, 100);  
-
-        
-//     setTimout(send_data_at_interval, 1);
-    
     // Send the data over a websocket 10 times per second (100ms)
     (function send_data_at_interval() {
         socket.emit('my broadcast event', {data: dpad});
