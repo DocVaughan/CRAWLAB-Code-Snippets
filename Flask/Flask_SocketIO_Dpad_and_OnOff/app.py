@@ -36,7 +36,7 @@ def index():
 
 @app.route('/full')
 def full():
-    return render_template('full_site.html')
+    return render_template('full.html')
 
 @app.route('/receive')
 def receive():
