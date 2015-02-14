@@ -75,9 +75,19 @@ $(document).ready(function(){
         dpad = 0000;
 //         clearInterval(timeout_up);
         return false;
-
     });
     
+    $('#up').on("touchstart", function () {
+        dpad = 1000;
+        return false;
+    });
+    
+    $('#up').on("touchend", function () {
+        dpad = 0000;
+        return false;
+    });
+    
+
     // right Button    
     $('#right').mousedown(function () {
         dpad = 0100;
@@ -94,6 +104,16 @@ $(document).ready(function(){
     $('#right').mouseout(function () {
         dpad = 0000;
         clearInterval(timeout_right);
+        return false;
+    });
+    
+    $('#right').on("touchstart", function () {
+        dpad = 0100;
+        return false;
+    });
+    
+    $('#right').on("touchend", function () {
+        dpad = 0000;
         return false;
     });
     
@@ -117,6 +137,16 @@ $(document).ready(function(){
         return false;
     });
     
+    $('#down').on("touchstart", function () {
+        dpad = 0010;
+        return false;
+    });
+    
+    $('#down').on("touchend", function () {
+        dpad = 0000;
+        return false;
+    });
+    
     // Left Button    
     $('#left').mousedown(function () {
         dpad = 0001;
@@ -135,6 +165,18 @@ $(document).ready(function(){
         clearInterval(timeout_left);
         return false;
     });
+    
+    $('#left').on("touchstart", function () {
+        dpad = 0001;
+        return false;
+    });
+    
+    $('#left').on("touchend", function () {
+        dpad = 0000;
+        return false;
+    });
+    
+    
     
     // Send the data over a websocket 10 times per second (100ms)
     (function send_data_at_interval() {
