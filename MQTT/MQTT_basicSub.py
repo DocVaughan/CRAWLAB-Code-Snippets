@@ -24,13 +24,18 @@
 import paho.mqtt.client as mqtt
 import time
 
+ 
+# ## Eclipse
+# HOST = 'iot.eclipse.org'
+# PORT = 1883
+# USERNAME = None
+# PASSWORD = None
 
-## Eclipse
-HOST = 'iot.eclipse.org'
+# MQTT Dashboard
+HOST = 'broker.mqttdashboard.com'
 PORT = 1883
 USERNAME = None
 PASSWORD = None
-
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):

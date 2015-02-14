@@ -22,7 +22,13 @@ import time
 
 
 ## Eclipse
-HOST = 'iot.eclipse.org'
+# HOST = 'iot.eclipse.org'
+# PORT = 1883
+# USERNAME = None
+# PASSWORD = None
+
+# MQTT Dashboard
+HOST = 'broker.mqttdashboard.com'
 PORT = 1883
 USERNAME = None
 PASSWORD = None
