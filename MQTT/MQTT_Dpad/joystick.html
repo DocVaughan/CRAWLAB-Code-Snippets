@@ -15,24 +15,36 @@
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/JoyStick.css">
         <link href='http://fonts.googleapis.com/css?family=Fugaz+One' rel='stylesheet' type='text/css'>        
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     
     <body>
 
         <div id="tester"></div>
+        <button type="submit" class="button control" onclick="toggle_sending();" id="control" style = "left: calc( 50% - 5px );top: calc(10px);">Start</button>
         <div id="joystick1" class="JoyStick" style="left: 200px; top: 200px;"></div>
+        <div class = "status">
+            Connected:
+            <div class="status_light connected" style="float:right"></div>
+            <br>
+            Sending Data:
+            <div class="status_light sending" style="float:right"></div>
+        </div>
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
 
-        <!-- 
-<script src="js/vendor/mqttws31.js"></script>
+        <!-- Get socket.io from CDN -->
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+        <script type="text/javascript" src="http://www.hivemq.com/demos/websocket-client/js/mqttws31.js"></script>
+
+        <!-- Load local scripts -->
         <script src="js/main.js"></script>
- -->
         <script src="js/JoyStick.js"></script>
         <script src="js/vendor/jquery.ui.touch-punch.min.js"></script>
         <script src="js/vendor/jquery-ui.min.js"></script>
+        <script src="js/vendor/mqttws31.js"></script>
 
     </body>
 </html>
