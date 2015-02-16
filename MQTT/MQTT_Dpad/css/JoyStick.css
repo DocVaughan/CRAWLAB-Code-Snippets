@@ -49,4 +49,17 @@
 .JoyStick {
     position: relative;
     background: #999999;
+    margin: 60px auto;
 }
+
+.Joy-background{
+/*     position: absolute; */
+    background: #6a6a6a;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+    margin: 10px auto;
+    height: 240px;
+    width: 240px;
+    border: 1px solid black;
+    }

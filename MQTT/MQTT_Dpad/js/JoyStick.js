@@ -50,7 +50,8 @@ var JoyStick = function(selector, sqhw, done) {
             var y = parseInt(this.style.top.substr(0, this.style.top.length - 2), 10) + sqhw / 4;
             var x = parseInt(this.style.left.substr(0, this.style.left.length - 2), 10) + sqhw / 4;
             
-            //console.log(x, y);
+//             console.log(x, y);
+
             
             if (x > sqhw / 2) {
                 x -= sqhw / 2;

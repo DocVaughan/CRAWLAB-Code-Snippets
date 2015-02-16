@@ -11,17 +11,23 @@ $(document).ready(function(){
 //     tester.draggable();
 
     JoyStick('#joystick1', 120, function(magnitude, theta, ximpulse, yimpulse) {
-        //console.log(magnitude, theta, ximpulse, yimpulse);
-        vec.x = 10 * (ximpulse / 80);
-        vec.y = 10 * (yimpulse / 80);
+//         console.log(magnitude, theta, ximpulse, yimpulse);
+
+        vec.x = ximpulse; // 10 * (ximpulse / 80);
+        vec.y = yimpulse; // 10 * (yimpulse / 80);
+        
+        if (vec.x > 100) {
+            vec.x = 100;
+        } else if (vec.x < -100) {
+            vec.x = -100;
+        } 
+        
+        if (vec.y > 100) {
+            vec.y = 100;
+        } else if (vec.y < -100) {
+            vec.y = -100;
+        } 
     });
-
-//     iid = setInterval(function() {
-//         console.log(vec.x, vec.y);
-// //         tester.css('top', (parseInt(tester.css('top').substr(0, tester.css('top').length - 2), 10) - vec.y) + 'px');
-// //         tester.css('left', (parseInt(tester.css('left').substr(0, tester.css('left').length - 2), 10) + vec.x) + 'px');
-//     }, 50);
-
 
 
     // Read and send the Dpad button states over MQTT
