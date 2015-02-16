@@ -214,11 +214,12 @@ nav a:hover {
 }
 
 .control{
-    font-size: 2em;
+    font-size: 1.8em;
     text-shadow: none;
+    float:left;
     
 	width: 80px;
-	height: 80px;
+	height: 60px;
 	border: 1px solid black;
 	-moz-border-radius: 12px 12px 12px 12px;
 	-webkit-border-radius: 12px 12px 12px 12px;
@@ -239,7 +240,6 @@ nav a:hover {
 .middle {
     z-index: 100;
     position: absolute;
-
     top: 79px;
     left: 79px;
 	width: 78px;
@@ -299,6 +299,8 @@ nav a:hover {
 .left {
     position: absolute;
     top: 79px;
+    left: 0px;
+    z-index: 100;
     
 	width: 80px;
 	height: 80px;
