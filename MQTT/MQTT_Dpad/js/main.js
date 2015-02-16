@@ -192,7 +192,7 @@ send_data = function (){
 //Send your message (also possible to serialize it as JSON or protobuf or just use a string, no limitations)
          var message = new Messaging.Message(String(dpad));
          message.destinationName = 'CRAWLAB';
-         message.qos = 2;
+         message.qos = 0;
          client.send(message);
         timer = setTimeout(send_data, 50);
         }
