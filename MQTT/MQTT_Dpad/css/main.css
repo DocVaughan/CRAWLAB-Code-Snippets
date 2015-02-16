@@ -99,6 +99,37 @@ body {
     MOBILE: Menu
    ============== */
 
+nav ul { 
+    display: none;
+    }
+
+nav select { 
+    display: inline-block; 
+    margin: 0 auto;
+    }
+
+nav {
+    text-align: center;
+    }
+
+select {
+	background-color: #999999;
+	color: white;
+	border: 0.5px solid black;
+	-moz-border-radius: 5px ;
+	border-radius: 5px;
+	}
+
+select.body{
+    margin: 0px;
+    width: 15em;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    outline: transparent;
+    }
+
+
 nav ul {
     margin: 0;
     padding: 0;
@@ -149,6 +180,7 @@ nav a:hover {
     padding: 20px 0;
 }
 
+
 /* ===============
     ALL: IE Fixes
    =============== */
@@ -161,11 +193,7 @@ nav a:hover {
    Author's custom styles
    ========================================================================== */
 .title {
-    font-size: 3em;
-/* 
-    margin-bottom: 15px;
-    margin-top: 15px;
- */
+    font-size: 2.5em;
     text-align: center;
     margin: 15px auto;
     }
@@ -173,6 +201,7 @@ nav a:hover {
 .dpad {
     position: relative;
     margin: 0 auto;
+    margin-bottom: 5px;
     height: 240px;
     width: 240px;
     }
@@ -182,6 +211,28 @@ nav a:hover {
     line-height: 0px;
     padding: 0;
     text-shadow: 0px 1px white, 0px -2px #444;
+}
+
+.control{
+    font-size: 2em;
+    text-shadow: none;
+    
+	width: 80px;
+	height: 80px;
+	border: 1px solid black;
+	-moz-border-radius: 12px 12px 12px 12px;
+	-webkit-border-radius: 12px 12px 12px 12px;
+	border-radius: 12px 12px 12px 12px;
+	-moz-box-shadow: 0px 2px 5px rgba(0,0,0,0.75);
+	-webkit-box-shadow: 0px 2px 5px rgba(0,0,0,0.75);
+		-moz-box-shadow: 0px 2px 5px rgba(0,0,0,0.75);
+	-webkit-box-shadow: 0px 2px 5px rgba(0,0,0,0.75);
+	box-shadow: 0px 2px 5px rgba(0,0,0,0.75);
+	background-image: -moz-linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
+	background-image: -o-linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
+	background-image: -ms-linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
+	background-image: -webkit-linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
+	background-image: linear-gradient(0deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
 }
 
 
@@ -287,32 +338,50 @@ nav a:hover {
 	background-image: linear-gradient(90deg, #6a6a6a 1%, #bfbfbf 24%, #d4d4d4 75%, #7f7f7f 100%);
 }
 
-.up:active {
+.button:active{
 	-moz-box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
 	-webkit-box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
 	box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
-}
+	}
 
-.right:active {
-	-moz-box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
-	-webkit-box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
-	box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
-}
 
-.down:active {
-	border-radius: 0px 0px 12px 12px;
-	-moz-box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
-	-webkit-box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
-	box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
-}
-
-.left:active {
-	-moz-box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
-	-webkit-box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
-	box-shadow: inset 0px 0px 15px rgba(0,0,0,0.75);
+.status {
+    margin: 0 auto; 
+    max-width: 240px;
 }
 
 
+.status_light {
+	width: 20px;
+	height: 20px;
+	border: 1px solid black;
+	-moz-border-radius: 54px;
+	-webkit-border-radius: 54px;
+	border-radius: 54px;
+	background: #f42300;
+	background-image: -moz-radial-gradient(50% 50%, #eeeeee 0%, #a6a6a6 53%, #6a6a6a 98%);
+	background-image: -o-radial-gradient(50% 50%, #eeeeee 0%, #a6a6a6 53%, #6a6a6a 98%);
+	background-image: -ms-radial-gradient(50% 50%, #eeeeee 0%, #a6a6a6 53%, #6a6a6a 98%);
+	background-image: -webkit-radial-gradient(50% 50%, #eeeeee 0%, #a6a6a6 53%, #6a6a6a 98%);
+	background-image: radial-gradient(circle at 50% 50%, #eeeeee 0%, #a6a6a6 53%, #6a6a6a 98%);
+	background-blend-mode: hard-light;
+}
+
+.on {
+	width: 20px;
+	height: 20px;
+	border: 1px solid black;
+	-moz-border-radius: 54px;
+	-webkit-border-radius: 54px;
+	border-radius: 54px;
+	background: #3fca00;
+	background-image: -moz-radial-gradient(50% 50%, #eeeeee 0%, #a6a6a6 53%, #6a6a6a 98%);
+	background-image: -o-radial-gradient(50% 50%, #eeeeee 0%, #a6a6a6 53%, #6a6a6a 98%);
+	background-image: -ms-radial-gradient(50% 50%, #eeeeee 0%, #a6a6a6 53%, #6a6a6a 98%);
+	background-image: -webkit-radial-gradient(50% 50%, #eeeeee 0%, #a6a6a6 53%, #6a6a6a 98%);
+	background-image: radial-gradient(circle at 50% 50%, #eeeeee 0%, #a6a6a6 53%, #6a6a6a 98%);
+	background-blend-mode: hard-light;
+}
 
 /* ==========================================================================
    Media Queries
@@ -323,7 +392,15 @@ nav a:hover {
 /* ====================
     INTERMEDIATE: Menu
    ==================== */
+    .title {
+    font-size: 3em;
+/* 
+    margin-bottom: 15px;
+    margin-top: 15px;
+ */
 
+    }
+    
     nav a {
         float: right;
         width: 27%;
@@ -339,11 +416,23 @@ nav a:hover {
     nav li:last-child a {
         margin-left: 0;
     }
+    
+    nav select {
+      display: none;
+    }
+    
+    nav ul {
+      display: block;
+      }
+    
+    .footer-container{
+        display: none;
+        }
 
 /* ========================
     INTERMEDIATE: IE Fixes
    ======================== */
-
+    
     nav ul li {
         display: inline;
     }
