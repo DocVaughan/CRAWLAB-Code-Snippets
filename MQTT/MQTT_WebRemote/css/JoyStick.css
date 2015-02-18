@@ -59,6 +59,7 @@
     -webkit-border-radius: 12px;
     border-radius: 12px;
     margin: 10px auto;
+    margin-top: -15px;
     height: 240px;
     width: 240px;
     border: 1px solid black;

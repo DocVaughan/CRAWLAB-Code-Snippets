@@ -241,7 +241,7 @@ nav a:hover {
     font-size: 1.8em;
     text-shadow: none;
     position: relative;
-    left: -40px;
+    left: -35px;
     top: 10px;
     
 	width: 150px;
@@ -266,7 +266,7 @@ nav a:hover {
     font-size: 1.8em;
     text-shadow: none;
     position: relative;
-    left: 140px;
+    left: 125px;
     top: -50px;
     
     
@@ -290,6 +290,9 @@ nav a:hover {
 
 .joy-control{
     position: relative;
+    left: calc( 50% - 40px ); 
+    margin: 10px auto;
+    margin-top: 5px;
     }
 
 .middle {
