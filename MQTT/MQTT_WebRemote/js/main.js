@@ -34,7 +34,8 @@ $(document).ready(function(){
     var timeout_down = $('#down');
     var timeout_right = $('#right');
     var timeout_left = $('#left'); 
-    var sending = false     
+    var sending = false  
+    var receiving = false   
     
     // Set up the MQTT client
     client = new Messaging.Client("broker.mqttdashboard.com", 8000, "myclientid_" + parseInt(Math.random() * 100, 10));
@@ -65,7 +66,9 @@ $(document).ready(function(){
     //Gets called whenever you receive a message for your subscriptions
     client.onMessageArrived = function (message) {
         //Do something with the push message you received
-        $('#messages').append('<span>Topic: ' + message.destinationName + '  | ' + message.payloadString + '</span><br/>');
+        if (receiving) {
+        $('#messages').prepend('<span>Topic: ' + message.destinationName + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data: ' + message.payloadString + '</span><br/>');
+        }
     };
 
     //Creates a new Messaging.Message Object and sends it to the HiveMQ MQTT Broker
@@ -243,29 +246,26 @@ send_data = function (){
          client.send(message);
         timer = setTimeout(send_data, 50);
         }
+        
+        
+// Accept the data being sent
+toggle_receiving = function () {
+    if (receiving) {
+         $('#receive').text('Receive');
+         receiving = false;
+        $('.receiving').toggleClass('on');
+    }
+    else 
+    {
+        $("#receive").text('Stop');
+        receiving = true;
+        $('.receiving').toggleClass('on');
+        $('#messages').text('');
+    }
+    }; 
 });
 
 $(function navigation() {
-// 	   
-//       // Create the dropdown base
-//       $("<select />").appendTo("nav");
-//       
-//       // Create default option "Go to..."
-//       $("<option />", {
-//          "selected": "selected",
-//          "value"   : "",
-//          "text"    : "Go to..."
-//       }).appendTo("nav select");
-//       
-//       // Populate dropdown with menu items
-//       $("nav a").each(function() {
-//        var el = $(this);
-//        $("<option />", {
-//            "value"   : el.attr("href"),
-//            "text"    : el.text()
-//        }).appendTo("nav select");
-//       });
-//       
 	   // To make dropdown actually work
 	   // To make more unobtrusive: http://css-tricks.com/4064-unobtrusive-page-changer/
       $("nav select").change(function() {
