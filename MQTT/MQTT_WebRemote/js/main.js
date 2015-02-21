@@ -34,12 +34,63 @@ $(document).ready(function(){
     var timeout_down = $('#down');
     var timeout_right = $('#right');
     var timeout_left = $('#left'); 
-    var sending = false  
-    var receiving = false   
+    var sending = false;  
+    var receiving = false;   
+    var subscribed = false;
+    var connected = false;
     
     // Set up the MQTT client
-    client = new Messaging.Client("broker.mqttdashboard.com", 8000, "myclientid_" + parseInt(Math.random() * 100, 10));
+    client = new Messaging.Client("iot.eclipse.org", 80, "myclientid_" + parseInt(Math.random() * 100, 10));
+    
+    // Select the MQTT server to use
+    $("#server" ).on('change', function() {
+        $('.receiving').toggleClass('on', false);
+        if (connected) {
+            client.disconnect();
+            sending = false;  
+            receiving = false;   
+            subscribed = false;
+            $('.connected').toggleClass('on', false);
+            $('.sending').toggleClass('on', false);
+            $('.subscribed').toggleClass('on', false);
+            $('.receiving').toggleClass('on', false);
+            $('#receive').text('Receive');
+            $('#control').text('Start');
+            
+        }
+        server = $(this).val();
+        select = document.getElementById('#server');
+        console.log(server);
+        
+        if (server == "iot.eclipse.org") {
+            port = 80;
+        }
+        else if (server == "test.mosquitto.org") {
+            port = 8080;
+        }
+        else if (server == "broker.mqtt-dashboard.com") {
+            port = 8000;
+        }
+        client = new Messaging.Client(server, port, "myclientid_" + parseInt(Math.random() * 100, 10));
+        client.connect(options)
+        
+        //Gets  called if the websocket/mqtt connection gets disconnected for any reason
+        client.onConnectionLost = function (responseObject) {
+        //Depending on your scenario you could implement a reconnect logic here
+        //alert("Connection Lost: " + responseObject.errorMessage);
+        $('.connected').toggleClass('on');
+        connected = false;
+        };
 
+        //Gets called whenever you receive a message for your subscriptions
+        client.onMessageArrived = function (message) {
+        //Do something with the push message you received
+        if (receiving) {
+        $('#messages').prepend('<span>Topic: ' + message.destinationName + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data: ' + message.payloadString + '</span><br/>');
+        }
+        };
+    });
+    
     //Connect Options
     options = {
          timeout: 3,
@@ -47,20 +98,24 @@ $(document).ready(function(){
          onSuccess: function () {
 //              alert("Connected");
             $('.connected').toggleClass('on');
+            connected = true;
          },
          //Gets Called if the connection could not be established
          onFailure: function (message) {
              alert("Connection failed: " + message.errorMessage);
+             $('.connected').toggleClass('on', false);
+             connected = false;
          }
      }; 
 
     client.connect(options);
 
-    //Gets  called if the websocket/mqtt connection gets disconnected for any reason
+            //Gets  called if the websocket/mqtt connection gets disconnected for any reason
     client.onConnectionLost = function (responseObject) {
         //Depending on your scenario you could implement a reconnect logic here
-        alert("connection lost: " + responseObject.errorMessage);
+        //alert("Connection Lost: " + responseObject.errorMessage);
         $('.connected').toggleClass('on');
+        connected = false;
     };
 
     //Gets called whenever you receive a message for your subscriptions
@@ -71,6 +126,7 @@ $(document).ready(function(){
         }
     };
 
+    
     //Creates a new Messaging.Message Object and sends it to the HiveMQ MQTT Broker
     publish = function (payload, topic, qos) {
         //Send your message (also possible to serialize it as JSON or protobuf or just use a string, no limitations)
@@ -241,12 +297,11 @@ toggle_sending = function () {
 send_data = function (){
 //Send your message (also possible to serialize it as JSON or protobuf or just use a string, no limitations)
          var message = new Messaging.Message(String(vec.x) + ',' + String(vec.y));
-         message.destinationName = 'CRAWLAB';
+         message.destinationName = 'CRAWLAB/test';
          message.qos = 0;
          client.send(message);
         timer = setTimeout(send_data, 50);
         }
-        
         
 // Accept the data being sent
 toggle_receiving = function () {
@@ -257,12 +312,33 @@ toggle_receiving = function () {
     }
     else 
     {
-        $("#receive").text('Stop');
-        receiving = true;
-        $('.receiving').toggleClass('on');
-        $('#messages').text('');
+        if (subscribed) {
+            $("#receive").text('Stop');
+            receiving = true;
+            $('.receiving').toggleClass('on');
+            $('#messages').text('');
+            }
+        else {
+            alert("You must be subscribed to a topic to receive data published to it. Please subscribe and try again.")
+        }
+        
     }
-    }; 
+    };
+    
+// Toggle susbscription
+toggle_subscription = function () {
+    if (subscribed) {
+        $('.subscribed').toggleClass('on');
+        client.unsubscribe('CRAWLAB/test');
+        subscribed = false;
+    }
+    else {
+        $('.subscribed').toggleClass('on');
+        client.subscribe('CRAWLAB/test', {qos: 0});
+        subscribed = true;
+    }
+    };
+     
 });
 
 $(function navigation() {

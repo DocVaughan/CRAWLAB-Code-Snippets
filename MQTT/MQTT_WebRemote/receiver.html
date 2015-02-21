@@ -57,17 +57,30 @@
                             <br>
                             Receiving:
                             <div class="status_light receiving" style="float:right"></div>
-                            <button class="button subscribe" onclick="client.subscribe('CRAWLAB', {qos: 0});$('.subscribed').toggleClass('on');">Subscribe</button>
+                            <button class="button subscribe" onclick="toggle_subscription();">Subscribe</button>
                             <button class="button receive" onclick="toggle_receiving();" id = "receive">Receive</button>
                         </div>
                             
                     </header>
+                    <aside>
+                        <h2>MQTT Broker</h2>
+                        <p>A MQTT broker can be selected from the list below. These are all free, public brokers, made available for testing MQTT applications. The broker provided by <a href="http://iot.eclipse.org" name="Eclipse Internet of Things">Eclipse</a> is used as default.</p>
+                        <select id="server"> 
+                            <option value="#" selected="selected">Select...</option>
+                            <option value="iot.eclipse.org">iot.eclipse.org</option>
+                            <option value="test.mosquitto.org">test.mosquitto.org</option> 
+                            <option value="broker.mqtt-dashboard.com">HiveMQ</option> 
+                        </select>
+                    </aside>
                     
                     <section>
                         <h2>Data Received:</h2>
                         <div class = "messages" id="messages">
                         </div>
                     </section>
+                    
+
+                    
                 </article>
 
 <!-- 
