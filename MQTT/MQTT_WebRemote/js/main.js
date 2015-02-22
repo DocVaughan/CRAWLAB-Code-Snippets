@@ -38,9 +38,13 @@ $(document).ready(function(){
     var receiving = false;   
     var subscribed = false;
     var connected = false;
-    
-    // Set up the MQTT client
-    client = new Messaging.Client("iot.eclipse.org", 80, "myclientid_" + parseInt(Math.random() * 100, 10));
+
+    // Set up the MQTT client    
+    // iot.eclipse.org is default
+    server = "iot.eclipse.org"
+    port = 80
+    client = new Messaging.Client(server, port, "CRAWLAB_" + parseInt(Math.random() * 100, 10));
+
     
     // Select the MQTT server to use
     $("#server" ).on('change', function() {
@@ -71,7 +75,7 @@ $(document).ready(function(){
         else if (server == "broker.mqtt-dashboard.com") {
             port = 8000;
         }
-        client = new Messaging.Client(server, port, "myclientid_" + parseInt(Math.random() * 100, 10));
+        client = new Messaging.Client(server, port, "CRAWLAB_" + parseInt(Math.random() * 100, 10));
         client.connect(options)
         
         //Gets  called if the websocket/mqtt connection gets disconnected for any reason

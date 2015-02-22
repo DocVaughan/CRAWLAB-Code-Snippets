@@ -27,12 +27,11 @@ import time
 # USERNAME = None
 # PASSWORD = None
 
-# MQTT Dashboard
-HOST = 'broker.mqttdashboard.com'
-PORT = 1883
-USERNAME = None
-PASSWORD = None
-
+## MQTT Dashboard
+# HOST = 'broker.mqttdashboard.com'
+# PORT = 1883
+# USERNAME = None
+# PASSWORD = None
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -54,5 +53,5 @@ counter = 0
 while True:
     counter += 1
     send_time = str(time.time())# + ' Count: ' + str(counter)
-    client.publish("CRAWLAB", send_time, qos = 0)
+    client.publish("CRAWLAB/from_python", send_time, qos = 0)
     time.sleep(0.1)

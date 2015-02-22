@@ -29,5 +29,5 @@ counter = 0
 while True:
     counter += 1
     send_time = str(time.time()) + ' Count: ' + str(counter)
-    publish.single("CRAWLAB", send_time, hostname = HOST, port = PORT, auth = AUTH)
+    publish.single("CRAWLAB/from_python", send_time, hostname = HOST, port = PORT, auth = AUTH)
     time.sleep(0.05)
