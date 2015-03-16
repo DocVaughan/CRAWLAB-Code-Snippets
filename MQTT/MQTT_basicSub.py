@@ -26,16 +26,17 @@ import time
 
  
 # ## Eclipse
-# HOST = 'iot.eclipse.org'
-# PORT = 1883
-# USERNAME = None
-# PASSWORD = None
-
-# MQTT Dashboard
-HOST = 'broker.mqttdashboard.com'
+HOST = 'iot.eclipse.org'
 PORT = 1883
 USERNAME = None
 PASSWORD = None
+
+
+# MQTT Dashboard
+# HOST = 'broker.mqttdashboard.com'
+# PORT = 1883
+# USERNAME = None
+# PASSWORD = None
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
