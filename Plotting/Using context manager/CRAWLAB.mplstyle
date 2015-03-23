@@ -1,0 +1,112 @@
+### MATPLOTLIBRC FORMAT
+
+#### CONFIGURATION BEGINS HERE
+
+# the default backend
+backend      : GTKAgg
+
+timezone     : US/Central        # a pytz timezone string, eg US/Central or Europe/Paris
+
+
+### LINES
+# See http://matplotlib.org/api/artist_api.html#module-matplotlib.lines for more
+# information on line properties.
+lines.linewidth   : 2.0              # line width in points
+lines.dash_joinstyle : miter         # miter|round|bevel
+lines.dash_capstyle : round          # butt|round|projecting
+#lines.solid_joinstyle : miter       # miter|round|bevel
+#lines.solid_capstyle : projecting   # butt|round|projecting
+
+
+### FONTS
+# font properties used by text.Text.  
+# See http://matplotlib.org/api/font_manager_api.html for more information 
+font.family          : serif
+font.serif           : CMU Serif, Bitstream Vera Serif, New Century Schoolbook, Century Schoolbook L, Utopia, ITC Bookman, Bookman, Nimbus Roman No9 L, Times New Roman, Times, Palatino, Charter, serif
+
+### TEXT
+# text properties used by text.Text.  See
+# http://matplotlib.org/api/artist_api.html#module-matplotlib.text for more
+# information on text properties
+
+### LaTeX customizations. See http://www.scipy.org/Wiki/Cookbook/Matplotlib/UsingTex
+text.usetex         : True    # use latex for all text handling. The following fonts
+                              # are supported through the usual rc parameter settings:
+                              # new century schoolbook, bookman, times, palatino,
+                              # zapf chancery, charter, serif, sans-serif, helvetica,
+                              # avant garde, courier, monospace, computer modern roman,
+                              # computer modern sans serif, computer modern typewriter
+                              # If another font is desired which can loaded using the
+                              # LaTeX \usepackage command, please inquire at the
+                              # matplotlib mailing list
+
+#text.hinting : 'auto' # May be one of the following:
+                       #   'none': Perform no hinting
+                       #   'auto': Use freetype's autohinter
+                       #   'native': Use the hinting information in the
+                       #             font file, if available, and if your
+                       #             freetype library supports it
+                       #   'either': Use the native hinting information,
+                       #             or the autohinter if none is available.
+                       # For backward compatibility, this value may also be
+                       # True === 'auto' or False === 'none'.
+text.hinting_factor : 8 # Specifies the amount of softness for hinting in the
+                         # horizontal direction.  A value of 1 will hint to full
+                         # pixels.  A value of 2 will hint to half pixels etc.
+
+
+### AXES
+# default face and edge color, default tick sizes,
+# default fontsizes for ticklabels, and so on.  See
+# http://matplotlib.org/api/axes_api.html#module-matplotlib.axes
+axes.grid           : True    # display grid or not
+axes.labelsize      : 22      # fontsize of the x any y labels
+axes.labelweight    : bold    # weight of the x and y labels
+axes.color_cycle    : e41a1c, 377eb8, 4daf4a, 984ea3, ff7f00, ffff33, a65628 # web-style hex
+
+### TICKS
+# see http://matplotlib.org/api/axis_api.html#matplotlib.axis.Tick
+xtick.labelsize      : 18      # fontsize of the tick labels
+ytick.labelsize      : 18      # fontsize of the tick labels
+
+### GRIDS
+grid.color       :   0.75      # grid color
+grid.linestyle   :   :         # dotted
+
+### LEGEND
+legend.fancybox      : True    # if True, use a rounded box for the
+legend.numpoints     : 1       # the number of points in the legend line
+legend.fontsize      : 20
+
+# the following dimensions are in axes coords
+legend.borderaxespad : 0.1   # the border between the axes and legend edge in fraction of fontsize
+
+### FIGURE
+# See http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure
+figure.figsize    : 6, 4    # figure size in inches
+figure.dpi        : 150     # figure dots per inch
+
+# The figure subplot parameters.  All dimensions are a fraction of the
+# figure width or height
+figure.subplot.left    : 0.17  # the left side of the subplots of the figure
+figure.subplot.right   : 0.96    # the right side of the subplots of the figure
+figure.subplot.bottom  : 0.17    # the bottom of the subplots of the figure
+figure.subplot.top     : 0.96    # the top of the subplots of the figure
+
+
+# the default savefig params can be different from the display params
+# Eg, you may want a higher resolution, or to make the figure
+# background white
+savefig.dpi        : 600      # figure dots per inch
+savefig.format     : pdf      # png, ps, pdf, svg
+savefig.bbox       : tight    # 'tight' or 'standard'
+
+
+# svg backend params
+#svg.image_inline : True       # write raster image data directly into the svg file
+#svg.image_noscale : False     # suppress scaling of raster data embedded in SVG
+# svg.fonttype : 'none'         # How to handle SVG fonts:
+#    'none': Assume fonts are installed on the machine where the SVG will be viewed.
+#    'path': Embed characters as paths -- supported by most SVG renderers
+#    'svgfont': Embed characters as SVG fonts -- supported only by Chrome,
+#               Opera and Safari
