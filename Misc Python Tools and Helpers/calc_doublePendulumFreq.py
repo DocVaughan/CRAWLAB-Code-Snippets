@@ -30,7 +30,7 @@ def calc_doublePendulumFreq(mh, mp, l1, l2, g = 9.81):
       mh : mass of the hook (kg)
       mp : mass of the payload (kg)
       l1 : supension cable length (m)
-      l2 : rigging lenght (m)
+      l2 : rigging length (m)
       g : gravitation acceleration (9.81 m/s^2 is default, we're on Earth)
       
     Returns:

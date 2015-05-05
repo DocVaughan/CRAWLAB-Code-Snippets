@@ -24,7 +24,7 @@ class Servo():
 
 if __name__ == "__main__":
 
-    servo1 = Servo("P8_13")
+    servo1 = Servo("P9_29")
 
     while True:
         angle = raw_input("Angle (0 to 180 x to exit):")
