@@ -1,0 +1,2 @@
+# Motor Control using the Pololu High-power Motor Drive
+This folder contains motor control scripts that utilize the [Pololu High-power Motor Drive](https://www.pololu.com/product/755). They include "simple" motor control, class-based control and monitoring, as well as more advanced usage such as using interrupts to control motors.

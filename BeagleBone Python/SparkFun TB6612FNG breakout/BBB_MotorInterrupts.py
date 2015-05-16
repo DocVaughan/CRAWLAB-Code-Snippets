@@ -4,6 +4,7 @@
 # BBB_MotorInterrupts.py
 #
 # Basic use of interrupts on the Beagle Bone Black to start/stop a motor
+# using the SparkFun TB6612FNG breakout board - http://sfe.io/p9457
 #
 # Requires - Adafruit BeagleBone IO Python library
 #

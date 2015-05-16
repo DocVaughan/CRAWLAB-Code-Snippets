@@ -1,18 +1,18 @@
 #! /usr/bin/env python
 
-##########################################################################################
-# BBB_MotorLimitSwitches.py
+###############################################################################
+# BBB_BasicMotorControl.py
 #
-# Basic use of interrupts limit switches on the BeagleBone Black to start/stop a motor
-#
+# Basic test of motor control using the SparkFun TB6612FNG breakout board
+#  http://sfe.io/p9457
+# 
 # Requires - Adafruit BeagleBone IO Python library
-#
 #
 # NOTE: Any plotting is set up for output, not viewing on screen.
 #       So, it will likely be ugly on screen. The saved PDFs should look
 #       better.
 #
-# Created: 05/03/15
+# Created: 01/09/15
 #   - Joshua Vaughan
 #   - joshua.vaughan@louisiana.edu
 #   - http://www.ucs.louisiana.edu/~jev9637
@@ -20,13 +20,12 @@
 # Modified:
 #   *
 #
-##########################################################################################
+###############################################################################
 
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
-
 import time
-import sys
+import math
 
 class motor(object):
     """ Convenience class for controlling a motor
@@ -44,11 +43,12 @@ class motor(object):
                   =None if the motor is not currently moving
                   
     """
-    def __init__(self, ControlPin1, ControlPin2, PWMpin, STBYpin):
+    def __init__(self, ControlPin1, ControlPin2, PWMpin, STBYpin, PWMfreq = 2000):
         self.ControlPin1 = ControlPin1
         self.ControlPin2 = ControlPin2
         self.PWMpin = PWMpin
         self.STBYpin = STBYpin
+        self.PWMfreq = PWMfreq
         self.isRunning = False
         self.currentDirection = None
         self.currentSpeed = 0
@@ -83,7 +83,7 @@ class motor(object):
         # Start the motor
         # PWM.start(channel, duty, freq=2000, polarity=0)
         if 0 <= speed <= 100:
-            PWM.start(self.PWMpin, speed)
+            PWM.start(self.PWMpin, speed, self.PWMfreq)
         else:
             raise ValueError("Please enter speed between 0 and 100, \
                               representing a percentage of the maximum \
@@ -136,94 +136,69 @@ class motor(object):
         self.currentSpeed = newSpeed
 
 
+
 if __name__ == '__main__':
     # Demonstrates the use of this class
     
     # Set up the pins - These are mutable, but *don't* change them
-    A01 = 'P8_7'            # A01 pin on board, controls direction along with A02
-    A02 = 'P8_8'            # A02 pin on board, controls direction along with A01
-    PWMA = 'P8_13'          # PWMA pin on board, controls the speed of Motor A
-    B01 = 'P8_9'            # B01 pin on board, controls direction along with B02
-    B02 = 'P8_10'           # B01 pin on board, controls direction along with B01
-    PWMB = 'P8_19'          # PWMB pin on board, controls the speed of Motor B
-    STBY = 'P8_11'          # STBY pin on the breakout, must go low to enable motion
-    E_STOP = 'P8_12'        # Pin of the E-Stop
-    TOP_LIMIT = 'P8_16'     # Pin of top limit switch
-    BOTTOM_LIMIT = 'P8_14'  # Pin of bottom limit switch
-
+    STBY = 'P8_9'       # STBY pin on the breakout, must go low to enable motion
+    A01 = 'P8_7'        # A01 pin on board, controls direction along with A02
+    A02 = 'P8_8'        # A02 pin on board, controls direction along with A01
+    PWMA = 'P8_13'      # PWMA pin on board, controls the speed of Motor A
     
     # Create the motorA instance of the class
     motorA = motor(A01, A02, PWMA, STBY)
-    motorB = motor(B01, B02, PWMB, STBY)
     
-    # GPIO P8_12, P8_14, P8_16 switches
-    GPIO.setup(TOP_LIMIT, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-    GPIO.setup(BOTTOM_LIMIT, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-    GPIO.setup(E_STOP, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-  
-    # now we'll define the threaded callback function  
-    # this will run in another thread when our event is detected  
-    def TOPlimit_callback(channel):  
-        print 'Top limit reached.'
-        motorA.hard_stop()
-        motorB.hard_stop() 
+    # We can check if it's running
+    if motorA.isRunning:
+        print 'Motor A is currently running.'
+    else:
+        print 'Motor A is not currently running.'
 
-    # now we'll define the threaded callback function  
-    # this will run in another thread when our event is detected  
-    def BOTTOMlimit_callback(channel):  
-        print 'Bottom limit reached.'
+
+    # Now, let's run it for 2s, off for 2s, on for 2s... for 5 times
+    # let's print that it's running each time too, using our inRunning attribute
+    for index in range(2):
+        motorA.start(100,'CCW')
+
+         # We can check if it's running
+        if motorA.isRunning:
+            print 'Motor A is spinning {} at {}% of maximum speed.'.format(motorA.currentDirection, motorA.currentSpeed)
+
+        time.sleep(2)
+        print 'This is a hard stop. It effectively brakes.\n'
         motorA.hard_stop()
-        motorB.hard_stop()    
+        time.sleep(2)
         
-    # now we'll define the threaded callback function  
-    # this will run in another thread when our event is detected  
-    def ESTOP_callback(channel):  
-        motorA.hard_stop()
-        motorB.hard_stop() 
-        GPIO.cleanup()           # clean up GPIO
-        sys.exit('E-STOP switch is in the emergency stop state. Aborting...')
+        motorA.start(100,'CW')
 
+        # We can check if it's running
+        if motorA.isRunning:
+            print 'Motor A is spinning {} at {}% of maximum speed.'.format(motorA.currentDirection, motorA.currentSpeed)
 
-    # The GPIO.add_event_detect() line below set things up so that  
-    # when a rising edge is detected, regardless of whatever   
-    # else is happening in the program, the function 'my_callback' will be run  
-    GPIO.add_event_detect(TOP_LIMIT, GPIO.RISING, callback=TOPlimit_callback, bouncetime=200)  
-    GPIO.add_event_detect(BOTTOM_LIMIT, GPIO.RISING, callback=BOTTOMlimit_callback, bouncetime=200)  
-    GPIO.add_event_detect(E_STOP, GPIO.RISING, callback=ESTOP_callback, bouncetime=200)  
+        time.sleep(2)
 
-    try:
-#         while True:
-        
-        if not GPIO.input(E_STOP):
-            GPIO.cleanup()           # clean up GPIO on normal exit  
-            sys.exit('\nE-STOP switch is in the emergency stop state. Exiting...\n')
-
-        # Move down
-        motorA.start(100, 'CW')
-        motorB.start(100, 'CCW')
-        time.sleep(0.5)
-
-        while motorA.isRunning:
-            # loop here until limit is reached
-            print 'Moving down...'
-            time.sleep(0.1)
-
-        # Start Moving Motors Up
-        motorA.start(100, 'CCW')
-        motorB.start(100, 'CW')
-        time.sleep(0.5)
-    
-        while motorA.isRunning:
-            # loop here until limit is reached
-            print 'Moving up...'
-            time.sleep(0.1)
-
-
-  
-    except KeyboardInterrupt:  
+        print 'This is a soft stop. It coasts to stop.\n'
         motorA.stop()
-        motorB.stop()
-        GPIO.cleanup()       # clean up GPIO on CTRL+C exit  
+        time.sleep(2)
+
+
+    # Let's vary the speed - we'll get fancy and use a sinusoidal variance
+    motorA.start(75,'CW')
+    lastTime = time.time()
+    startTime = time.time()
+
+    while time.time()-startTime < 30:
+        speed = 75 + 25 * math.sin(0.25 * 2 * math.pi * (time.time()-startTime))
+        motorA.set_speed(speed)
+        
+        if time.time() - lastTime > 1:
+            print 'Motor A is spinning {} at {:>6.2f}% of maximum speed.'.format(motorA.currentDirection, motorA.currentSpeed)
+            lastTime = time.time()
+            
+        time.sleep(0.01)
     
+    motorA.stop()
     
-    GPIO.cleanup()           # clean up GPIO on normal exit  
+    # We can still access pins and "raw" Adafruit library functions if needed
+    GPIO.output(motorA.STBYpin, GPIO.LOW)
