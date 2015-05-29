@@ -112,10 +112,10 @@ if __name__ == '__main__':
     # Demonstrates the use of this class
     
     # Set up the pins - These are mutable, but *don't* change them
-    DIR_PIN = 'P8_7'        # DIR pin on board, controls direction
+    DIR_PIN = 'P8_8'        # DIR pin on board, controls direction
     PWM_PIN = 'P8_13'       # PWM pin on board, controls the speed of the motor 
-    ONswitch = 'P8_12'      # Pin of the swtich to turn the motor on
-    OFFswitch = 'P8_14'     # pin of the switch to turn the motor off
+    ONswitch = 'P8_14'      # Pin of the swtich to turn the motor on
+    OFFswitch = 'P8_16'     # pin of the switch to turn the motor off
     
     # Create the motorA instance of the class
     motorA = motor(DIR_PIN, PWM_PIN)

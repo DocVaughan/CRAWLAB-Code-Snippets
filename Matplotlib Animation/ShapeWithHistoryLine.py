@@ -10,7 +10,9 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   *
+#   * 05/29/15 - JEV - joshua.vaughan@louisiana.edu
+#       - Changed savefig.bbox to standard as it causes problem with ffmpeg
+#       - updated some font formatting
 #
 ##########################################################################################
 
@@ -21,6 +23,7 @@ import matplotlib.animation as animation
 
 import matplotlib as mpl
 mpl.rcParams['savefig.dpi']=160
+mpl.rcParams['savefig.bbox'] = 'standard'
 
 
 # Define the example path
@@ -34,8 +37,8 @@ fig = plt.figure(figsize=(8,4.5))
 # fig = plt.figure(figsize=(6,4))
 ax = plt.gca()
 plt.subplots_adjust(bottom=0.17,left=0.17,top=0.96,right=0.96)
-plt.setp(ax.get_ymajorticklabels(),family='CMU Serif',fontsize=18)
-plt.setp(ax.get_xmajorticklabels(),family='CMU Serif',fontsize=18)
+plt.setp(ax.get_ymajorticklabels(),family='serif',fontsize=18)
+plt.setp(ax.get_xmajorticklabels(),family='serif',fontsize=18)
 ax.spines['right'].set_color('none')
 ax.spines['top'].set_color('none')
 ax.xaxis.set_ticks_position('bottom')
@@ -43,8 +46,8 @@ ax.yaxis.set_ticks_position('left')
 ax.grid(True,linestyle=':',color='0.75')
 ax.set_axisbelow(True)
 
-plt.xlabel(r'Position (m)',family='CMU Serif',fontsize=22,weight='bold',labelpad=5)
-plt.ylabel(r'Position (m)',family='CMU Serif',fontsize=22,weight='bold',labelpad=10)
+plt.xlabel(r'Position (m)',family='serif',fontsize=22,weight='bold',labelpad=5)
+plt.ylabel(r'Position (m)',family='serif',fontsize=22,weight='bold',labelpad=10)
 
 
 # For the trapezoid
@@ -59,9 +62,8 @@ shape = mpatches.Circle(([],[]),0.1,ec='none')
 
 leg = plt.legend(loc='upper right', fancybox=True)
 ltext  = leg.get_texts()
-plt.setp(ltext,family='CMU Serif',fontsize=16)
+plt.setp(ltext,family='serif',fontsize=16)
 
-# Adjust the page layout filling the page using the new tight_layout command
 plt.tight_layout(pad=0.5)
 
 def init():
@@ -88,4 +90,4 @@ ani = animation.FuncAnimation(fig, animate, frames=300, init_func=init)
 # http://matplotlib.sourceforge.net/api/animation_api.html
 ani.save('simple_animation.mp4', bitrate = 2500, fps=30)
 
-plt.show()
+# plt.show()

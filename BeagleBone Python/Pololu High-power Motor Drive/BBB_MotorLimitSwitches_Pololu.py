@@ -111,7 +111,7 @@ if __name__ == '__main__':
     # Demonstrates the use of this class
 
     # Set up the pins - These are mutable, but *don't* change them
-    DIR_PIN = 'P8_7'        # DIR pin on board, controls direction
+    DIR_PIN = 'P8_8'        # DIR pin on board, controls direction
     PWM_PIN = 'P8_13'       # PWM pin on board, controls the speed of the motor 
     TOP_LIMIT = 'P8_12'     # Pin of top limit switch
     BOTTOM_LIMIT = 'P8_14'  # Pin of bottom limit switch
@@ -142,8 +142,8 @@ if __name__ == '__main__':
     # The GPIO.add_event_detect() line below set things up so that  
     # when a rising edge is detected, regardless of whatever   
     # else is happening in the program, the function 'my_callback' will be run  
-    GPIO.add_event_detect(TOP_LIMIT, GPIO.RISING, callback=TOPlimit_callback, bouncetime=200)  
-    GPIO.add_event_detect(BOTTOM_LIMIT, GPIO.RISING, callback=BOTTOMlimit_callback, bouncetime=200)   
+    GPIO.add_event_detect(TOP_LIMIT, GPIO.RISING, callback=TOPlimit_callback, bouncetime=500)  
+    GPIO.add_event_detect(BOTTOM_LIMIT, GPIO.RISING, callback=BOTTOMlimit_callback, bouncetime=500)   
 
     try:
         # Move down

@@ -1,18 +1,19 @@
 #! /usr/bin/env python
 
-##########################################################################################
-# BBB_MotorLimitSwitches.py
+###############################################################################
+# BBB_GeneralDualMotorControl.py
 #
-# Basic use of interrupts limit switches on the BeagleBone Black to start/stop 
-# using the Pololu High-power motor driver - https://www.pololu.com/product/755
-#
+# Class-based test of dual motor control using 
+# using the SparkFun TB6612FNG breakout board
+#    http://sfe.io/p9457
+# 
 # Requires - Adafruit BeagleBone IO Python library
 #
 # NOTE: Any plotting is set up for output, not viewing on screen.
 #       So, it will likely be ugly on screen. The saved PDFs should look
 #       better.
 #
-# Created: 05/16/15
+# Created: 05/18/15
 #   - Joshua Vaughan
 #   - joshua.vaughan@louisiana.edu
 #   - http://www.ucs.louisiana.edu/~jev9637
@@ -20,13 +21,12 @@
 # Modified:
 #   *
 #
-##########################################################################################
+###############################################################################
 
 import Adafruit_BBIO.GPIO as GPIO
 import Adafruit_BBIO.PWM as PWM
-
 import time
-import sys
+import math
 
 class motor(object):
     """ Convenience class for controlling a Polulu High-Power Motor Driver
@@ -113,64 +113,44 @@ if __name__ == '__main__':
     # Set up the pins - These are mutable, but *don't* change them
     DIR_PIN = 'P8_8'        # DIR pin on board, controls direction
     PWM_PIN = 'P8_13'       # PWM pin on board, controls the speed of the motor 
-    E_STOP = 'P8_12'        # Pin of the E-stop swtich
-    TOP_LIMIT = 'P8_14'     # Pin of top limit switch
-    BOTTOM_LIMIT = 'P8_16'  # Pin of bottom limit switch
-
-
-    # Create the motorA instance of the class
-    motorA = motor(DIR_PIN, PWM_PIN)
+    E_STOP = 'P8_12'    # Pin of the swtich to turn the motor on
     
-    # Set up reading of the switches
-    GPIO.setup(E_STOP, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-    GPIO.setup(TOP_LIMIT, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-    GPIO.setup(BOTTOM_LIMIT, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-
-    # now we'll define the threaded callback function  
-    # this will run in another thread when our event is detected  
-    def ESTOP_callback(channel):  
-        motorA.stop()
-        GPIO.cleanup()           # clean up GPIO
-        sys.exit('E-STOP switch is in the emergency stop state. Aborting...')
-
-
-    # The GPIO.add_event_detect() line below set things up so that  
-    # when a rising edge is detected, regardless of whatever   
-    # else is happening in the program, the function 'my_callback' will be run  
-    GPIO.add_event_detect(E_STOP, GPIO.RISING, callback=ESTOP_callback, bouncetime=200)  
-
-    try:
-        while True:
-            if not GPIO.input(E_STOP):
-                GPIO.cleanup()           # clean up GPIO on normal exit  
-                sys.exit('\nE-STOP switch is in the emergency stop state. Exiting...\n')
-
-            # Start Moving Motors Up
-            motorA.start(100, 'CCW')
-            print 'Moving up...'
-            time.sleep(0.5)
-        
-
-            GPIO.wait_for_edge(TOP_LIMIT, GPIO.RISING)        
-            print 'Top limit reached.'
-            motorA.stop()
-            time.sleep(2)
-        
-        
-            # Move down
-            motorA.start(100, 'CW')
-            print 'Moving down...'
-            time.sleep(0.5)
-
-            GPIO.wait_for_edge(BOTTOM_LIMIT, GPIO.RISING)        
-            print 'Bottom limit reached.'
-            motorA.stop()
-            time.sleep(2)
-
-  
-    except KeyboardInterrupt:  
-        motorA.stop()
-        GPIO.cleanup()       # clean up GPIO on CTRL+C exit  
+    # Create the motors instance of the class
+    motors = motor(DIR_PIN, PWM_PIN)
     
     
-    GPIO.cleanup()           # clean up GPIO on normal exit  
+    # We can check if it's running
+    if motors.isRunning:
+        print 'Motor A is currently running.'
+    else:
+        print 'Motor A is not currently running.'
+
+
+    # Now, let's run it for 1s, off for 1s, on in opposite direction for 1s... for 5 times
+    # let's print that it's running each time too, using our inRunning attribute
+    for index in range(2):
+        # Up
+        motors.start(100,'CCW')
+
+         # We can check if it's running
+        if motors.isRunning:
+            print 'Motor A is spinning {} at {}% of maximum speed.'.format(motors.currentDirection, motors.currentSpeed)
+
+        time.sleep(0.5)
+        print 'This is a hard stop. It effectively brakes.\n'
+        motors.stop()
+        time.sleep(0.5)
+        
+        motors.start(100,'CW')
+
+        # We can check if it's running
+        if motors.isRunning:
+            print 'Motor A is spinning {} at {}% of maximum speed.'.format(motors.currentDirection, motors.currentSpeed)
+
+        time.sleep(0.5)
+
+        print 'This is a hard stop. It effectively brakes.\n'
+        motors.stop()
+        time.sleep(0.5)
+
+    motors.stop()
