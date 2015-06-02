@@ -26,15 +26,16 @@
 
 import Adafruit_BBIO.GPIO as GPIO
 
-# GPIO P9_15 as an input - Left button on 7-inch LCD
+# GPIO P8_14 and P8_16 as an inputs
 GPIO.setup('P8_14', GPIO.IN)
 GPIO.setup('P8_16', GPIO.IN)
   
-# now we'll define the threaded callback function  
-# this will run in another thread when our event is detected  
+# # now we'll define the threaded callback function  
+# # this will run in another thread when our event is detected  
 def my_callback(channel):  
     print 'Rising edge detected on P8_16 Button even though, in the main thread,'  
     print 'we are still waiting for a falling edge - how cool?\n'  
+
 
 
 # The GPIO.add_event_detect() line below set things up so that  

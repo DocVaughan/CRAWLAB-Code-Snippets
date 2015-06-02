@@ -10,6 +10,7 @@ class Servo():
         self.duty_mid = ((90.0 / 180) * self.duty_span + self.duty_min)
         
         self.servo_pin = servo_pin
+        print 'starting servo PWM'
         PWM.start(self.servo_pin, self.duty_mid, 60.0)
 
     def set_servo_angle(self, angle):
