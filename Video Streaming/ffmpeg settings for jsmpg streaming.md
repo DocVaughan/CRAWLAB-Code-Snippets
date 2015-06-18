@@ -16,7 +16,6 @@
     v4l2-ctl --list-devices  
 
 
-
 ## Starting the video stream from the local machine
 * See: http://phoboslab.org/log/2013/09/html5-live-video-streaming-via-websockets
 * Change the IP address and password to match the server
