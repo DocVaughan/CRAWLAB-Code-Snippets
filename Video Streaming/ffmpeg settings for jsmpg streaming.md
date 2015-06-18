@@ -4,11 +4,11 @@
 ### OS X
 * For avfoundation
 
-    ffmpeg -f avfoundation -list_devices true -i ""    
+        ffmpeg -f avfoundation -list_devices true -i ""    
     
 * For qt
 
-    ffmpeg -f qtkit -list_devices true -i ""    
+        ffmpeg -f qtkit -list_devices true -i ""    
      
     
 ### Linux
