@@ -39,10 +39,10 @@ def calc_doublePendulumFreq(mh, mp, l1, l2, g = 9.81):
     """
     R = mp / mh
 
-    beta = np.sqrt((1 + R)**2 * (1/l1 + 1/l2)**2 - 4 * ((1 + R) / (l1 * l2)))
+    beta = np.sqrt((1 + R)**2 * (1.0/l1 + 1.0/l2)**2 - 4 * ((1.0 + R) / (l1 * l2)))
     
-    w1 = np.sqrt(g / 2) * np.sqrt((1+R) * (1/l1 + 1/l2) - beta)
-    w2 = np.sqrt(g / 2) * np.sqrt((1+R) * (1/l1 + 1/l2) + beta)
+    w1 = np.sqrt(g / 2) * np.sqrt((1+R) * (1.0/l1 + 1.0/l2) - beta)
+    w2 = np.sqrt(g / 2) * np.sqrt((1+R) * (1.0/l1 + 1.0/l2) + beta)
     
     return w1, w2
 
@@ -50,7 +50,7 @@ def calc_doublePendulumFreq(mh, mp, l1, l2, g = 9.81):
 if __name__ == '__main__':
     # Define system parameters
     mh = 50.0           # mass of the hook (kg)
-    mp = 34.05           # mass of the payload (kg)
+    mp = 22.7/2           # mass of the payload (kg)
     l1 = 3.5            # suspension cable length (m)
     l2 = 1.8            # rigging length (m)
 

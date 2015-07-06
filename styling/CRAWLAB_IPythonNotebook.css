@@ -72,6 +72,22 @@
     padding: 0 0.25em;
     background: white;
     }
+
+/* 
+    a.anchor-link {
+        visibility: hidden;
+        padding: 0;
+        margin: 0;
+        width: 0;
+    }    
+    
+    a.anchor-link:link {
+        visibility: hidden;
+        padding: 0;
+        margin: 0;
+        width: 0;
+    }
+ */
     
 /*  Center figures, etc
     .ui-wrapper {

@@ -1,5 +1,8 @@
 #! /usr/bin/env python 
 # Script to generate colorbrewer based colors for matplotlib
+#    http://colorbrewer2.org
+#
+# TODO: Upgrade to https://jiffyclub.github.io/palettable/
 
 
 import numpy as np
