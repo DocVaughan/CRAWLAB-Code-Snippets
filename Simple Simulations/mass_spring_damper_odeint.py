@@ -50,8 +50,12 @@ def eq_of_motion(w, t, p):
     x, x_dot = w
     m, k, c, L, StartTime = p
     
-    import ipdb
-    ipdb.set_trace()
+#     import ipdb
+#     ipdb.set_trace()
+    
+    #or 
+    import pdb
+    pdb.set_trace()
     
     # Create sysODE = (x',y_dot')
     #  We ignore the xd_dot term, as it is only an impulse as the start of the step
