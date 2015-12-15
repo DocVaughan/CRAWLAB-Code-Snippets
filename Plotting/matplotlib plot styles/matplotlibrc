@@ -29,7 +29,7 @@
 # You can also deploy your own backend outside of matplotlib by
 # referring to the module name (which must be in the PYTHONPATH) as
 # 'module://my_backend'
-#backend      : GTKAgg
+# backend      : CocoaAgg
 backend      : MacOSX
 
 # If you are using the Qt4Agg backend, you can choose here
@@ -237,15 +237,19 @@ axes.labelweight    : bold  # weight of the x and y labels
 #axes.unicode_minus  : True    # use unicode for the minus symbol
                                # rather than hyphen.  See
                                # http://en.wikipedia.org/wiki/Plus_and_minus_signs#Character_codes
-#axes.color_cycle    : b, r, g, k, c, m, y, # color cycle for plot lines
-                                            # as list of string colorspecs:
-                                            # single letter, long name, or
-                                            # web-style hex
-axes.color_cycle    : e41a1c, 377eb8, 4daf4a, 984ea3, ff7f00, ffff33, a65628
+
+#axes.prop_cycle    : cycler('color', 'bgrcmyk')
                                             # color cycle for plot lines
                                             # as list of string colorspecs:
                                             # single letter, long name, or
-                                            # web-style hex                                    
+                                            # web-style hex
+
+
+axes.prop_cycle    : cycler('color', ['e41a1c', '377eb8', '4daf4a', '984ea3', 'ff7f00', 'ffff33', 'a65628', 'f781bf'])
+                                            # color cycle for plot lines
+                                            # as list of string colorspecs:
+                                            # single letter, long name, or
+                                            # web-style hex                                  
 
 #polaraxes.grid      : True    # display grid on polar axes
 #axes3d.grid         : True    # display grid on 3d axes
