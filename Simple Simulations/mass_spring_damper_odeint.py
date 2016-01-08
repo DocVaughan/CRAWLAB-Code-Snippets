@@ -33,7 +33,7 @@
 
 
 import numpy as np
-from matplotlib.pyplot import * 
+import matplotlib.pyplot as plt 
 from scipy.integrate import odeint
 
 
@@ -49,7 +49,14 @@ def eq_of_motion(w, t, p):
     """
     x, x_dot = w
     m, k, c, L, StartTime = p
-
+    
+#     import ipdb
+#     ipdb.set_trace()
+    
+    #or 
+    import pdb
+    pdb.set_trace()
+    
     # Create sysODE = (x',y_dot')
     #  We ignore the xd_dot term, as it is only an impulse as the start of the step
     sysODE = [x_dot,
@@ -98,7 +105,7 @@ stoptime = 5.0
 numpoints = 501
 
 # Create the time samples for the output of the ODE solver.
-t = np.linspace(0,stoptime,numpoints)
+t = np.linspace(0, stoptime, numpoints)
 
 # Pack up the parameters and initial conditions:
 p = [m, k, c, L, StartTime]
@@ -110,11 +117,11 @@ resp = odeint(eq_of_motion, x0, t, args=(p,), atol = abserr, rtol = relerr)
 
 # Plot the response
 #   Many of these setting could also be made default by the .matplotlibrc file
-fig = figure(figsize=(6,4))
-ax = gca()
-subplots_adjust(bottom=0.17,left=0.17,top=0.96,right=0.96)
-setp(ax.get_ymajorticklabels(),fontsize=18)
-setp(ax.get_xmajorticklabels(),fontsize=18)
+fig = plt.figure(figsize=(6,4))
+ax = plt.gca()
+plt.subplots_adjust(bottom=0.17,left=0.17,top=0.96,right=0.96)
+plt.setp(ax.get_ymajorticklabels(),fontsize=18)
+plt.setp(ax.get_xmajorticklabels(),fontsize=18)
 ax.spines['right'].set_color('none')
 ax.spines['top'].set_color('none')
 ax.xaxis.set_ticks_position('bottom')
@@ -122,19 +129,19 @@ ax.yaxis.set_ticks_position('left')
 ax.grid(True,linestyle=':',color='0.75')
 ax.set_axisbelow(True)
 
-xlabel('Time (s)',fontsize=22,labelpad=8)
-ylabel('Position (m)',fontsize=22,labelpad=10)
+plt.xlabel('Time (s)',fontsize=22,labelpad=8)
+plt.ylabel('Position (m)',fontsize=22,labelpad=10)
 
-plot(t,xd(t, L, StartTime),'--',linewidth=2,label=r'$x_d$')
-plot(t,resp[:,0],linewidth=2,label=r'$x$')
+plt.plot(t,xd(t, L, StartTime),'--',linewidth=2,label=r'$x_d$')
+plt.plot(t,resp[:,0],linewidth=2,label=r'$x$')
 
-ylim(0,2.5)
+plt.ylim(0,2.5)
 
-leg = legend(loc='upper right', ncol = 2, fancybox=True)
+leg = plt.legend(loc='upper right', ncol = 2, fancybox=True)
 ltext  = leg.get_texts() 
-setp(ltext,fontsize=16)
+plt.setp(ltext,fontsize=16)
 
 # save the figure as a high-res pdf in the current folder
-savefig('mass_spring_damper.pdf',dpi=300)
+plt.savefig('mass_spring_damper.pdf',dpi=300)
 
-show()
+plt.show()
