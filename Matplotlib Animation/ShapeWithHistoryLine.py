@@ -74,7 +74,7 @@ def init():
 
 
 def animate(i):
-    print 'Processing frame {}.'.format(i)
+    print('Processing frame {}.'.format(i))
     shape.center = (x[i],y[i])
     historyLine.set_data(x[0:i],y[0:i])
 
