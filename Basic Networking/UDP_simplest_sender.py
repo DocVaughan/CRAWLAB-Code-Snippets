@@ -15,22 +15,25 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   *
+#   * 01/27/16 - Joshua Vaughan - joshua.vaughan@louisiana.edu
+#       - updated for Python 3
 #
 ##########################################################################################
 
+from __future__ import print_function
+
 import socket
 
-UDP_IP = "192.168.10.1"
-UDP_PORT = 10005
-MESSAGE = "q"
+UDP_IP = "192.168.0.101"
+UDP_PORT = 2390
+MESSAGE = "Hello from Python"
 
-print "UDP target IP:", UDP_IP
-print "UDP target port:", UDP_PORT
-print "message:", MESSAGE
+print("UDP target IP: {}".format(UDP_IP))
+print("UDP target port: {}".format(UDP_PORT))
+print("Message: {}".format(MESSAGE))
 
-sock = socket.socket(socket.AF_INET, # Internet
+sock = socket.socket(socket.AF_INET,    # Internet
                      socket.SOCK_DGRAM) # UDP
                      
-sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
+sock.sendto(MESSAGE.encode('utf-8'), (UDP_IP, UDP_PORT))
 
