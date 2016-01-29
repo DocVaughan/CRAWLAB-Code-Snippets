@@ -19,15 +19,18 @@
 ##########################################################################################
 
 import paho.mqtt.publish as publish
+import datetime
 import time
 
 ## Eclipse
 HOST = 'iot.eclipse.org'
+PORT = 1883
 AUTH = None
 
 counter = 0
 while True:
     counter += 1
-    send_time = str(time.time()) + ' Count: ' + str(counter)
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    send_time = str(timestamp) + ' Count: ' + str(counter)
     publish.single("CRAWLAB/from_python", send_time, hostname = HOST, port = PORT, auth = AUTH)
-    time.sleep(0.05)
+    time.sleep(0.2)
