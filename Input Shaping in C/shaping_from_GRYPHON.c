@@ -5,8 +5,8 @@ void doInputShaping(int axis[3],float correspondingJointValues[3],unsigned char 
 {
 	#define inputShapingYawAxisDT (40)
 	#define inputShapingOtherAxisDT (33)
-	#define inputShapingBufferLength2 (inputShapingYawAxisDT*2+2)
-	#define inputShapingBufferLength01 (inputShapingOtherAxisDT*2+2)
+	#define inputShapingBufferLength2 (inputShapingYawAxisDT*2 + 2)
+	#define inputShapingBufferLength01 (inputShapingOtherAxisDT*2 + 2)
 	static int axis0[inputShapingBufferLength01];
 	static int axis1[inputShapingBufferLength01];
 	static int axis2[inputShapingBufferLength2];
@@ -71,7 +71,7 @@ void doInputShaping(int axis[3],float correspondingJointValues[3],unsigned char 
 }
 */
 
-void doInputShaping(int axis[3],float correspondingJointValues[3],unsigned char reset)
+void doInputShaping(int axis[3], float correspondingJointValues[3], unsigned char reset)
 {
 	#define inputShapingBufferLength (72) // 100 not good, 86 shaking
 	static int axis0[inputShapingBufferLength];
@@ -80,7 +80,7 @@ void doInputShaping(int axis[3],float correspondingJointValues[3],unsigned char 
 	static char bufferStartPos=-1;
 	char inputShapingYawAxisDT;
 	char inputShapingOtherAxisDT;
-	float j1,j2,r;
+	float j1, j2, r;
 	char i;
 
 	if (bufferStartPos==-1) // the very first time we pass here

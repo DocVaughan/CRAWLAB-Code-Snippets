@@ -28,13 +28,13 @@ float doInputShaping(float unshapedVelocity)
     -------------------------------------------------------------------------*/     
 	
 	// ZVD-shaper for undamped system
-	float TAU = 0.25;                         // damped period (s)
+	float TAU = 1.0;                         // damped period (s)
 	#define NUM_IMPULSES (3)                 // the number of shaper impulses
 	float AMPS[3] = {0.25, 0.5, 0.25};       // shaper impulse amplitudes
 	float TIMES[3] = {0.0, 0.5 * TAU, TAU};  // shaper impulse times (s)
 	
 	// Define the sampling rate in Hz
-	#define DT (100)
+	#define DT (50)
 	
 	// buffer length should be 2x shaper duration (sec.) * samples/sec at min
 	// could be just the shaper length, but have to be more elegant to execute

@@ -1,4 +1,17 @@
-float doInputShaping(float unshapedVelocity)
+typedef struct { 
+    float TAU;                        // damped period (s)
+    int const NUM_IMPULSES;           // the number of shaper impulses
+    int SAMPLE_RATE;			      // sampling/loop update rate (Hz)
+    int BUFFER_LENGTH;                // length of buffer to hold shaped values
+    float AMPS[3];                    // shaper impulse amplitudes
+    float TIMES[3];                   // shaper impulse times (s)
+    int impulse_buffer_pos[3];        // index of buffer position for each imp.
+    float shaped_output_buffer[150];  // ring buffer to hold output of shaper, length should equal BUFFER_LENGTH
+}  three_impulse_shaper;
+
+
+
+float doInputShaping(float unshapedVelocity, three_impulse_shaper shaper)
 {
     /* ------------------------------------------------------------------------
     Function that does input shaping for a single axis
@@ -26,68 +39,52 @@ float doInputShaping(float unshapedVelocity)
         * More robust definition of shaper parameters
     -------------------------------------------------------------------------*/     
 	
-	// Define the input shaper parameters
-	
-	// ZVD-shaper for undamped system
-	float TAU = 0.5;                         // damped period (s)
-	#define NUM_IMPULSES (3)                 // the number of shaper impulses
-	float AMPS[3] = {0.25, 0.5, 0.25};       // shaper impulse amplitudes
-	float TIMES[3] = {0.0, 0.5 * TAU, TAU};  // shaper impulse times (s)
-	
-	// Define the sampling rate in Hz
-	#define DT (10)
-	
-	// Buffer length should be ~2x shaper duration in (sec.) * samples/sec
-	// Could be just the shaper length, but have to be more elegant to execute
-	#define BUFFER_LENGTH (151)
-	
-	// Define the buffer to fill with shaped values
-	static float shaped_output_buffer[BUFFER_LENGTH];
-	
     // Define a variable to hold the current position in the buffer 
     // corresponding to each impulses's time offset.
-	static int impulse_buffer_pos[NUM_IMPULSES] = {-1};
+	static int shaper.impulse_buffer_pos[NUM_IMPULSES] = {-1};
 	
 	// During first time the function is called, initialize the buffer positions
-	if (impulse_buffer_pos[0] == -1 ) 
+	if (shaper.impulse_buffer_pos[0] == -1 ) 
 	{
         // Define the starting buffer locations, the impulse_buffer_pos[0] location  
         // can also be thought of as the "current" output, the impulse_buffer_pos[1] 
         // location is offset by the time of the 2nd impulse (* samples/s), etc
         // Each of these locations gets updated each time the function is called
-        for (int ii = 0; ii < NUM_IMPULSES; ii++)
+        for (int ii = 0; ii < shaper.NUM_IMPULSES; ii++)
         {
-            impulse_buffer_pos[ii] = (int) TIMES[ii] * DT - 1; 
+            shaper.impulse_buffer_pos[ii] = (int) shaper.TIMES[ii] * shaper.SAMPLE_RATE - 1; 
         }
     }
     
 
 	// Increment the current positions in the buffers
-	for (int ii = 0; ii < NUM_IMPULSES; ii++)
+	for (int ii = 0; ii < shaper.NUM_IMPULSES; ii++)
 	{
-	    impulse_buffer_pos[ii]++;
+	    shaper.impulse_buffer_pos[ii]++;
 	}
 	
 	// For each impulse, multiple the current input by the impulse amplitude 
 	// and add it to the place in the buffer corresponding to the time offset
 	// of the impulse. If the desired buffer position (from the time offset)
 	// is outside of the buffer, wrap to the beginning. 
-	for (int ii = 0; ii < NUM_IMPULSES; ii++)
+	for (int ii = 0; ii < shaper.NUM_IMPULSES; ii++)
 	{
 	    // wrap the buffer location, if necessary
-	    if (impulse_buffer_pos[ii] > BUFFER_LENGTH) 
+	    if (shaper.impulse_buffer_pos[ii] > shaper.BUFFER_LENGTH) 
 	    {
-	        impulse_buffer_pos[ii] = 0;
+	        shaper.impulse_buffer_pos[ii] = 0;
 	    }
 	    
-	    shaped_output_buffer[impulse_buffer_pos[ii]] += AMPS[ii] * unshapedVelocity;
+	    shaper.shaped_output_buffer[shaper.impulse_buffer_pos[ii]] += shaper.AMPS[ii] * unshapedVelocity;
 	}
 	
     // set up the current output
-    float current_shaped_output = shaped_output_buffer[impulse_buffer_pos[0]];
+    float current_shaped_output = shaper.shaped_output_buffer[shaper.impulse_buffer_pos[0]];
     
     // clear the current position in the buffer, because it's been used
-    shaped_output_buffer[impulse_buffer_pos[0]] = 0;
+    shaper.shaped_output_buffer[impulse_buffer_pos[0]] = 0;
     
     return current_shaped_output;
 }
+
+
