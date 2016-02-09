@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 float doInputShaping(float unshapedVelocity)
 {
@@ -38,7 +39,7 @@ float doInputShaping(float unshapedVelocity)
 	
 	// buffer length should be 2x shaper duration (sec.) * samples/sec at min
 	// could be just the shaper length, but have to be more elegant to execute
-	#define BUFFER_LENGTH (151)
+	#define BUFFER_LENGTH (200)
 	
 	// Define the buffer to fill with shaped values
 	static float shaped_output_buffer[BUFFER_LENGTH];
@@ -55,7 +56,7 @@ float doInputShaping(float unshapedVelocity)
         // Each of these locations gets updated each time the function is called
         for (int ii = 0; ii < NUM_IMPULSES; ii++)
         {
-            impulse_buffer_pos[ii] = (int) (TIMES[ii] * DT - 1); 
+            impulse_buffer_pos[ii] = (int) ceil((TIMES[ii] * DT - 1)); 
         }
 		// printf("%d, %d, %d\n", impulse_buffer_pos[0],impulse_buffer_pos[1],impulse_buffer_pos[2]);
     }

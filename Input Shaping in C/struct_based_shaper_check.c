@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
 	float shaped_y[200];
 	
     three_impulse_shaper ZVD_shaper = {   3, 	            // Number of impulses
-                                        100,		        // 100Hz
+                                        50,		        // 100Hz
                                         150,               // buffer length
                                        {0.25, 0.5, 0.25},  // amplitudes
                                        {0, 0.5, 1.0},      // times
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
                                       };
 
     three_impulse_shaper EI_shaper = {   3, 	            // Number of impulses
-                                       100,		        // 100Hz
+                                       50,		            // 100Hz
                                     	 150,                // buffer length
                                        {0.26, 0.48, 0.26}, // amplitudes
                                        {0, 0.5, 1.0},      // times

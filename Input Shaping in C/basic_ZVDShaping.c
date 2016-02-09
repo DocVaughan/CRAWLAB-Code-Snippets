@@ -40,7 +40,7 @@ float doZVDShaping(float unshapedVelocity)
 	
 	// Define the two buffer locations, the impulse1 location can also be 
 	// thought of as the "current" output location, the impulse2 location
-	// is offset by the time of the 2nd impulse (* samples/s)
+	// is offset by the time of the the impulse (* samples/s)
 	// Each of these locations gets updated each time the function is called
 	static int impulse1_buffer_pos = -1; // The impulse1 buffer position
 	static int impulse2_buffer_pos = 49; // The impulse2 buffer position
