@@ -1,0 +1,1 @@
+ -Wa,-gdwarf2 -x assembler-with-cpp   -fomit-frame-pointer -DINIT_SECTIONS -D__BIG_ENDIAN__=1 -O2 -g -m2 -mb 

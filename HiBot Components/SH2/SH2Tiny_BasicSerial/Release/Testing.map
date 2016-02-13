@@ -1,0 +1,927 @@
+Archive member included because of file (symbol)
+
+libTesting.a(sprintf.o)       ./src/SH2Tiny_BasicSerial.o (sprintf)
+libTesting.a(svfprintf.o)     libTesting.a(sprintf.o) (_svfprintf_r)
+libTesting.a(dtoa.o)          libTesting.a(svfprintf.o) (_dtoa_r)
+libTesting.a(impure.o)        libTesting.a(sprintf.o) (_impure_ptr)
+libTesting.a(locale.o)        libTesting.a(svfprintf.o) (_localeconv_r)
+libTesting.a(mallocr.o)       libTesting.a(svfprintf.o) (_malloc_r)
+libTesting.a(memchr.o)        libTesting.a(svfprintf.o) (memchr)
+libTesting.a(memcpy.o)        libTesting.a(dtoa.o) (memcpy)
+libTesting.a(memmove.o)       libTesting.a(mallocr.o) (memmove)
+libTesting.a(memset.o)        libTesting.a(mallocr.o) (memset)
+libTesting.a(mlock.o)         libTesting.a(mallocr.o) (__malloc_lock)
+libTesting.a(mprec.o)         libTesting.a(dtoa.o) (_Balloc)
+libTesting.a(s_fpclassify.o)  libTesting.a(svfprintf.o) (__fpclassifyd)
+libTesting.a(sbrkr.o)         libTesting.a(mallocr.o) (_sbrk_r)
+libTesting.a(strcmp.o)        libTesting.a(locale.o) (strcmp)
+libTesting.a(strlen.o)        libTesting.a(svfprintf.o) (strlen)
+libTesting.a(svfiprintf.o)    libTesting.a(svfprintf.o) (__ssprint_r)
+libTesting.a(syscalls.o)      libTesting.a(sbrkr.o) (_sbrk)
+libTesting.a(trap.o)          libTesting.a(syscalls.o) (__trap34)
+libTesting.a(abort.o)         libTesting.a(syscalls.o) (abort)
+libTesting.a(signal.o)        libTesting.a(abort.o) (raise)
+libTesting.a(signalr.o)       libTesting.a(signal.o) (_kill_r)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftrt.o)
+                              libTesting.a(mprec.o) (__ashiftrt_r4_20)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftrt_n.o)
+                              libTesting.a(mprec.o) (__ashrsi3)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftlt.o)
+                              libTesting.a(dtoa.o) (__ashlsi3)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_lshiftrt.o)
+                              libTesting.a(dtoa.o) (__lshrsi3)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_nedf2.o)
+                              libTesting.a(svfprintf.o) (__nedf2)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_gtdf2t.o)
+                              libTesting.a(svfprintf.o) (__gtdf2t)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_gedf2f.o)
+                              libTesting.a(dtoa.o) (__gedf2f)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_muldf3.o)
+                              libTesting.a(dtoa.o) (__muldf3)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_add_sub_df3.o)
+                              libTesting.a(dtoa.o) (__subdf3)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_divdf3.o)
+                              libTesting.a(dtoa.o) (__divdf3)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_fixdfsi.o)
+                              libTesting.a(dtoa.o) (__fixdfsi)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_floatunssidf.o)
+                              libTesting.a(dtoa.o) (__floatunsidf)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_floatsidf.o)
+                              libTesting.a(dtoa.o) (__floatsidf)
+C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc-Os-4-200.a(udivsi3_i4i-Os-4-200.o)
+                              libTesting.a(dtoa.o) (__udivsi3_i4i)
+
+Allocating common symbols
+Common symbol       size              file
+
+order               0x10              ./src/SH2Tiny_BasicSerial.o
+str                 0xb               ./src/SH2Tiny_BasicSerial.o
+errno               0x4               libTesting.a(syscalls.o)
+
+Discarded input sections
+
+ .debug_info    0x0000000000000000      0x85f ./src/SH2Tiny_BasicSerial.o
+ .debug_abbrev  0x0000000000000000      0x17f ./src/SH2Tiny_BasicSerial.o
+ .debug_loc     0x0000000000000000       0x70 ./src/SH2Tiny_BasicSerial.o
+ .debug_aranges
+                0x0000000000000000       0x28 ./src/SH2Tiny_BasicSerial.o
+ .debug_ranges  0x0000000000000000       0x18 ./src/SH2Tiny_BasicSerial.o
+ .debug_line    0x0000000000000000       0xa1 ./src/SH2Tiny_BasicSerial.o
+ .debug_str     0x0000000000000000      0x2c6 ./src/SH2Tiny_BasicSerial.o
+ .debug_frame   0x0000000000000000       0x54 ./src/SH2Tiny_BasicSerial.o
+ .debug_info    0x0000000000000000     0x12f6 ./src/hardware_setup.o
+ .debug_abbrev  0x0000000000000000      0x15c ./src/hardware_setup.o
+ .debug_loc     0x0000000000000000       0x6e ./src/hardware_setup.o
+ .debug_aranges
+                0x0000000000000000       0x20 ./src/hardware_setup.o
+ .debug_line    0x0000000000000000       0x91 ./src/hardware_setup.o
+ .debug_str     0x0000000000000000      0x305 ./src/hardware_setup.o
+ .debug_frame   0x0000000000000000       0x30 ./src/hardware_setup.o
+ .debug_info    0x0000000000000000      0xab0 ./src/interrupt_handlers.o
+ .debug_abbrev  0x0000000000000000      0x13c ./src/interrupt_handlers.o
+ .debug_loc     0x0000000000000000       0xdb ./src/interrupt_handlers.o
+ .debug_aranges
+                0x0000000000000000       0x20 ./src/interrupt_handlers.o
+ .debug_line    0x0000000000000000      0x13f ./src/interrupt_handlers.o
+ .debug_str     0x0000000000000000      0x5d4 ./src/interrupt_handlers.o
+ .debug_frame   0x0000000000000000      0x638 ./src/interrupt_handlers.o
+ .debug_line    0x0000000000000000       0x6a ./src/reset_program.o
+ .debug_info    0x0000000000000000       0x7d ./src/reset_program.o
+ .debug_abbrev  0x0000000000000000       0x14 ./src/reset_program.o
+ .debug_aranges
+                0x0000000000000000       0x20 ./src/reset_program.o
+ .debug_info    0x0000000000000000      0x8ff ./src/sci3.o
+ .debug_abbrev  0x0000000000000000      0x1a9 ./src/sci3.o
+ .debug_loc     0x0000000000000000       0x34 ./src/sci3.o
+ .debug_aranges
+                0x0000000000000000       0x20 ./src/sci3.o
+ .debug_line    0x0000000000000000       0x6b ./src/sci3.o
+ .debug_str     0x0000000000000000      0x21b ./src/sci3.o
+ .debug_frame   0x0000000000000000       0x40 ./src/sci3.o
+ .debug_info    0x0000000000000000       0x68 ./src/vector_table.o
+ .debug_abbrev  0x0000000000000000       0x64 ./src/vector_table.o
+ .debug_line    0x0000000000000000       0x36 ./src/vector_table.o
+ .debug_str     0x0000000000000000       0x7b ./src/vector_table.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+
+.vects          0x0000000000000000      0x400
+ *(.vects)
+ .vects         0x0000000000000000      0x400 ./src/vector_table.o
+                0x0000000000000000                HardwareVectors
+
+.text           0x0000000000001000     0x5dcc
+ *(.text)
+ .text          0x0000000000001000       0x20 ./src/SH2Tiny_BasicSerial.o
+                0x0000000000001000                INT_CMT_CMT1
+ .text          0x0000000000001020       0xd0 ./src/hardware_setup.o
+                0x0000000000001020                HardwareSetup
+                0x00000000000010d0                set_imask
+ .text          0x00000000000010f0      0x640 ./src/interrupt_handlers.o
+                0x00000000000010f0                INT_Manual_Reset_PC
+                0x0000000000001100                INT_Manual_Reset_SP
+                0x0000000000001110                INT_Illegal_code
+                0x0000000000001120                INT_Illegal_slot
+                0x0000000000001130                INT_CPU_Address
+                0x0000000000001140                INT_DTC_Address
+                0x0000000000001150                INT_NMI
+                0x0000000000001160                INT_User_Break
+                0x0000000000001170                INT_H_UDI
+                0x0000000000001180                INT_TRAPA32
+                0x0000000000001190                INT_TRAPA33
+                0x00000000000011a0                INT_TRAPA34
+                0x00000000000011b0                INT_TRAPA35
+                0x00000000000011c0                INT_TRAPA36
+                0x00000000000011d0                INT_TRAPA37
+                0x00000000000011e0                INT_TRAPA38
+                0x00000000000011f0                INT_TRAPA39
+                0x0000000000001200                INT_TRAPA40
+                0x0000000000001210                INT_TRAPA41
+                0x0000000000001220                INT_TRAPA42
+                0x0000000000001230                INT_TRAPA43
+                0x0000000000001240                INT_TRAPA44
+                0x0000000000001250                INT_TRAPA45
+                0x0000000000001260                INT_TRAPA46
+                0x0000000000001270                INT_TRAPA47
+                0x0000000000001280                INT_TRAPA48
+                0x0000000000001290                INT_TRAPA49
+                0x00000000000012a0                INT_TRAPA50
+                0x00000000000012b0                INT_TRAPA51
+                0x00000000000012c0                INT_TRAPA52
+                0x00000000000012d0                INT_TRAPA53
+                0x00000000000012e0                INT_TRAPA54
+                0x00000000000012f0                INT_TRAPA55
+                0x0000000000001300                INT_TRAPA56
+                0x0000000000001310                INT_TRAPA57
+                0x0000000000001320                INT_TRAPA58
+                0x0000000000001330                INT_TRAPA59
+                0x0000000000001340                INT_TRAPA60
+                0x0000000000001350                INT_TRAPA61
+                0x0000000000001360                INT_TRAPA62
+                0x0000000000001370                INT_TRAPA63
+                0x0000000000001380                INT_IRQ0
+                0x0000000000001390                INT_IRQ1
+                0x00000000000013a0                INT_IRQ2
+                0x00000000000013b0                INT_IRQ3
+                0x00000000000013c0                INT_MTU0_TGIA0
+                0x00000000000013d0                INT_MTU0_TGIB0
+                0x00000000000013e0                INT_MTU0_TGIC0
+                0x00000000000013f0                INT_MTU0_TGID0
+                0x0000000000001400                INT_MTU0_TCIV0
+                0x0000000000001410                INT_MTU1_TGIA1
+                0x0000000000001420                INT_MTU1_TGIB1
+                0x0000000000001430                INT_MTU1_TCIV1
+                0x0000000000001440                INT_MTU1_TCIU1
+                0x0000000000001450                INT_MTU2_TGIA2
+                0x0000000000001460                INT_MTU2_TGIB2
+                0x0000000000001470                INT_MTU2_TCIV2
+                0x0000000000001480                INT_MTU2_TCIU2
+                0x0000000000001490                INT_MTU3_TGIA3
+                0x00000000000014a0                INT_MTU3_TGIB3
+                0x00000000000014b0                INT_MTU3_TGIC3
+                0x00000000000014c0                INT_MTU3_TGID3
+                0x00000000000014d0                INT_MTU3_TCIV3
+                0x00000000000014e0                INT_MTU4_TGIA4
+                0x00000000000014f0                INT_MTU4_TGIB4
+                0x0000000000001500                INT_MTU4_TGIC4
+                0x0000000000001510                INT_MTU4_TGID4
+                0x0000000000001520                INT_MTU4_TCIV4
+                0x0000000000001530                INT_ADI0
+                0x0000000000001540                INT_ADI1
+                0x0000000000001550                INT_DTC_SWDTEND
+                0x0000000000001560                INT_CMT_CMT0
+                0x0000000000001570                INT_WDT_ITI
+                0x0000000000001580                INT_MTUOEI
+                0x0000000000001590                INT_SCI2_ERI2
+                0x00000000000015a0                INT_SCI2_RXI2
+                0x00000000000015b0                INT_SCI2_TXI2
+                0x00000000000015c0                INT_SCI2_TEI2
+                0x00000000000015d0                INT_SCI3_ERI3
+                0x00000000000015f0                INT_SCI3_RXI3
+                0x0000000000001620                INT_SCI3_TXI3
+                0x0000000000001640                INT_SCI3_TEI3
+                0x0000000000001660                INT_SCI4_ERI4
+                0x0000000000001670                INT_SCI4_RXI4
+                0x0000000000001680                INT_SCI4_TXI4
+                0x0000000000001690                INT_SCI4_TEI4
+                0x00000000000016a0                INT_MMT_TGIM
+                0x00000000000016b0                INT_MMT_TGIN
+                0x00000000000016c0                INT_ADI2
+                0x00000000000016d0                INT_MMTOEI
+                0x00000000000016e0                INT_HCAN2_ERS1
+                0x00000000000016f0                INT_HCAN2_OVR1
+                0x0000000000001700                INT_HCAN2_RM1
+                0x0000000000001710                INT_HCAN2_SLE1
+                0x0000000000001720                Dummy
+ .text          0x0000000000001730       0x60 ./src/reset_program.o
+                0x0000000000001730                PowerON_Reset
+ .text          0x0000000000001790       0x90 ./src/sci3.o
+                0x0000000000001790                init_sci3
+                0x00000000000017c0                myputc_sci3
+                0x00000000000017f0                myputs_sci3
+ .text          0x0000000000001820        0x0 ./src/vector_table.o
+ .text          0x0000000000001820        0x0 libTesting.a(sprintf.o)
+ .text          0x0000000000001820        0x0 libTesting.a(svfprintf.o)
+ .text          0x0000000000001820        0x0 libTesting.a(dtoa.o)
+ .text          0x0000000000001820        0x0 libTesting.a(impure.o)
+ .text          0x0000000000001820        0x0 libTesting.a(locale.o)
+ .text          0x0000000000001820        0x0 libTesting.a(mallocr.o)
+ .text          0x0000000000001820        0x0 libTesting.a(memchr.o)
+ .text          0x0000000000001820        0x0 libTesting.a(memcpy.o)
+ .text          0x0000000000001820        0x0 libTesting.a(memmove.o)
+ .text          0x0000000000001820        0x0 libTesting.a(memset.o)
+ .text          0x0000000000001820        0x0 libTesting.a(mlock.o)
+ .text          0x0000000000001820        0x0 libTesting.a(mprec.o)
+ .text          0x0000000000001820        0x0 libTesting.a(s_fpclassify.o)
+ .text          0x0000000000001820        0x0 libTesting.a(sbrkr.o)
+ .text          0x0000000000001820        0x0 libTesting.a(strcmp.o)
+ .text          0x0000000000001820        0x0 libTesting.a(strlen.o)
+ .text          0x0000000000001820        0x0 libTesting.a(svfiprintf.o)
+ .text          0x0000000000001820        0x0 libTesting.a(syscalls.o)
+ .text          0x0000000000001820       0x14 libTesting.a(trap.o)
+                0x0000000000001820                __trap34
+ .text          0x0000000000001834        0x0 libTesting.a(abort.o)
+ .text          0x0000000000001834        0x0 libTesting.a(signal.o)
+ .text          0x0000000000001834        0x0 libTesting.a(signalr.o)
+ .text          0x0000000000001834       0x52 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftrt.o)
+                0x0000000000001834                __ashiftrt_r4_31
+                0x0000000000001834                __ashiftrt_r4_32
+                0x000000000000183a                __ashiftrt_r4_30
+                0x000000000000183c                __ashiftrt_r4_29
+                0x000000000000183e                __ashiftrt_r4_28
+                0x0000000000001840                __ashiftrt_r4_27
+                0x0000000000001842                __ashiftrt_r4_26
+                0x0000000000001844                __ashiftrt_r4_25
+                0x0000000000001846                __ashiftrt_r4_24
+                0x000000000000184e                __ashiftrt_r4_23
+                0x0000000000001850                __ashiftrt_r4_22
+                0x0000000000001852                __ashiftrt_r4_21
+                0x0000000000001854                __ashiftrt_r4_20
+                0x0000000000001856                __ashiftrt_r4_19
+                0x0000000000001858                __ashiftrt_r4_18
+                0x000000000000185a                __ashiftrt_r4_17
+                0x000000000000185c                __ashiftrt_r4_16
+                0x0000000000001862                __ashiftrt_r4_15
+                0x0000000000001864                __ashiftrt_r4_14
+                0x0000000000001866                __ashiftrt_r4_13
+                0x0000000000001868                __ashiftrt_r4_12
+                0x000000000000186a                __ashiftrt_r4_11
+                0x000000000000186c                __ashiftrt_r4_10
+                0x000000000000186e                __ashiftrt_r4_9
+                0x0000000000001870                __ashiftrt_r4_8
+                0x0000000000001872                __ashiftrt_r4_7
+                0x0000000000001874                __ashiftrt_r4_6
+                0x0000000000001876                __ashiftrt_r4_5
+                0x0000000000001878                __ashiftrt_r4_4
+                0x000000000000187a                __ashiftrt_r4_3
+                0x000000000000187c                __ashiftrt_r4_2
+                0x000000000000187e                __ashiftrt_r4_1
+                0x0000000000001882                __ashiftrt_r4_0
+ *fill*         0x0000000000001886        0x2 00
+ .text          0x0000000000001888       0x80 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftrt_n.o)
+                0x0000000000001888                __ashrsi3
+ .text          0x0000000000001908       0x88 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftlt.o)
+                0x0000000000001908                __ashlsi3
+ .text          0x0000000000001990       0x88 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_lshiftrt.o)
+                0x0000000000001990                __lshrsi3
+ .text          0x0000000000001a18       0x24 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_nedf2.o)
+                0x0000000000001a18                __nedf2
+ .text          0x0000000000001a3c       0x48 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_gtdf2t.o)
+                0x0000000000001a3c                __gtdf2t
+ .text          0x0000000000001a84       0x48 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_gedf2f.o)
+                0x0000000000001a84                __gedf2f
+ *fill*         0x0000000000001acc       0x14 00
+ .text          0x0000000000001ae0      0x260 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_muldf3.o)
+                0x0000000000001ae0                __muldf3
+ .text          0x0000000000001d40      0x320 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_add_sub_df3.o)
+                0x0000000000001d40                __subdf3
+                0x0000000000001d46                __adddf3
+ .text          0x0000000000002060      0x260 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_divdf3.o)
+                0x0000000000002060                __divdf3
+ .text          0x00000000000022c0       0xc0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_fixdfsi.o)
+                0x00000000000022c0                __fixdfsi
+ .text          0x0000000000002380       0x40 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_floatunssidf.o)
+                0x0000000000002380                __floatunsidf
+ .text          0x00000000000023c0       0x80 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_floatsidf.o)
+                0x00000000000023c0                __floatsidf
+ .text          0x0000000000002440       0xbc C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc-Os-4-200.a(udivsi3_i4i-Os-4-200.o)
+                0x0000000000002440                __udivsi3_i4i
+                0x00000000000024bc                __sdivsi3_i4i
+ *(.text.*)
+ *fill*         0x00000000000024fc        0x4 00
+ .text.startup  0x0000000000002500       0x90 ./src/SH2Tiny_BasicSerial.o
+                0x0000000000002500                main
+ .text._sprintf_r
+                0x0000000000002590       0x48 libTesting.a(sprintf.o)
+                0x0000000000002590                _sprintf_r
+ .text.sprintf  0x00000000000025d8       0x54 libTesting.a(sprintf.o)
+                0x00000000000025d8                sprintf
+ .text._svfprintf_r
+                0x000000000000262c     0x11c0 libTesting.a(svfprintf.o)
+                0x000000000000262c                _svfprintf_r
+ .text.quorem   0x00000000000037ec      0x144 libTesting.a(dtoa.o)
+ .text._dtoa_r  0x0000000000003930      0xdb4 libTesting.a(dtoa.o)
+                0x0000000000003930                _dtoa_r
+ .text._setlocale_r
+                0x00000000000046e4       0x50 libTesting.a(locale.o)
+                0x00000000000046e4                _setlocale_r
+ .text.__locale_charset
+                0x0000000000004734        0xc libTesting.a(locale.o)
+                0x0000000000004734                __locale_charset
+ .text.__locale_mb_cur_max
+                0x0000000000004740        0xc libTesting.a(locale.o)
+                0x0000000000004740                __locale_mb_cur_max
+ .text.__locale_msgcharset
+                0x000000000000474c        0xc libTesting.a(locale.o)
+                0x000000000000474c                __locale_msgcharset
+ .text.__locale_cjk_lang
+                0x0000000000004758        0x4 libTesting.a(locale.o)
+                0x0000000000004758                __locale_cjk_lang
+ .text._localeconv_r
+                0x000000000000475c        0xc libTesting.a(locale.o)
+                0x000000000000475c                _localeconv_r
+ .text.setlocale
+                0x0000000000004768       0x18 libTesting.a(locale.o)
+                0x0000000000004768                setlocale
+ .text.localeconv
+                0x0000000000004780        0xc libTesting.a(locale.o)
+                0x0000000000004780                localeconv
+ .text._malloc_trim_r
+                0x000000000000478c       0xc8 libTesting.a(mallocr.o)
+                0x000000000000478c                _malloc_trim_r
+ .text._free_r  0x0000000000004854      0x1d8 libTesting.a(mallocr.o)
+                0x0000000000004854                _free_r
+ .text._malloc_r
+                0x0000000000004a2c      0x4b8 libTesting.a(mallocr.o)
+                0x0000000000004a2c                _malloc_r
+ .text._calloc_r
+                0x0000000000004ee4       0x7c libTesting.a(mallocr.o)
+                0x0000000000004ee4                _calloc_r
+ .text._realloc_r
+                0x0000000000004f60      0x348 libTesting.a(mallocr.o)
+                0x0000000000004f60                _realloc_r
+ .text.memchr   0x00000000000052a8       0x1c libTesting.a(memchr.o)
+                0x00000000000052a8                memchr
+ .text.memcpy   0x00000000000052c4       0x1a libTesting.a(memcpy.o)
+                0x00000000000052c4                memcpy
+ .text.memmove  0x00000000000052de       0x56 libTesting.a(memmove.o)
+                0x00000000000052de                memmove
+ .text.memset   0x0000000000005334       0x14 libTesting.a(memset.o)
+                0x0000000000005334                memset
+ .text.__malloc_lock
+                0x0000000000005348        0x4 libTesting.a(mlock.o)
+                0x0000000000005348                __malloc_lock
+ .text.__malloc_unlock
+                0x000000000000534c        0x4 libTesting.a(mlock.o)
+                0x000000000000534c                __malloc_unlock
+ .text._Balloc  0x0000000000005350       0x7c libTesting.a(mprec.o)
+                0x0000000000005350                _Balloc
+ .text._Bfree   0x00000000000053cc       0x18 libTesting.a(mprec.o)
+                0x00000000000053cc                _Bfree
+ .text.__multadd
+                0x00000000000053e4       0xac libTesting.a(mprec.o)
+                0x00000000000053e4                __multadd
+ .text.__s2b    0x0000000000005490       0xb0 libTesting.a(mprec.o)
+                0x0000000000005490                __s2b
+ .text.__hi0bits
+                0x0000000000005540       0x5c libTesting.a(mprec.o)
+                0x0000000000005540                __hi0bits
+ .text.__lo0bits
+                0x000000000000559c       0x7a libTesting.a(mprec.o)
+                0x000000000000559c                __lo0bits
+ *fill*         0x0000000000005616        0x2 00
+ .text.__i2b    0x0000000000005618       0x20 libTesting.a(mprec.o)
+                0x0000000000005618                __i2b
+ .text.__multiply
+                0x0000000000005638      0x154 libTesting.a(mprec.o)
+                0x0000000000005638                __multiply
+ .text.__pow5mult
+                0x000000000000578c       0xbc libTesting.a(mprec.o)
+                0x000000000000578c                __pow5mult
+ .text.__lshift
+                0x0000000000005848      0x104 libTesting.a(mprec.o)
+                0x0000000000005848                __lshift
+ .text.__mcmp   0x000000000000594c       0x3a libTesting.a(mprec.o)
+                0x000000000000594c                __mcmp
+ *fill*         0x0000000000005986        0x2 00
+ .text.__mdiff  0x0000000000005988       0xf4 libTesting.a(mprec.o)
+                0x0000000000005988                __mdiff
+ .text.__ulp    0x0000000000005a7c       0x74 libTesting.a(mprec.o)
+                0x0000000000005a7c                __ulp
+ .text.__b2d    0x0000000000005af0      0x11c libTesting.a(mprec.o)
+                0x0000000000005af0                __b2d
+ .text.__d2b    0x0000000000005c0c       0xfc libTesting.a(mprec.o)
+                0x0000000000005c0c                __d2b
+ .text.__ratio  0x0000000000005d08       0x70 libTesting.a(mprec.o)
+                0x0000000000005d08                __ratio
+ .text._mprec_log10
+                0x0000000000005d78       0x4c libTesting.a(mprec.o)
+                0x0000000000005d78                _mprec_log10
+ .text.__copybits
+                0x0000000000005dc4       0x3a libTesting.a(mprec.o)
+                0x0000000000005dc4                __copybits
+ *fill*         0x0000000000005dfe        0x2 00
+ .text.__any_on
+                0x0000000000005e00       0x88 libTesting.a(mprec.o)
+                0x0000000000005e00                __any_on
+ .text.__fpclassifyd
+                0x0000000000005e88       0x68 libTesting.a(s_fpclassify.o)
+                0x0000000000005e88                __fpclassifyd
+ .text._sbrk_r  0x0000000000005ef0       0x34 libTesting.a(sbrkr.o)
+                0x0000000000005ef0                _sbrk_r
+ .text.strcmp   0x0000000000005f24       0x1a libTesting.a(strcmp.o)
+                0x0000000000005f24                strcmp
+ .text.strlen   0x0000000000005f3e       0x10 libTesting.a(strlen.o)
+                0x0000000000005f3e                strlen
+ *fill*         0x0000000000005f4e        0x2 00
+ .text.__ssprint_r
+                0x0000000000005f50      0x13c libTesting.a(svfiprintf.o)
+                0x0000000000005f50                __ssprint_r
+ .text._svfiprintf_r
+                0x000000000000608c      0x88c libTesting.a(svfiprintf.o)
+                0x000000000000608c                _svfiprintf_r
+ .text.__setup_argv_for_main
+                0x0000000000006918       0x7c libTesting.a(syscalls.o)
+ .text._read    0x0000000000006994       0x14 libTesting.a(syscalls.o)
+                0x0000000000006994                _read
+ .text._lseek   0x00000000000069a8       0x14 libTesting.a(syscalls.o)
+                0x00000000000069a8                _lseek
+ .text._write   0x00000000000069bc       0x14 libTesting.a(syscalls.o)
+                0x00000000000069bc                _write
+ .text._close   0x00000000000069d0       0x10 libTesting.a(syscalls.o)
+                0x00000000000069d0                _close
+ .text._link    0x00000000000069e0        0x4 libTesting.a(syscalls.o)
+                0x00000000000069e0                _link
+ .text._sbrk    0x00000000000069e4       0x58 libTesting.a(syscalls.o)
+                0x00000000000069e4                _sbrk
+ .text._fstat   0x0000000000006a3c        0xa libTesting.a(syscalls.o)
+                0x0000000000006a3c                _fstat
+ *fill*         0x0000000000006a46        0x2 00
+ .text._open    0x0000000000006a48       0x14 libTesting.a(syscalls.o)
+                0x0000000000006a48                _open
+ .text._creat   0x0000000000006a5c       0x14 libTesting.a(syscalls.o)
+                0x0000000000006a5c                _creat
+ .text._unlink  0x0000000000006a70        0x4 libTesting.a(syscalls.o)
+                0x0000000000006a70                _unlink
+ .text.isatty   0x0000000000006a74        0x4 libTesting.a(syscalls.o)
+                0x0000000000006a74                isatty
+ .text._isatty  0x0000000000006a78        0x4 libTesting.a(syscalls.o)
+                0x0000000000006a78                _isatty
+ .text._exit    0x0000000000006a7c       0x10 libTesting.a(syscalls.o)
+                0x0000000000006a7c                _exit
+ .text._kill    0x0000000000006a8c       0x14 libTesting.a(syscalls.o)
+                0x0000000000006a8c                _kill
+ .text._getpid  0x0000000000006aa0        0x4 libTesting.a(syscalls.o)
+                0x0000000000006aa0                _getpid
+ .text._raise   0x0000000000006aa4        0x4 libTesting.a(syscalls.o)
+                0x0000000000006aa4                _raise
+ .text._stat    0x0000000000006aa8       0x14 libTesting.a(syscalls.o)
+                0x0000000000006aa8                _stat
+ .text._chmod   0x0000000000006abc       0x10 libTesting.a(syscalls.o)
+                0x0000000000006abc                _chmod
+ .text._chown   0x0000000000006acc       0x14 libTesting.a(syscalls.o)
+                0x0000000000006acc                _chown
+ .text._utime   0x0000000000006ae0       0x14 libTesting.a(syscalls.o)
+                0x0000000000006ae0                _utime
+ .text._fork    0x0000000000006af4        0xc libTesting.a(syscalls.o)
+                0x0000000000006af4                _fork
+ .text._wait    0x0000000000006b00       0x10 libTesting.a(syscalls.o)
+                0x0000000000006b00                _wait
+ .text._execve  0x0000000000006b10       0x14 libTesting.a(syscalls.o)
+                0x0000000000006b10                _execve
+ .text._execv   0x0000000000006b24       0x10 libTesting.a(syscalls.o)
+                0x0000000000006b24                _execv
+ .text._pipe    0x0000000000006b34        0xc libTesting.a(syscalls.o)
+                0x0000000000006b34                _pipe
+ .text._times   0x0000000000006b40        0x4 libTesting.a(syscalls.o)
+                0x0000000000006b40                _times
+ .text._gettimeofday
+                0x0000000000006b44       0x20 libTesting.a(syscalls.o)
+                0x0000000000006b44                _gettimeofday
+ .text.__setup_argv_and_call_main
+                0x0000000000006b64       0x30 libTesting.a(syscalls.o)
+                0x0000000000006b64                __setup_argv_and_call_main
+ .text.abort    0x0000000000006b94       0x18 libTesting.a(abort.o)
+                0x0000000000006b94                abort
+ .text._init_signal_r
+                0x0000000000006bac       0x54 libTesting.a(signal.o)
+                0x0000000000006bac                _init_signal_r
+ .text._signal_r
+                0x0000000000006c00       0x58 libTesting.a(signal.o)
+                0x0000000000006c00                _signal_r
+ .text._raise_r
+                0x0000000000006c58       0x74 libTesting.a(signal.o)
+                0x0000000000006c58                _raise_r
+ .text.__sigtramp_r
+                0x0000000000006ccc       0x70 libTesting.a(signal.o)
+                0x0000000000006ccc                __sigtramp_r
+ .text.raise    0x0000000000006d3c       0x14 libTesting.a(signal.o)
+                0x0000000000006d3c                raise
+ .text.signal   0x0000000000006d50       0x18 libTesting.a(signal.o)
+                0x0000000000006d50                signal
+ .text._init_signal
+                0x0000000000006d68       0x10 libTesting.a(signal.o)
+                0x0000000000006d68                _init_signal
+ .text.__sigtramp
+                0x0000000000006d78       0x14 libTesting.a(signal.o)
+                0x0000000000006d78                __sigtramp
+ .text._kill_r  0x0000000000006d8c       0x34 libTesting.a(signalr.o)
+                0x0000000000006d8c                _kill_r
+ .text._getpid_r
+                0x0000000000006dc0        0xc libTesting.a(signalr.o)
+                0x0000000000006dc0                _getpid_r
+                0x0000000000006dcc                etext = .
+
+.init
+ *(.init)
+
+.fini
+ *(.fini)
+
+.got
+ *(.got)
+ *(.got.plt)
+
+.rodata         0x0000000000006dcc      0x1f4
+ *(.rodata)
+ *(.rodata.*)
+ .rodata.str1.4
+                0x0000000000006dcc       0x14 ./src/SH2Tiny_BasicSerial.o
+ .rodata.str1.4
+                0x0000000000006de0       0x3a libTesting.a(svfprintf.o)
+                                         0x3c (size before relaxing)
+ *fill*         0x0000000000006e1a        0x2 00
+ .rodata.blanks.3758
+                0x0000000000006e1c       0x10 libTesting.a(svfprintf.o)
+ .rodata.zeroes.3759
+                0x0000000000006e2c       0x10 libTesting.a(svfprintf.o)
+ .rodata.str1.4
+                0x0000000000006e3c       0x10 libTesting.a(dtoa.o)
+                                         0x14 (size before relaxing)
+ .rodata._global_impure_ptr
+                0x0000000000006e4c        0x4 libTesting.a(impure.o)
+                0x0000000000006e4c                _global_impure_ptr
+ .rodata.str1.4
+                0x0000000000006e50        0x2 libTesting.a(impure.o)
+                                          0x4 (size before relaxing)
+ *fill*         0x0000000000006e52        0x2 00
+ .rodata.str1.4
+                0x0000000000006e54        0xa libTesting.a(locale.o)
+                                         0x14 (size before relaxing)
+ *fill*         0x0000000000006e5e        0x2 00
+ .rodata.__mprec_tinytens
+                0x0000000000006e60       0x28 libTesting.a(mprec.o)
+                0x0000000000006e60                __mprec_tinytens
+ .rodata.__mprec_bigtens
+                0x0000000000006e88       0x28 libTesting.a(mprec.o)
+                0x0000000000006e88                __mprec_bigtens
+ .rodata.__mprec_tens
+                0x0000000000006eb0       0xc8 libTesting.a(mprec.o)
+                0x0000000000006eb0                __mprec_tens
+ .rodata.p05.2271
+                0x0000000000006f78        0xc libTesting.a(mprec.o)
+ .rodata.str1.4
+                0x0000000000000000       0x28 libTesting.a(svfiprintf.o)
+ .rodata.blanks.3702
+                0x0000000000006f84       0x10 libTesting.a(svfiprintf.o)
+ .rodata.zeroes.3703
+                0x0000000000006f94       0x10 libTesting.a(svfiprintf.o)
+ .rodata.str1.4
+                0x0000000000006fa4       0x1c libTesting.a(syscalls.o)
+                0x0000000000006fc0                _erodata = .
+
+.rela.dyn       0x0000000000006fc0        0x0
+ .rela.text.startup
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text     0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.vects    0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._sprintf_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text.sprintf
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._svfprintf_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text.quorem
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._dtoa_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._setlocale_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._malloc_trim_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._free_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._malloc_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._calloc_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._realloc_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._Balloc
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text.__lshift
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text.__ulp
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text.__b2d
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text.__d2b
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text.__ratio
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._mprec_log10
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text.__any_on
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._sbrk_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text.__setup_argv_for_main
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._read
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._lseek
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._write
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._close
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._sbrk
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._open
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._creat
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._exit
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._kill
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._stat
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._chmod
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._chown
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._utime
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._fork
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._wait
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._execve
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._execv
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._pipe
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._gettimeofday
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text.__setup_argv_and_call_main
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text.abort
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._raise_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+ .rela.text._kill_r
+                0x0000000000000000        0x0 ./src/SH2Tiny_BasicSerial.o
+
+.eh_frame_hdr
+ *(.eh_frame_hdr)
+
+.eh_frame
+ *(.eh_frame)
+
+.jcr
+ *(.jcr)
+
+.tors           0x0000000000006fc0        0x0
+                0x0000000000006fc0                __CTOR_LIST__ = .
+                0x0000000000006fc0                ___ctors = .
+ *(.ctors)
+                0x0000000000006fc0                ___ctors_end = .
+                0x0000000000006fc0                __CTOR_END__ = .
+                0x0000000000006fc0                __DTOR_LIST__ = .
+                0x0000000000006fc0                ___dtors = .
+ *(.dtors)
+                0x0000000000006fc0                ___dtors_end = .
+                0x0000000000006fc0                __DTOR_END__ = .
+                0x0000000000006fc0                _mdata = .
+
+.data           0x00000000ffffd000      0x8b8 load address 0x0000000000006fc0
+                0x00000000ffffd000                _data = .
+ *(.data)
+ .data          0x00000000ffffd000        0x1 ./src/SH2Tiny_BasicSerial.o
+ .data          0x00000000ffffd001        0x0 ./src/hardware_setup.o
+ .data          0x00000000ffffd001        0x0 ./src/interrupt_handlers.o
+ .data          0x00000000ffffd001        0x0 ./src/reset_program.o
+ .data          0x00000000ffffd001        0x0 ./src/sci3.o
+ .data          0x00000000ffffd001        0x0 ./src/vector_table.o
+ .data          0x00000000ffffd001        0x0 libTesting.a(sprintf.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(svfprintf.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(dtoa.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(impure.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(locale.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(mallocr.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(memchr.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(memcpy.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(memmove.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(memset.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(mlock.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(mprec.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(s_fpclassify.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(sbrkr.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(strcmp.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(strlen.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(svfiprintf.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(syscalls.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(trap.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(abort.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(signal.o)
+ .data          0x00000000ffffd001        0x0 libTesting.a(signalr.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftrt.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftrt_n.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftlt.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_lshiftrt.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_nedf2.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_gtdf2t.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_gedf2f.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_muldf3.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_add_sub_df3.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_divdf3.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_fixdfsi.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_floatunssidf.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_floatsidf.o)
+ .data          0x00000000ffffd001        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc-Os-4-200.a(udivsi3_i4i-Os-4-200.o)
+ *(.data.*)
+ *fill*         0x00000000ffffd001        0x3 00
+ .data._impure_ptr
+                0x00000000ffffd004        0x4 libTesting.a(impure.o)
+                0x00000000ffffd004                _impure_ptr
+ .data.impure_data
+                0x00000000ffffd008      0x424 libTesting.a(impure.o)
+ .data.__mb_cur_max
+                0x00000000ffffd42c        0x4 libTesting.a(locale.o)
+                0x00000000ffffd42c                __mb_cur_max
+ .data.lc_ctype_charset
+                0x00000000ffffd430       0x20 libTesting.a(locale.o)
+ .data.lc_message_charset
+                0x00000000ffffd450       0x20 libTesting.a(locale.o)
+ .data.lconv    0x00000000ffffd470       0x38 libTesting.a(locale.o)
+ .data.__malloc_sbrk_base
+                0x00000000ffffd4a8        0x4 libTesting.a(mallocr.o)
+                0x00000000ffffd4a8                __malloc_sbrk_base
+ .data.__malloc_trim_threshold
+                0x00000000ffffd4ac        0x4 libTesting.a(mallocr.o)
+                0x00000000ffffd4ac                __malloc_trim_threshold
+ .data.__malloc_av_
+                0x00000000ffffd4b0      0x408 libTesting.a(mallocr.o)
+                0x00000000ffffd4b0                __malloc_av_
+                0x00000000ffffd8b8                _edata = .
+
+.gcc_exc
+ *(.gcc_exc)
+
+.bss            0x00000000ffffd8b8       0x64 load address 0x0000000000007878
+                0x00000000ffffd8b8                _bss = .
+ *(.bss)
+ .bss           0x00000000ffffd8b8        0x0 ./src/SH2Tiny_BasicSerial.o
+ .bss           0x00000000ffffd8b8        0x0 ./src/hardware_setup.o
+ .bss           0x00000000ffffd8b8        0x0 ./src/interrupt_handlers.o
+ .bss           0x00000000ffffd8b8        0x0 ./src/reset_program.o
+ .bss           0x00000000ffffd8b8        0x0 ./src/sci3.o
+ .bss           0x00000000ffffd8b8        0x0 ./src/vector_table.o
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(sprintf.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(svfprintf.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(dtoa.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(impure.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(locale.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(mallocr.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(memchr.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(memcpy.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(memmove.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(memset.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(mlock.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(mprec.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(s_fpclassify.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(sbrkr.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(strcmp.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(strlen.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(svfiprintf.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(syscalls.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(trap.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(abort.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(signal.o)
+ .bss           0x00000000ffffd8b8        0x0 libTesting.a(signalr.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftrt.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftrt_n.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_ashiftlt.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_lshiftrt.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_nedf2.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_gtdf2t.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_gedf2f.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_muldf3.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_add_sub_df3.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_divdf3.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_fixdfsi.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_floatunssidf.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a(_floatsidf.o)
+ .bss           0x00000000ffffd8b8        0x0 C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc-Os-4-200.a(udivsi3_i4i-Os-4-200.o)
+ *(.bss.*)
+ .bss._PathLocale
+                0x00000000ffffd8b8        0x4 libTesting.a(locale.o)
+                0x00000000ffffd8b8                _PathLocale
+ .bss.__mlocale_changed
+                0x00000000ffffd8bc        0x4 libTesting.a(locale.o)
+                0x00000000ffffd8bc                __mlocale_changed
+ .bss.__nlocale_changed
+                0x00000000ffffd8c0        0x4 libTesting.a(locale.o)
+                0x00000000ffffd8c0                __nlocale_changed
+ .bss.__malloc_current_mallinfo
+                0x00000000ffffd8c4       0x28 libTesting.a(mallocr.o)
+                0x00000000ffffd8c4                __malloc_current_mallinfo
+ .bss.__malloc_max_total_mem
+                0x00000000ffffd8ec        0x4 libTesting.a(mallocr.o)
+                0x00000000ffffd8ec                __malloc_max_total_mem
+ .bss.__malloc_max_sbrked_mem
+                0x00000000ffffd8f0        0x4 libTesting.a(mallocr.o)
+                0x00000000ffffd8f0                __malloc_max_sbrked_mem
+ .bss.__malloc_top_pad
+                0x00000000ffffd8f4        0x4 libTesting.a(mallocr.o)
+                0x00000000ffffd8f4                __malloc_top_pad
+ .bss.heap_end.1135
+                0x00000000ffffd8f8        0x4 libTesting.a(syscalls.o)
+ *(COMMON)
+ COMMON         0x00000000ffffd8fc       0x1b ./src/SH2Tiny_BasicSerial.o
+                0x00000000ffffd8fc                order
+                0x00000000ffffd90c                str
+ *fill*         0x00000000ffffd917        0x1 00
+ COMMON         0x00000000ffffd918        0x4 libTesting.a(syscalls.o)
+                0x00000000ffffd918                errno
+                0x00000000ffffd91c                _ebss = .
+                0x00000000ffffd91c                _end = .
+
+.stack          0x00000000fffffff0        0x0
+                0x00000000fffffff0                _stack = .
+LOAD ./src/SH2Tiny_BasicSerial.o
+LOAD ./src/hardware_setup.o
+LOAD ./src/interrupt_handlers.o
+LOAD ./src/reset_program.o
+LOAD ./src/sci3.o
+LOAD ./src/vector_table.o
+LOAD libTesting.a
+START GROUP
+LOAD C:\Renesas\workspace\SH2Tiny_BasicSerial\Release\libTesting.a
+LOAD C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a
+LOAD C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc-Os-4-200.a
+END GROUP
+OUTPUT(Testing.x elf32-sh)
+
+.debug_info
+
+.debug_abbrev
+
+.debug_loc
+
+.debug_aranges
+
+.debug_ranges
+
+.debug_line
+
+.debug_str
+
+.comment        0x0000000000000000       0x1c
+ .comment       0x0000000000000000       0x1c ./src/SH2Tiny_BasicSerial.o
+                                         0x1d (size before relaxing)
+ .comment       0x0000000000000000       0x1d ./src/hardware_setup.o
+ .comment       0x0000000000000000       0x1d ./src/interrupt_handlers.o
+ .comment       0x0000000000000000       0x1d ./src/sci3.o
+ .comment       0x0000000000000000       0x1d ./src/vector_table.o
+ .comment       0x0000000000000000       0x1d libTesting.a(sprintf.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(svfprintf.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(dtoa.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(impure.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(locale.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(mallocr.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(memchr.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(memcpy.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(memmove.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(memset.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(mlock.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(mprec.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(s_fpclassify.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(sbrkr.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(strcmp.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(strlen.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(svfiprintf.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(syscalls.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(abort.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(signal.o)
+ .comment       0x0000000000000000       0x1d libTesting.a(signalr.o)
+
+.debug_frame

@@ -1,0 +1,262 @@
+
+Discarded input sections
+
+ .debug_info    0x0000000000000000      0x43f ./src/SH2Tiny_Sample1.o
+ .debug_abbrev  0x0000000000000000       0xfe ./src/SH2Tiny_Sample1.o
+ .debug_aranges
+                0x0000000000000000       0x28 ./src/SH2Tiny_Sample1.o
+ .debug_ranges  0x0000000000000000       0x18 ./src/SH2Tiny_Sample1.o
+ .debug_line    0x0000000000000000       0x80 ./src/SH2Tiny_Sample1.o
+ .debug_str     0x0000000000000000       0xb0 ./src/SH2Tiny_Sample1.o
+ .debug_frame   0x0000000000000000       0x30 ./src/SH2Tiny_Sample1.o
+ .debug_info    0x0000000000000000     0x10a0 ./src/hardware_setup.o
+ .debug_abbrev  0x0000000000000000       0xd1 ./src/hardware_setup.o
+ .debug_aranges
+                0x0000000000000000       0x20 ./src/hardware_setup.o
+ .debug_line    0x0000000000000000       0x62 ./src/hardware_setup.o
+ .debug_str     0x0000000000000000      0x263 ./src/hardware_setup.o
+ .debug_frame   0x0000000000000000       0x20 ./src/hardware_setup.o
+ .debug_info    0x0000000000000000      0x7e3 ./src/interrupt_handlers.o
+ .debug_abbrev  0x0000000000000000       0x49 ./src/interrupt_handlers.o
+ .debug_aranges
+                0x0000000000000000       0x20 ./src/interrupt_handlers.o
+ .debug_line    0x0000000000000000      0x119 ./src/interrupt_handlers.o
+ .debug_str     0x0000000000000000      0x585 ./src/interrupt_handlers.o
+ .debug_frame   0x0000000000000000      0x610 ./src/interrupt_handlers.o
+ .debug_line    0x0000000000000000       0x6a ./src/reset_program.o
+ .debug_info    0x0000000000000000       0x79 ./src/reset_program.o
+ .debug_abbrev  0x0000000000000000       0x14 ./src/reset_program.o
+ .debug_aranges
+                0x0000000000000000       0x20 ./src/reset_program.o
+ .debug_info    0x0000000000000000       0x68 ./src/vector_table.o
+ .debug_abbrev  0x0000000000000000       0x64 ./src/vector_table.o
+ .debug_line    0x0000000000000000       0x36 ./src/vector_table.o
+ .debug_str     0x0000000000000000       0x77 ./src/vector_table.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+
+.vects          0x0000000000000000      0x400
+ *(.vects)
+ .vects         0x0000000000000000      0x400 ./src/vector_table.o
+                0x0000000000000000                HardwareVectors
+
+.text           0x0000000000001000      0x730
+ *(.text)
+ .text          0x0000000000001000       0x10 ./src/SH2Tiny_Sample1.o
+                0x0000000000001000                test
+ .text          0x0000000000001010       0x40 ./src/hardware_setup.o
+                0x0000000000001010                HardwareSetup
+ .text          0x0000000000001050      0x600 ./src/interrupt_handlers.o
+                0x0000000000001050                INT_Manual_Reset_PC
+                0x0000000000001060                INT_Manual_Reset_SP
+                0x0000000000001070                INT_Illegal_code
+                0x0000000000001080                INT_Illegal_slot
+                0x0000000000001090                INT_CPU_Address
+                0x00000000000010a0                INT_DTC_Address
+                0x00000000000010b0                INT_NMI
+                0x00000000000010c0                INT_User_Break
+                0x00000000000010d0                INT_H_UDI
+                0x00000000000010e0                INT_TRAPA32
+                0x00000000000010f0                INT_TRAPA33
+                0x0000000000001100                INT_TRAPA34
+                0x0000000000001110                INT_TRAPA35
+                0x0000000000001120                INT_TRAPA36
+                0x0000000000001130                INT_TRAPA37
+                0x0000000000001140                INT_TRAPA38
+                0x0000000000001150                INT_TRAPA39
+                0x0000000000001160                INT_TRAPA40
+                0x0000000000001170                INT_TRAPA41
+                0x0000000000001180                INT_TRAPA42
+                0x0000000000001190                INT_TRAPA43
+                0x00000000000011a0                INT_TRAPA44
+                0x00000000000011b0                INT_TRAPA45
+                0x00000000000011c0                INT_TRAPA46
+                0x00000000000011d0                INT_TRAPA47
+                0x00000000000011e0                INT_TRAPA48
+                0x00000000000011f0                INT_TRAPA49
+                0x0000000000001200                INT_TRAPA50
+                0x0000000000001210                INT_TRAPA51
+                0x0000000000001220                INT_TRAPA52
+                0x0000000000001230                INT_TRAPA53
+                0x0000000000001240                INT_TRAPA54
+                0x0000000000001250                INT_TRAPA55
+                0x0000000000001260                INT_TRAPA56
+                0x0000000000001270                INT_TRAPA57
+                0x0000000000001280                INT_TRAPA58
+                0x0000000000001290                INT_TRAPA59
+                0x00000000000012a0                INT_TRAPA60
+                0x00000000000012b0                INT_TRAPA61
+                0x00000000000012c0                INT_TRAPA62
+                0x00000000000012d0                INT_TRAPA63
+                0x00000000000012e0                INT_IRQ0
+                0x00000000000012f0                INT_IRQ1
+                0x0000000000001300                INT_IRQ2
+                0x0000000000001310                INT_IRQ3
+                0x0000000000001320                INT_MTU0_TGIA0
+                0x0000000000001330                INT_MTU0_TGIB0
+                0x0000000000001340                INT_MTU0_TGIC0
+                0x0000000000001350                INT_MTU0_TGID0
+                0x0000000000001360                INT_MTU0_TCIV0
+                0x0000000000001370                INT_MTU1_TGIA1
+                0x0000000000001380                INT_MTU1_TGIB1
+                0x0000000000001390                INT_MTU1_TCIV1
+                0x00000000000013a0                INT_MTU1_TCIU1
+                0x00000000000013b0                INT_MTU2_TGIA2
+                0x00000000000013c0                INT_MTU2_TGIB2
+                0x00000000000013d0                INT_MTU2_TCIV2
+                0x00000000000013e0                INT_MTU2_TCIU2
+                0x00000000000013f0                INT_MTU3_TGIA3
+                0x0000000000001400                INT_MTU3_TGIB3
+                0x0000000000001410                INT_MTU3_TGIC3
+                0x0000000000001420                INT_MTU3_TGID3
+                0x0000000000001430                INT_MTU3_TCIV3
+                0x0000000000001440                INT_MTU4_TGIA4
+                0x0000000000001450                INT_MTU4_TGIB4
+                0x0000000000001460                INT_MTU4_TGIC4
+                0x0000000000001470                INT_MTU4_TGID4
+                0x0000000000001480                INT_MTU4_TCIV4
+                0x0000000000001490                INT_ADI0
+                0x00000000000014a0                INT_ADI1
+                0x00000000000014b0                INT_DTC_SWDTEND
+                0x00000000000014c0                INT_CMT_CMT0
+                0x00000000000014d0                INT_CMT_CMT1
+                0x00000000000014e0                INT_WDT_ITI
+                0x00000000000014f0                INT_MTUOEI
+                0x0000000000001500                INT_SCI2_ERI2
+                0x0000000000001510                INT_SCI2_RXI2
+                0x0000000000001520                INT_SCI2_TXI2
+                0x0000000000001530                INT_SCI2_TEI2
+                0x0000000000001540                INT_SCI3_ERI3
+                0x0000000000001550                INT_SCI3_RXI3
+                0x0000000000001560                INT_SCI3_TXI3
+                0x0000000000001570                INT_SCI3_TEI3
+                0x0000000000001580                INT_SCI4_ERI4
+                0x0000000000001590                INT_SCI4_RXI4
+                0x00000000000015a0                INT_SCI4_TXI4
+                0x00000000000015b0                INT_SCI4_TEI4
+                0x00000000000015c0                INT_MMT_TGIM
+                0x00000000000015d0                INT_MMT_TGIN
+                0x00000000000015e0                INT_ADI2
+                0x00000000000015f0                INT_MMTOEI
+                0x0000000000001600                INT_HCAN2_ERS1
+                0x0000000000001610                INT_HCAN2_OVR1
+                0x0000000000001620                INT_HCAN2_RM1
+                0x0000000000001630                INT_HCAN2_SLE1
+                0x0000000000001640                Dummy
+ .text          0x0000000000001650       0x60 ./src/reset_program.o
+                0x0000000000001650                PowerON_Reset
+ .text          0x00000000000016b0        0x0 ./src/vector_table.o
+ *(.text.*)
+ .text.startup  0x00000000000016b0       0x80 ./src/SH2Tiny_Sample1.o
+                0x00000000000016b0                main
+                0x0000000000001730                etext = .
+
+.rela.dyn       0x0000000000001730        0x0
+ .rela.text     0x0000000000000000        0x0 ./src/reset_program.o
+ .rela.vects    0x0000000000000000        0x0 ./src/reset_program.o
+
+.init
+ *(.init)
+
+.fini
+ *(.fini)
+
+.got
+ *(.got)
+ *(.got.plt)
+
+.rodata         0x0000000000001730        0x0
+ *(.rodata)
+ *(.rodata.*)
+                0x0000000000001730                _erodata = .
+
+.eh_frame_hdr
+ *(.eh_frame_hdr)
+
+.eh_frame
+ *(.eh_frame)
+
+.jcr
+ *(.jcr)
+
+.tors           0x0000000000001730        0x0
+                0x0000000000001730                __CTOR_LIST__ = .
+                0x0000000000001730                ___ctors = .
+ *(.ctors)
+                0x0000000000001730                ___ctors_end = .
+                0x0000000000001730                __CTOR_END__ = .
+                0x0000000000001730                __DTOR_LIST__ = .
+                0x0000000000001730                ___dtors = .
+ *(.dtors)
+                0x0000000000001730                ___dtors_end = .
+                0x0000000000001730                __DTOR_END__ = .
+                0x0000000000001730                _mdata = .
+
+.data           0x00000000ffffd000        0x0 load address 0x0000000000001730
+                0x00000000ffffd000                _data = .
+ *(.data)
+ .data          0x00000000ffffd000        0x0 ./src/SH2Tiny_Sample1.o
+ .data          0x00000000ffffd000        0x0 ./src/hardware_setup.o
+ .data          0x00000000ffffd000        0x0 ./src/interrupt_handlers.o
+ .data          0x00000000ffffd000        0x0 ./src/reset_program.o
+ .data          0x00000000ffffd000        0x0 ./src/vector_table.o
+ *(.data.*)
+                0x00000000ffffd000                _edata = .
+
+.gcc_exc
+ *(.gcc_exc)
+
+.bss            0x00000000ffffd000        0x0 load address 0x0000000000001730
+                0x00000000ffffd000                _bss = .
+ *(.bss)
+ .bss           0x00000000ffffd000        0x0 ./src/SH2Tiny_Sample1.o
+ .bss           0x00000000ffffd000        0x0 ./src/hardware_setup.o
+ .bss           0x00000000ffffd000        0x0 ./src/interrupt_handlers.o
+ .bss           0x00000000ffffd000        0x0 ./src/reset_program.o
+ .bss           0x00000000ffffd000        0x0 ./src/vector_table.o
+ *(.bss.*)
+ *(COMMON)
+                0x00000000ffffd000                _ebss = .
+                0x00000000ffffd000                _end = .
+
+.stack          0x00000000fffffff0        0x0
+                0x00000000fffffff0                _stack = .
+LOAD ./src/SH2Tiny_Sample1.o
+LOAD ./src/hardware_setup.o
+LOAD ./src/interrupt_handlers.o
+LOAD ./src/reset_program.o
+LOAD ./src/vector_table.o
+LOAD libTesting.a
+START GROUP
+LOAD C:\Renesas\workspace\SH2Tiny_Sample1\Release\libTesting.a
+LOAD C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc.a
+LOAD C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf/lib/gcc/sh-elf/4.6-GNUSH_v12.01/m2\libgcc-Os-4-200.a
+END GROUP
+OUTPUT(Testing.x elf32-sh)
+
+.debug_info
+
+.debug_abbrev
+
+.debug_aranges
+
+.debug_ranges
+
+.debug_line
+
+.debug_str
+
+.comment        0x0000000000000000       0x1c
+ .comment       0x0000000000000000       0x1c ./src/SH2Tiny_Sample1.o
+                                         0x1d (size before relaxing)
+ .comment       0x0000000000000000       0x1d ./src/hardware_setup.o
+ .comment       0x0000000000000000       0x1d ./src/interrupt_handlers.o
+ .comment       0x0000000000000000       0x1d ./src/vector_table.o
+
+.debug_frame

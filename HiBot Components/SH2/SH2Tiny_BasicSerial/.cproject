@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="com.renesas.cdt.sh.base.release.configuration.Id.27236970">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.renesas.cdt.sh.base.release.configuration.Id.27236970" moduleId="org.eclipse.cdt.core.settings" name="Release">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.PE" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="Testing" buildArtefactType="com.renesas.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=com.renesas.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf *.lst *.lis *.lpp *.map" description="" id="com.renesas.cdt.sh.base.release.configuration.Id.27236970" name="Release" parent="com.renesas.cdt.sh.base.release.configuration.Id">
+					<folderInfo id="com.renesas.cdt.sh.base.release.configuration.Id.27236970." name="/" resourcePath="">
+						<toolChain id="com.renesas.cdt.sh.release.win32.toolchain.Id.567375369" name="KPIT GNUSH-ELF Toolchain" superClass="com.renesas.cdt.sh.release.win32.toolchain.Id">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.PE" id="com.renesas.cdt.sh.release.win32.targetPlatform.Id.1356744607" osList="win32" superClass="com.renesas.cdt.sh.release.win32.targetPlatform.Id"/>
+							<builder buildPath="${workspace_loc:/Testing}/Release" id="com.renesas.cdt.sh.release.win32.builder.Id.1113987750" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="GNU Make Builder" superClass="com.renesas.cdt.sh.release.win32.builder.Id"/>
+							<tool id="com.renesas.cdt.sh.release.win32.tool.libgen.Id.219886393" name="Library Generator" superClass="com.renesas.cdt.sh.release.win32.tool.libgen.Id">
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.math.1080885673" name="math.h : Performs numeric calculations such as trigonometric functions" superClass="com.renesas.cdt.core.LibraryGenerator.option.math" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.stdio.28636196" name="stdio.h : Performs input/output handling" superClass="com.renesas.cdt.core.LibraryGenerator.option.stdio" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.stdlib.2041022532" name="stdlib.h : Performs C program standard processing such as storage area management" superClass="com.renesas.cdt.core.LibraryGenerator.option.stdlib" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.string.1170074296" name="string.h : Performs string comparison, copying " superClass="com.renesas.cdt.core.LibraryGenerator.option.string" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.selectLibrary.1149290064" name="Select library" superClass="com.renesas.cdt.core.LibraryGenerator.option.selectLibrary" value="com.renesas.core.LibraryGenerator.option.selectLibrary.newLib" valueType="enumerated"/>
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.libraryType.794905495" name="Library type" superClass="com.renesas.cdt.core.LibraryGenerator.option.libraryType" value="com.renesas.cdt.core.LibraryGenerator.option.libraryType.projectBuilt" valueType="enumerated"/>
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.misc9.518364075" name="Place each function into its own section in the output file(-ffunction-sections)" superClass="com.renesas.cdt.core.LibraryGenerator.option.misc9" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.misc14.1423479085" name="Do not put function addresses in registers(-fno-function-cse)" superClass="com.renesas.cdt.core.LibraryGenerator.option.misc14" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.misc36.1323740344" name="Parse the whole compilation unit before starting to produce code ( -funit-at-a-time)" superClass="com.renesas.cdt.core.LibraryGenerator.option.misc36" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.misc10.1154405138" name="Place each data into its own section in the output file(-fdata-sections)" superClass="com.renesas.cdt.core.LibraryGenerator.option.misc10" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.misc37.1254647045" name="Align branch targets to a power-of-two boundary (-falign-jumps)" superClass="com.renesas.cdt.core.LibraryGenerator.option.misc37" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.LibraryGenerator.option.ctype.906452542" name="ctype.h : Handles and checks characters" superClass="com.renesas.cdt.core.LibraryGenerator.option.ctype" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.renesas.cdt.sh.release.win32.tool.compiler.Id.408650018" name="Compiler" superClass="com.renesas.cdt.sh.release.win32.tool.compiler.Id">
+								<option defaultValue="true" id="com.renesas.cdt.core.Compiler.option.misc2.1845802568" name="Don't search standard system directories for header files(-nostdinc)" superClass="com.renesas.cdt.core.Compiler.option.misc2" value="false" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.renesas.cdt.sh.Release.Compiler.option.macroDefines.2125344459" name="Macro Defines" superClass="com.renesas.cdt.sh.Release.Compiler.option.macroDefines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="INIT_SECTIONS"/>
+									<listOptionValue builtIn="false" value="__BIG_ENDIAN__=1"/>
+								</option>
+								<option id="com.renesas.cdt.sh.Release.Compiler.option.cpuType.33852256" name="CPU type" superClass="com.renesas.cdt.sh.Release.Compiler.option.cpuType" value="com.renesas.cdt.sh.Release.Compiler.option.cpuType.sh2" valueType="enumerated"/>
+								<option id="com.renesas.cdt.sh.Release.Compiler.option.dataEndian.384222736" name="Endian" superClass="com.renesas.cdt.sh.Release.Compiler.option.dataEndian" value="com.renesas.cdt.sh.Release.Compiler.option.dataEndian.big" valueType="enumerated"/>
+								<option id="com.renesas.cdt.core.Compiler.option.warnStackSize.50682904" name="Warn if stack size exceeds the limit (-Wstack-usage) (H')" superClass="com.renesas.cdt.core.Compiler.option.warnStackSize" value="" valueType="string"/>
+								<option id="com.renesas.cdt.core.Compiler.option.device.501498628" name="Device" superClass="com.renesas.cdt.core.Compiler.option.device" value="SH7047" valueType="string"/>
+								<option id="com.renesas.cdt.core.Compiler.option.CPUSeries.964926600" name="Cpu Series" superClass="com.renesas.cdt.core.Compiler.option.CPUSeries" value="SH7047" valueType="string"/>
+								<option id="com.renesas.cdt.core.Compiler.option.misc28.1589736813" name="Don't keep unneeded function frame pointers(-fomit-frame-pointer)" superClass="com.renesas.cdt.core.Compiler.option.misc28" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.Compiler.option.misc25.1378826456" name="Don't put function addresses in registers(-fno-function-cse)" superClass="com.renesas.cdt.core.Compiler.option.misc25" value="false" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.Compiler.option.misc56.812570960" name="Parse the whole compilation unit before starting to produce code ( -funit-at-a-time)" superClass="com.renesas.cdt.core.Compiler.option.misc56" value="false" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.Compiler.option.misc53.227113990" name="Place each data item into its own section in the output file(-fdata-sections)" superClass="com.renesas.cdt.core.Compiler.option.misc53" value="false" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.Compiler.option.misc19.1760639098" name="Place each function into its own section in the output file(-ffunction-sections)" superClass="com.renesas.cdt.core.Compiler.option.misc19" value="false" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.Compiler.option.misc57.1714605523" name="Align branch targets to a power-of-two boundary (-falign-jumps)" superClass="com.renesas.cdt.core.Compiler.option.misc57" value="false" valueType="boolean"/>
+								<option id="com.renesas.cdt.core.Compiler.option.stackSizeInDecimal.1704007994" name="Decimal representation of '-Wsatck-usage'" superClass="com.renesas.cdt.core.Compiler.option.stackSizeInDecimal" value="" valueType="string"/>
+								<option id="com.renesas.cdt.sh.Release.Compiler.option.optimizationLevel.962737127" name="Optimization level" superClass="com.renesas.cdt.sh.Release.Compiler.option.optimizationLevel" value="com.renesas.cdt.sh.Release.Compiler.option.optimizationLevel.speedCodeSize" valueType="enumerated"/>
+								<inputType id="%Base.Compiler.C.InputType.Id.1880495161" name="C Input" superClass="%Base.Compiler.C.InputType.Id"/>
+								<inputType id="Base.Compiler.CPP.InputType.Id.1025029135" name="C++ Input" superClass="Base.Compiler.CPP.InputType.Id"/>
+							</tool>
+							<tool id="com.renesas.cdt.sh.release.win32.tool.assembler.Id.1712819691" name="Assembler" superClass="com.renesas.cdt.sh.release.win32.tool.assembler.Id">
+								<option id="com.renesas.cdt.sh.Release.Assembler.option.dataEndian.1434266784" name="Endian" superClass="com.renesas.cdt.sh.Release.Assembler.option.dataEndian" value="com.renesas.cdt.sh.Release.Assembler.option.dataEndian.big" valueType="enumerated"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.renesas.cdt.core.Assembler.option.includeFileDirectories.2127884423" name="Include file directories" superClass="com.renesas.cdt.core.Assembler.option.includeFileDirectories" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}/src&quot;"/>
+								</option>
+								<inputType id="%Base.Assembler.inputType.Id.1624422625" name="Assembler InputType" superClass="%Base.Assembler.inputType.Id"/>
+							</tool>
+							<tool id="com.renesas.cdt.sh.release.win32.tool.linker.Id.368247360" name="Linker" superClass="com.renesas.cdt.sh.release.win32.tool.linker.Id">
+								<option id="com.renesas.cdt.sh.Release.Linker.option.dataEndian.927049460" name="Endian" superClass="com.renesas.cdt.sh.Release.Linker.option.dataEndian" value="com.renesas.cdt.sh.Release.Linker.option.dataEndian.big" valueType="enumerated"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.renesas.cdt.sh.Release.Linker.option.archiveSearchDirectories.1057865098" name="Archive search directories" superClass="com.renesas.cdt.sh.Release.Linker.option.archiveSearchDirectories" valueType="stringList">
+									<listOptionValue builtIn="false" value="&quot;${CONFIGDIR}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${TCINSTALL}/lib/gcc/sh-elf/${GCC_VERSION}/m2&quot;"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.renesas.cdt.sh.Release.Linker.option.archiveLibraryFiles.1142634012" name="Archive (library) files" superClass="com.renesas.cdt.sh.Release.Linker.option.archiveLibraryFiles" valueType="stringList">
+									<listOptionValue builtIn="false" value="${BuildArtifactFileBaseName}"/>
+									<listOptionValue builtIn="false" value="gcc"/>
+									<listOptionValue builtIn="false" value="gcc-Os-4-200"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.renesas.cdt.core.Linker.option.userDefinedOptions.602664014" name="User defined options" superClass="com.renesas.cdt.core.Linker.option.userDefinedOptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-e_PowerON_Reset"/>
+								</option>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.renesas.cdt.core.Linker.option.linkOrderList.73699770" name="" superClass="com.renesas.cdt.core.Linker.option.linkOrderList" valueType="stringList">
+									<listOptionValue builtIn="false" value="&quot;.\src\hardware_setup.o&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src\interrupt_handlers.o&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src\reset_program.o&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src\vector_table.o&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\libTesting.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src\SH2Tiny_BasicSerial.o&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src\sci3.o&quot;"/>
+								</option>
+								<option command="--gc-sections" id="com.renesas.cdt.core.Linker.option.misc19.296429945" name="Enable garbage collection of unused input sections(-gc-sections)" superClass="com.renesas.cdt.core.Linker.option.misc19" value="false" valueType="boolean"/>
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="true" command="-defsym " id="com.renesas.cdt.core.Linker.option.symbolDefinesMacro.Defines.Id.2036601419" name="Symbol defines" superClass="com.renesas.cdt.core.Linker.option.symbolDefinesMacro.Defines.Id" valueType="stringList"/>
+							</tool>
+							<tool id="com.renesas.cdt.sh.release.win32.tool.objcopy.Id.1274798153" name="Objcopy" superClass="com.renesas.cdt.sh.release.win32.tool.objcopy.Id"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="Testing.com.renesas.cdt.sh.projectType.Id.1025676000" name="Executable (Renesas)" projectType="com.renesas.cdt.sh.projectType.Id"/>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/Testing"/>
+		</configuration>
+	</storageModule>
+</cproject>

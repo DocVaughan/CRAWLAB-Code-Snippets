@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.renesas.cdt.launch.debug.launchConfigurationType">
+<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Release\Testing.x"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="Testing"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="com.renesas.cdt.sh.base.release.configuration.Id.27236970"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/Testing"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+</launchConfiguration>

@@ -1,0 +1,5 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+PATH := $(PATH):C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf\bin;C:\Renesas\E2_STU~1\GNUSHV~1.01-\sh-elf\libexec\gcc\sh-elf\4.6-GNUSH_v12.01

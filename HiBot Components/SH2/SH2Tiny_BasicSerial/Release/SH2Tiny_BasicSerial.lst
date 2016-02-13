@@ -1,0 +1,262 @@
+   1              		.file	"SH2Tiny_BasicSerial.c"
+   2              		.text
+   3              		.text
+   4              	.Ltext0:
+   5              		.cfi_sections	.debug_frame
+   6              		.align 1
+   7              		.align 4
+   8              		.global	_INT_CMT_CMT1
+  10              	_INT_CMT_CMT1:
+  11              	.LFB0:
+  12              		.file 1 "../src/SH2Tiny_BasicSerial.c"
+   1:../src/SH2Tiny_BasicSerial.c **** /****************************************************************
+   2:../src/SH2Tiny_BasicSerial.c **** KPIT Cummins Infosystems Ltd, Pune, India. - 10-Mar-2003.
+   3:../src/SH2Tiny_BasicSerial.c **** 
+   4:../src/SH2Tiny_BasicSerial.c **** This program is distributed in the hope that it will be useful,
+   5:../src/SH2Tiny_BasicSerial.c **** but WITHOUT ANY WARRANTY; without even the implied warranty of
+   6:../src/SH2Tiny_BasicSerial.c **** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+   7:../src/SH2Tiny_BasicSerial.c **** 
+   8:../src/SH2Tiny_BasicSerial.c **** The automatic generation of the project from KPIT has a problem
+   9:../src/SH2Tiny_BasicSerial.c **** in the linker. After compiling you would get OUT OF MEMORY when
+  10:../src/SH2Tiny_BasicSerial.c **** downloading the firmware on the board.
+  11:../src/SH2Tiny_BasicSerial.c **** 
+  12:../src/SH2Tiny_BasicSerial.c **** Workaround:
+  13:../src/SH2Tiny_BasicSerial.c **** Select from the menu: Buil->Linker->Section
+  14:../src/SH2Tiny_BasicSerial.c **** select .data and press MODIFY
+  15:../src/SH2Tiny_BasicSerial.c **** press ADVANCED in the new window and select from map address the option Label
+  16:../src/SH2Tiny_BasicSerial.c **** press OK to all windows.
+  17:../src/SH2Tiny_BasicSerial.c **** 
+  18:../src/SH2Tiny_BasicSerial.c **** Project Description:
+  19:../src/SH2Tiny_BasicSerial.c **** Simple example of Serial Module SCI3 for HiBot SH2Tiny Controller
+  20:../src/SH2Tiny_BasicSerial.c **** What is received in input from the keyboard it will be displayed as ASCII value in output
+  21:../src/SH2Tiny_BasicSerial.c **** 
+  22:../src/SH2Tiny_BasicSerial.c **** Terminal or TeraTerm Serial configuration
+  23:../src/SH2Tiny_BasicSerial.c **** 
+  24:../src/SH2Tiny_BasicSerial.c **** Baudrate: 115200
+  25:../src/SH2Tiny_BasicSerial.c **** Data bit: 8
+  26:../src/SH2Tiny_BasicSerial.c **** Parity: no
+  27:../src/SH2Tiny_BasicSerial.c **** Stop bit: 1
+  28:../src/SH2Tiny_BasicSerial.c **** Flow control: no
+  29:../src/SH2Tiny_BasicSerial.c **** 
+  30:../src/SH2Tiny_BasicSerial.c **** 
+  31:../src/SH2Tiny_BasicSerial.c **** contact: info@hibot.co.jp
+  32:../src/SH2Tiny_BasicSerial.c **** 		 www.hibot.co.jp
+  33:../src/SH2Tiny_BasicSerial.c **** 		 ver 1.0 2009.12.29
+  34:../src/SH2Tiny_BasicSerial.c **** *****************************************************************/
+  35:../src/SH2Tiny_BasicSerial.c **** 
+  36:../src/SH2Tiny_BasicSerial.c **** #include "iodefine.h"
+  37:../src/SH2Tiny_BasicSerial.c **** #include "boot.h"
+  38:../src/SH2Tiny_BasicSerial.c **** #include <math.h>
+  39:../src/SH2Tiny_BasicSerial.c **** #include "interrupt_handlers.h"
+  40:../src/SH2Tiny_BasicSerial.c **** #include "sci3.h"
+  41:../src/SH2Tiny_BasicSerial.c **** #include <stdio.h>
+  42:../src/SH2Tiny_BasicSerial.c **** #include <stdlib.h>
+  43:../src/SH2Tiny_BasicSerial.c **** 
+  44:../src/SH2Tiny_BasicSerial.c **** //static double time = 0.0;
+  45:../src/SH2Tiny_BasicSerial.c **** //static double time_old = 0.0;
+  46:../src/SH2Tiny_BasicSerial.c **** unsigned char str[11];
+  47:../src/SH2Tiny_BasicSerial.c **** unsigned char order[4][4];
+  48:../src/SH2Tiny_BasicSerial.c **** unsigned char data='0';
+  49:../src/SH2Tiny_BasicSerial.c **** 
+  50:../src/SH2Tiny_BasicSerial.c **** void INT_CMT_CMT1(void)
+  51:../src/SH2Tiny_BasicSerial.c **** {
+  13              		.loc 1 51 0
+  14              		.cfi_startproc
+  15 0000 2F06     		mov.l	r0,@-r15
+  16              	.LCFI0:
+  17              		.cfi_def_cfa_offset 4
+  18              		.cfi_offset 0, -4
+  19 0002 2F16     		mov.l	r1,@-r15
+  20              	.LCFI1:
+  21              		.cfi_def_cfa_offset 8
+  22              		.cfi_offset 1, -8
+  52:../src/SH2Tiny_BasicSerial.c **** 
+  53:../src/SH2Tiny_BasicSerial.c **** 	CMT1.CMCSR.BIT.CMF = 0;
+  23              		.loc 1 53 0
+  24 0004 9106     		mov.w	.L2,r1
+  25 0006 6010     		mov.b	@r1,r0
+  26 0008 C97F     		and	#127,r0
+  27 000a 2100     		mov.b	r0,@r1
+  54:../src/SH2Tiny_BasicSerial.c **** }
+  28              		.loc 1 54 0
+  29 000c 61F6     		mov.l   @r15+,r1
+  30 000e 60F6     		mov.l   @r15+,r0
+  31 0010 002B     		rte	
+  32 0012 0009     		nop
+  33              		.align 1
+  34              	.L2:
+  35 0014 83D9     		.short	-31783
+  36              		.cfi_endproc
+  37              	.LFE0:
+  39              		.section	.rodata.str1.4,"aMS",@progbits,1
+  40              		.align 2
+  41              	.LC0:
+  42 0000 43524157 		.string	"CRAWLAB data: %3d\r\n"
+  42      4C414220 
+  42      64617461 
+  42      3A202533 
+  42      640D0A00 
+  43              		.section	.text.startup,"ax",@progbits
+  44              		.align 1
+  45              		.align 4
+  46              		.global	_main
+  48              	_main:
+  49              	.LFB1:
+  55:../src/SH2Tiny_BasicSerial.c **** 
+  56:../src/SH2Tiny_BasicSerial.c **** 
+  57:../src/SH2Tiny_BasicSerial.c **** 
+  58:../src/SH2Tiny_BasicSerial.c **** int main(void)
+  59:../src/SH2Tiny_BasicSerial.c **** {
+  50              		.loc 1 59 0
+  51              		.cfi_startproc
+  52              	.LVL0:
+  53 0000 2F86     		mov.l	r8,@-r15
+  54              	.LCFI2:
+  55              		.cfi_def_cfa_offset 4
+  56              		.cfi_offset 8, -4
+  60:../src/SH2Tiny_BasicSerial.c ****     // TODO: add application code here
+  61:../src/SH2Tiny_BasicSerial.c **** 
+  62:../src/SH2Tiny_BasicSerial.c **** 
+  63:../src/SH2Tiny_BasicSerial.c **** 	//Initialization of the Timer CMT1
+  64:../src/SH2Tiny_BasicSerial.c **** 	//refer to the SH2 hardware manual for a detailed explanation
+  65:../src/SH2Tiny_BasicSerial.c **** 	//on the register settings on Section Compare Match Timer (CMT)
+  66:../src/SH2Tiny_BasicSerial.c **** 	unsigned int PeriodCNT =(samplingTime*(peripheralClock/8.0+0.5))-1;
+  67:../src/SH2Tiny_BasicSerial.c **** 	CMT.CMSTR.BIT.STR1 = 0;	 		//Stop the count operation
+  57              		.loc 1 67 0
+  58 0002 E1FD     		mov	#-3,r1
+  59:../src/SH2Tiny_BasicSerial.c **** {
+  59              		.loc 1 59 0
+  60 0004 2F96     		mov.l	r9,@-r15
+  61              	.LCFI3:
+  62              		.cfi_def_cfa_offset 8
+  63              		.cfi_offset 9, -8
+  64 0006 2FA6     		mov.l	r10,@-r15
+  65              	.LCFI4:
+  66              		.cfi_def_cfa_offset 12
+  67              		.cfi_offset 10, -12
+  68              		.loc 1 67 0
+  69 0008 922D     		mov.w	.L6,r2
+  59:../src/SH2Tiny_BasicSerial.c **** {
+  70              		.loc 1 59 0
+  71 000a 4F22     		sts.l	pr,@-r15
+  72              	.LCFI5:
+  73              		.cfi_def_cfa_offset 16
+  74              		.cfi_offset 17, -16
+  75              		.loc 1 67 0
+  76 000c 6320     		mov.b	@r2,r3
+  77 000e 2139     		and	r3,r1
+  78 0010 2210     		mov.b	r1,@r2
+  68:../src/SH2Tiny_BasicSerial.c **** 	CMT1.CMCSR.BIT.CMIE = 1; 		//Enable interrupts
+  69:../src/SH2Tiny_BasicSerial.c **** 	CMT1.CMCSR.BIT.CKS = 0;  		//Select the peripheral clock
+  79              		.loc 1 69 0
+  80 0012 E3FC     		mov	#-4,r3
+  68:../src/SH2Tiny_BasicSerial.c **** 	CMT1.CMCSR.BIT.CMIE = 1; 		//Enable interrupts
+  81              		.loc 1 68 0
+  82 0014 9128     		mov.w	.L7,r1
+  83 0016 DA16     		mov.l	.L8,r10
+  84 0018 6010     		mov.b	@r1,r0
+  85 001a CB40     		or	#64,r0
+  86 001c 2100     		mov.b	r0,@r1
+  87              		.loc 1 69 0
+  88 001e 6710     		mov.b	@r1,r7
+  89 0020 2379     		and	r7,r3
+  90 0022 2130     		mov.b	r3,@r1
+  70:../src/SH2Tiny_BasicSerial.c **** 	CMT1.CMCNT		= 0;			//Reset the counter
+  91              		.loc 1 70 0
+  92 0024 E700     		mov	#0,r7
+  93 0026 9320     		mov.w	.L9,r3
+  94 0028 D912     		mov.l	.L10,r9
+  95 002a 2371     		mov.w	r7,@r3
+  71:../src/SH2Tiny_BasicSerial.c **** 	CMT1.CMCOR		= PeriodCNT;	//Set the constant register for matching
+  96              		.loc 1 71 0
+  97 002c 7302     		add	#2,r3
+  98 002e 971D     		mov.w	.L11,r7
+  99 0030 2371     		mov.w	r7,@r3
+  72:../src/SH2Tiny_BasicSerial.c **** 	CMT1.CMCSR.BIT.CMF &= 0;		//set to zero to set a "NOT MATCHED CONDITION"
+ 100              		.loc 1 72 0
+ 101 0032 6310     		mov.b	@r1,r3
+ 102 0034 6010     		mov.b	@r1,r0
+ 103 0036 C97F     		and	#127,r0
+ 104 0038 2100     		mov.b	r0,@r1
+  73:../src/SH2Tiny_BasicSerial.c **** 	INTC.IPRG.WORD	|= 0x0007;		//Interrupt priority
+ 105              		.loc 1 73 0
+ 106 003a 9118     		mov.w	.L12,r1
+ 107 003c D80E     		mov.l	.L13,r8
+ 108 003e 6011     		mov.w	@r1,r0
+ 109 0040 600D     		extu.w	r0,r0
+ 110 0042 CB07     		or	#7,r0
+ 111 0044 2101     		mov.w	r0,@r1
+  74:../src/SH2Tiny_BasicSerial.c **** 	CMT.CMSTR.BIT.STR1 = 1;			//Start the count operation
+  75:../src/SH2Tiny_BasicSerial.c **** 
+  76:../src/SH2Tiny_BasicSerial.c **** 	//initialize the SERIAL PORT SCI3
+  77:../src/SH2Tiny_BasicSerial.c **** 	init_sci3();
+ 112              		.loc 1 77 0
+ 113 0046 D10D     		mov.l	.L14,r1
+  74:../src/SH2Tiny_BasicSerial.c **** 	CMT.CMSTR.BIT.STR1 = 1;			//Start the count operation
+ 114              		.loc 1 74 0
+ 115 0048 6020     		mov.b	@r2,r0
+ 116 004a CB02     		or	#2,r0
+ 117 004c 2200     		mov.b	r0,@r2
+ 118              		.loc 1 77 0
+ 119 004e 410B     		jsr	@r1
+ 120 0050 0009     		nop
+ 121              	.LBB2:
+  78:../src/SH2Tiny_BasicSerial.c **** 
+  79:../src/SH2Tiny_BasicSerial.c ****     while (1) {
+  80:../src/SH2Tiny_BasicSerial.c **** 				sprintf(str, "CRAWLAB data: %3d\r\n",data);
+ 122              		.loc 1 80 0 discriminator 1
+ 123 0052 66A0     		mov.b	@r10,r6
+ 124              	.L19:
+ 125 0054 D50A     		mov.l	.L15,r5
+ 126 0056 D40B     		mov.l	.L17,r4
+ 127 0058 490B     		jsr	@r9
+ 128 005a 666C     		extu.b	r6,r6
+  81:../src/SH2Tiny_BasicSerial.c **** 				myputs_sci3(str);
+ 129              		.loc 1 81 0 discriminator 1
+ 130 005c D409     		mov.l	.L17,r4
+ 131 005e 480B     		jsr	@r8
+ 132 0060 0009     		nop
+  80:../src/SH2Tiny_BasicSerial.c **** 				sprintf(str, "CRAWLAB data: %3d\r\n",data);
+ 133              		.loc 1 80 0 discriminator 1
+ 134 0062 AFF7     		bra	.L19
+ 135 0064 66A0     		mov.b	@r10,r6
+ 136              		.align 1
+ 137              	.L6:
+ 138 0066 83D1     		.short	-31791
+ 139              	.L7:
+ 140 0068 83D9     		.short	-31783
+ 141              	.L9:
+ 142 006a 83DA     		.short	-31782
+ 143              	.L11:
+ 144 006c 0ACB     		.short	2763
+ 145              	.L12:
+ 146 006e 8354     		.short	-31916
+ 147              	.L18:
+ 148              		.align 2
+ 149              	.L8:
+ 150 0070 00000000 		.long	_data
+ 151              	.L10:
+ 152 0074 00000000 		.long	_sprintf
+ 153              	.L13:
+ 154 0078 00000000 		.long	_myputs_sci3
+ 155              	.L14:
+ 156 007c 00000000 		.long	_init_sci3
+ 157              	.L15:
+ 158 0080 00000000 		.long	.LC0
+ 159              	.L17:
+ 160 0084 00000000 		.long	_str
+ 161              	.LBE2:
+ 162              		.cfi_endproc
+ 163              	.LFE1:
+ 165              		.global	_data
+ 166 0088 00090009 		.data
+ 166      00090009 
+ 169              	_data:
+ 170 0000 30       		.byte	48
+ 171              		.comm	_order,16,1
+ 172              		.comm	_str,11,4
+ 173              		.text
+ 174              	.Letext0:
+ 175              		.file 2 "../src/iodefine.h"
+ 176              		.file 3 "../src/boot.h"
+ 177              		.file 4 "../src/sci3.h"

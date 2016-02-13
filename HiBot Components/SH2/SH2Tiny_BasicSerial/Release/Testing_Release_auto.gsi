@@ -1,0 +1,82 @@
+SECTIONS
+{
+	.vects 0x0 : AT (0x0)
+	{
+		KEEP(*(.vects))
+	}
+	.text 0x1000 : AT (0x1000)
+	{
+		*(.text)
+		*(.text.*)
+		etext = .;
+	}
+	.init : 
+	{
+		*(.init)
+	}
+	.fini : 
+	{
+		*(.fini)
+	}
+	.got : 
+	{
+		*(.got)
+		*(.got.plt)
+	}
+	.rodata : 
+	{
+		*(.rodata)
+		*(.rodata.*)
+		_erodata = .;
+	}
+	.eh_frame_hdr : 
+	{
+		*(.eh_frame_hdr)
+	}
+	.eh_frame : 
+	{
+		*(.eh_frame)
+	}
+	.jcr : 
+	{
+		*(.jcr)
+	}
+	.tors : 
+	{
+		__CTOR_LIST__ = .;
+		___ctors = .;
+		*(.ctors)
+		___ctors_end = .;
+		__CTOR_END__ = .;
+		__DTOR_LIST__ = .;
+		___dtors = .;
+		*(.dtors)
+		___dtors_end = .;
+		__DTOR_END__ = .;
+		_mdata = .;
+	}
+	.data 0xFFFFD000 : AT (_mdata)
+	{
+		_data = .;
+		*(.data)
+		*(.data.*)
+		_edata = .;
+	}
+	.gcc_exc : 
+	{
+		*(.gcc_exc)
+	}
+	.bss : 
+	{
+		_bss = .;
+		*(.bss)
+		*(.bss.*)
+		*(COMMON)
+		_ebss = .;
+		_end = .;
+	}
+	.stack 0xFFFFFFF0 : AT (0xFFFFFFF0)
+	{
+		_stack = .;
+	}
+}

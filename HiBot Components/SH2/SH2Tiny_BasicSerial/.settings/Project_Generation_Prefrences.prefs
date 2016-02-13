@@ -1,0 +1,22 @@
+Library\ Generator\ Command=sh-elf-libgen
+com.renesas.cdt.core.Assembler.option.includeFileDirectories="${workspace_loc\:/${ProjName}}/src";
+com.renesas.cdt.core.Compiler.option.CPUSeries=SH7047
+com.renesas.cdt.core.Compiler.option.includeFileDir=
+com.renesas.cdt.core.Compiler.option.warnStackSize=100
+com.renesas.cdt.core.LibraryGenerator.option.ctype=false
+com.renesas.cdt.core.LibraryGenerator.option.libraryType=Project-Built
+com.renesas.cdt.core.LibraryGenerator.option.math=true
+com.renesas.cdt.core.LibraryGenerator.option.selectLibrary=Newlib
+com.renesas.cdt.core.LibraryGenerator.option.stdio=true
+com.renesas.cdt.core.LibraryGenerator.option.stdlib=true
+com.renesas.cdt.core.LibraryGenerator.option.string=true
+com.renesas.cdt.core.Linker.option.userDefinedOptions=;
+com.renesas.cdt.sh.Release.Compiler.option.cpuType=SH2
+com.renesas.cdt.sh.Release.Compiler.option.dataEndian=Big
+com.renesas.cdt.sh.Release.Compiler.option.macroDefines=INIT_SECTIONS;__BIG_ENDIAN__\=1;
+com.renesas.cdt.sh.Release.Compiler.option.relax=false
+com.renesas.cdt.sh.Release.Compiler.option.renesasCallingConventions=false
+com.renesas.cdt.sh.Release.Linker.option.archiveLibraryFiles=${BuildArtifactFileBaseName};gcc;gcc-Os-4-200;
+com.renesas.cdt.sh.Release.Linker.option.archiveSearchDirectories="${CONFIGDIR}";"${TCINSTALL}/lib/gcc/sh-elf/${GCC_VERSION}/m2";
+com.renesas.cdt.sh.Release.Linker.option.archiveSearchDirectories.1057865098="${CONFIGDIR}";"${TCINSTALL}/lib/gcc/sh-elf/${GCC_VERSION}/m2";
+eclipse.preferences.version=1

@@ -1,0 +1,175 @@
+   1              		.file	"sci3.c"
+   2              		.text
+   3              		.text
+   4              	.Ltext0:
+   5              		.cfi_sections	.debug_frame
+   6              		.align 1
+   7              		.align 4
+   8              		.global	_init_sci3
+  10              	_init_sci3:
+  11              	.LFB0:
+  12              		.file 1 "../src/sci3.c"
+   1:../src/sci3.c **** #include "iodefine.h"
+   2:../src/sci3.c **** #include "sci3.h"
+   3:../src/sci3.c **** 
+   4:../src/sci3.c **** void	myputc_sci3(char c);	//自作一文字送信
+   5:../src/sci3.c **** void	myputs_sci3(char* s);	//自作文字列送信
+   6:../src/sci3.c **** 
+   7:../src/sci3.c **** void init_sci3(void)
+   8:../src/sci3.c **** {
+  13              		.loc 1 8 0
+  14              		.cfi_startproc
+   9:../src/sci3.c **** 	INTC.IPRI.WORD		|= 0x0700;	
+  15              		.loc 1 9 0
+  16 0000 9210     		mov.w	.L2,r2
+  17 0002 9310     		mov.w	.L3,r3
+  18 0004 6121     		mov.w	@r2,r1
+  19 0006 611D     		extu.w	r1,r1
+  20 0008 213B     		or	r3,r1
+  21 000a 2211     		mov.w	r1,@r2
+  10:../src/sci3.c **** 	SCI3.SCR.BYTE = 0x70;	//0111 00xx　受信割り込み，送受信を可能に
+  22              		.loc 1 10 0
+  23 000c E370     		mov	#112,r3
+  24 000e 910B     		mov.w	.L4,r1
+  25 0010 6213     		mov	r1,r2
+  26 0012 7202     		add	#2,r2
+  27 0014 2230     		mov.b	r3,@r2
+  11:../src/sci3.c **** 	SCI3.SMR.BYTE = 0x00;	// 0000 0000 調歩同期8bitノンパリティSTOP1bit
+  28              		.loc 1 11 0
+  29 0016 E200     		mov	#0,r2
+  30 0018 2120     		mov.b	r2,@r1
+  12:../src/sci3.c **** 	SCI3.BRR      = 5;		// Pφ=22MHz, bps=115200 → n=0,N=5
+  31              		.loc 1 12 0
+  32 001a 7101     		add	#1,r1
+  33 001c E205     		mov	#5,r2
+  34 001e 2120     		mov.b	r2,@r1
+  13:../src/sci3.c **** }
+  35              		.loc 1 13 0
+  36 0020 000B     		rts	
+  37 0022 0009     		nop
+  38              		.align 1
+  39              	.L2:
+  40 0024 835C     		.short	-31908
+  41              	.L3:
+  42 0026 0700     		.short	1792
+  43              	.L4:
+  44 0028 81D0     		.short	-32304
+  45              		.cfi_endproc
+  46              	.LFE0:
+  48              		.align 1
+  49 002a 00090009 		.align 4
+  49      0009
+  50              		.global	_myputc_sci3
+  52              	_myputc_sci3:
+  53              	.LFB1:
+  14:../src/sci3.c **** /************************************/
+  15:../src/sci3.c **** 
+  16:../src/sci3.c **** void	myputc_sci3(char c)
+  17:../src/sci3.c **** {
+  54              		.loc 1 17 0
+  55              		.cfi_startproc
+  56              	.LVL0:
+  18:../src/sci3.c **** 	while(!SCI3.SSR.BIT.TDRE);			//送信可能状態まで待つ．
+  57              		.loc 1 18 0
+  58 0030 970F     		mov.w	.L10,r7
+  17:../src/sci3.c **** {
+  59              		.loc 1 17 0
+  60 0032 644E     		exts.b	r4,r4
+  61              		.loc 1 18 0
+  62 0034 E380     		mov	#-128,r3
+  63 0036 0009     		.align 2
+  64              	.L6:
+  65              		.loc 1 18 0 is_stmt 0 discriminator 1
+  66 0038 6170     		mov.b	@r7,r1
+  67 003a 611C     		extu.b	r1,r1
+  68 003c 2138     		tst	r3,r1
+  69 003e 9208     		mov.w	.L10,r2
+  70 0040 89FA     		bt	.L6
+  71 0042 634C     		extu.b	r4,r3
+  19:../src/sci3.c **** 	SCI3.TDR = c;
+  72              		.loc 1 19 0 is_stmt 1
+  73 0044 9106     		mov.w	.L11,r1
+  74 0046 2130     		mov.b	r3,@r1
+  20:../src/sci3.c **** 	SCI3.SSR.BIT.TDRE = 0;				/* TDRE クリア			*/
+  75              		.loc 1 20 0
+  76 0048 6020     		mov.b	@r2,r0
+  77 004a C97F     		and	#127,r0
+  78 004c 2200     		mov.b	r0,@r2
+  21:../src/sci3.c **** 
+  22:../src/sci3.c **** }
+  79              		.loc 1 22 0
+  80 004e 000B     		rts	
+  81 0050 0009     		nop
+  82              		.align 1
+  83              	.L10:
+  84 0052 81D4     		.short	-32300
+  85              	.L11:
+  86 0054 81D3     		.short	-32301
+  87              		.cfi_endproc
+  88              	.LFE1:
+  90              		.align 1
+  91 0056 00090009 		.align 4
+  91      00090009 
+  91      0009
+  92              		.global	_myputs_sci3
+  94              	_myputs_sci3:
+  95              	.LFB2:
+  23:../src/sci3.c **** 
+  24:../src/sci3.c **** void	myputs_sci3(char* s)
+  25:../src/sci3.c **** {
+  96              		.loc 1 25 0
+  97              		.cfi_startproc
+  98              	.LVL1:
+  26:../src/sci3.c **** 	short i;
+  27:../src/sci3.c **** 
+  28:../src/sci3.c **** 	for(i=0; s[i]; i++)
+  99              		.loc 1 28 0
+ 100 0060 6740     		mov.b	@r4,r7
+ 101 0062 2778     		tst	r7,r7
+ 102 0064 8910     		bt	.L12
+ 103 0066 7401     		add	#1,r4
+  29:../src/sci3.c **** 	{
+  30:../src/sci3.c **** 		while(!SCI3.SSR.BIT.TDRE);			//送信可能状態まで待つ．
+ 104              		.loc 1 30 0
+ 105 0068 9210     		mov.w	.L19,r2
+ 106              	.LVL2:
+  31:../src/sci3.c **** 		SCI3.TDR = s[i];
+ 107              		.loc 1 31 0
+ 108 006a 9610     		mov.w	.L20,r6
+  30:../src/sci3.c **** 		while(!SCI3.SSR.BIT.TDRE);			//送信可能状態まで待つ．
+ 109              		.loc 1 30 0
+ 110 006c E380     		mov	#-128,r3
+ 111              	.LVL3:
+ 112 006e 0009     		.align 2
+ 113              	.L18:
+  30:../src/sci3.c **** 		while(!SCI3.SSR.BIT.TDRE);			//送信可能状態まで待つ．
+ 114              		.loc 1 30 0 is_stmt 0 discriminator 1
+ 115 0070 6120     		mov.b	@r2,r1
+ 116 0072 611C     		extu.b	r1,r1
+ 117 0074 2138     		tst	r3,r1
+ 118 0076 89FB     		bt	.L18
+ 119 0078 677C     		extu.b	r7,r7
+ 120              		.loc 1 31 0 is_stmt 1
+ 121 007a 2670     		mov.b	r7,@r6
+  32:../src/sci3.c **** 		SCI3.SSR.BIT.TDRE = 0;				/* TDRE クリア			*/
+ 122              		.loc 1 32 0
+ 123 007c 6020     		mov.b	@r2,r0
+ 124 007e C97F     		and	#127,r0
+ 125 0080 2200     		mov.b	r0,@r2
+  28:../src/sci3.c **** 	for(i=0; s[i]; i++)
+ 126              		.loc 1 28 0
+ 127 0082 6744     		mov.b	@r4+,r7
+ 128 0084 2778     		tst	r7,r7
+ 129 0086 8BF3     		bf	.L18
+ 130              	.L12:
+ 131 0088 000B     		rts	
+ 132 008a 0009     		nop
+ 133              		.align 1
+ 134              	.L19:
+ 135 008c 81D4     		.short	-32300
+ 136              	.L20:
+ 137 008e 81D3     		.short	-32301
+ 138              		.cfi_endproc
+ 139              	.LFE2:
+ 141              	.Letext0:
+ 142              		.file 2 "../src/iodefine.h"
