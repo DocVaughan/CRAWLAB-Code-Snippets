@@ -9,6 +9,8 @@
 #       So, it will likely be ugly on screen. The saved PDFs should look
 #       better.
 #
+# TODO: The ax2 gridlines are "above" the ax1 plots. Need to correct this.
+#
 # Created: 02/13/16
 #   - Joshua Vaughan
 #   - joshua.vaughan@louisiana.edu
@@ -35,9 +37,11 @@ plt.subplots_adjust(bottom=0.17, left=0.17, top=0.96, right=0.96)
 plt.setp(ax1.get_ymajorticklabels(),fontsize=18)
 plt.setp(ax1.get_xmajorticklabels(),fontsize=18)
 
+# Remove the top and right border, they are not needed
 ax1.spines['right'].set_color('none')
 ax1.spines['top'].set_color('none')
 
+# Define the positions of the axes tick marks
 ax1.xaxis.set_ticks_position('bottom')
 ax1.yaxis.set_ticks_position('left')
 
@@ -45,15 +49,15 @@ ax1.yaxis.set_ticks_position('left')
 # plt.xlim(0,5)
 
 # Turn on the plot grid and set appropriate linestyle and color
-ax1.grid(True,linestyle=':', color='0.75')
+ax1.grid(True, linestyle=':', color='0.75')
 ax1.set_axisbelow(True)
 
 # Define the X and Y1 axis labels
-ax1.set_xlabel('X-Label (units)', fontsize=22,weight='bold',labelpad=5)
-ax1.set_ylabel(r'$y_1$ Label (units)', fontsize=22,weight='bold',labelpad=10)
+ax1.set_xlabel('X-Label (units)', fontsize=22, weight='bold', labelpad=5)
+ax1.set_ylabel(r'$y_1$ Label (units)', fontsize=22, weight='bold', labelpad=10)
 
 # Plots gain used on input to tracking of Surge
-ax1.plot(x, y1, linewidth=2,linestyle='-',label=r'$y_1$')
+ax1.plot(x, y1, linewidth=2, linestyle='-', label=r'$y_1$', )
 
 # Manually set the y1-axes limits, if necessary
 ax1.set_ylim(-4, 4)
@@ -62,10 +66,19 @@ ax1.set_ylim(-4, 4)
 # Set up the 2nd Y-axis, using the same x-axis as the first
 ax2 = ax1.twinx()
 
+# Remove the top border, it's not needed
 ax2.spines['top'].set_color('none')
 
-plt.setp(ax2.get_ymajorticklabels(),fontsize=18)
+# Turn on the plot grid and set appropriate linestyle and color
+ax2.grid(True, linestyle=':', color='0.75')
+ax2.set_axisbelow(True) 
+
+# Change the y2 axis units font
+plt.setp(ax2.get_ymajorticklabels(), fontsize=18)
+
+# Define the Y2 axis labels
 ax2.set_ylabel(r'$y_2$ Label (units)', fontsize=22, weight='bold', labelpad=10)
+
 ax2.plot(x, y2, linewidth=2, linestyle='--', color = '#377eb8', label=r'$y_2$')
 
 # Manually set the y2-axes limits, if necessary
