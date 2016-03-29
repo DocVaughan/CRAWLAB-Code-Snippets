@@ -17,7 +17,11 @@
 #
 ###############################################################################
 
-# import numpy as np
+# import from __future__ for Python 2 people
+from __future__ import division, print_function, unicode_literals
+
+
+import numpy as np
 import serial
 import time
 
@@ -28,7 +32,7 @@ class oceanControls(object):
     def __init__(self, port, baudrate = 9600, address = 00):
         self.ser = serial.Serial(port, baudrate, 
                                  bytesize=8, parity='N', 
-                                 stopbits=1, timeout=None)
+                                 stopbits=1, timeout=0.1)
         
         self.address = address
         
@@ -126,6 +130,36 @@ class oceanControls(object):
         
         self.ser.write('@{:02d} OFF {}\r'.format(self.address, 0).encode('utf-8'))
 
+    def isDigitalInputOn(self, digital_input_number):
+        """ Method that checks the status of an individual digital input 
+        
+        Input Arugments:
+            digital_input_number = The input number to check
+        
+        Returns:
+            Boolean indicating if input is High/On (True) or Low/Ooff (False)
+        
+        Created: Joshua Vaughan - joshua.vaughan@louisiana.edu - 03/16/16
+        """
+        
+        if digital_input_number in [1, 2, 3, 4]:
+            self.ser.flushInput()
+            # May need to change to below in versions of PySerial >= 3.0
+            # self.ser.reset_input_buffer()
+        
+            self.ser.write('@{:02d} IS {:02d}\r'.format(self.address, digital_input_number).encode('utf-8'))
+        
+            # TODO: Be more elegant about this
+            status_string = self.ser.readlines()[-1]
+        
+            status = int(status_string.split()[-1])
+        
+            if status:
+                return True
+            else:
+                return False
+        else:
+            raise ValueError('Please enter a digital input number between 1 and 4.')
     
     def isRelayOn(self, relay_number):
         """ Method that checks the status of an individual relay 
@@ -140,16 +174,16 @@ class oceanControls(object):
         """
         
         if relay_number in [1, 2, 3, 4, 5, 6, 7, 8]:
-            self.ser.flushInput()
+            # self.ser.flushInput()
             # May need to change to below in versions of PySerial >= 3.0
             # self.ser.reset_input_buffer()
         
             self.ser.write('@{:02d} RS {:02d}\r'.format(self.address, relay_number).encode('utf-8'))
+            
+            # TODO: Be more elegant about this
+            status_string = self.ser.readlines()[-1]
         
-            # read 10 bytes
-            status_string = self.ser.read(10)
-        
-            status = int(chr(status_string[-1]))
+            status = int(status_string.split()[-1])
         
             if status:
                 return True
@@ -157,7 +191,6 @@ class oceanControls(object):
                 return False
         else:
             raise ValueError('Please enter a relay number between 1 and 8.')
-    
     
     def printRelayStatus(self, relay_number):
         """ Method to print the status of an individual relay 
@@ -172,23 +205,46 @@ class oceanControls(object):
         """
         
         if relay_number in [1, 2, 3, 4, 5, 6, 7, 8]:
-            if controller.isRelayOn(RELAY_NUMBER):
+            if controller.isRelayOn(relay_number):
                 print('Relay {} is on.'.format(relay_number))
             else:
                 print('Relay {} is off.'.format(relay_number))
         else:
             raise ValueError('Please enter a relay number between 1 and 8.')
+    
+    def printDigitalInputStatus(self, digital_input_number):
+        """ Method to print the status of an individual digital input 
+        
+        Input Arugments:
+            relay_number = The digital input number to check
+        
+        Returns:
+            nothing
+        
+        Created: Joshua Vaughan - joshua.vaughan@louisiana.edu - 03/16/16
+        """
+        
+        if digital_input_number in [1, 2, 3, 4]:
+            if controller.isDigitalInputOn(digital_input_number):
+                print('Input {} is High/On.'.format(digital_input_number))
+            else:
+                print('Input {} is Low/Off.'.format(digital_input_number))
+        else:
+            raise ValueError('Please enter a digital input number between 1 and 4.')
 
     
+
+
 if __name__ == '__main__':
     """ Example Use """
     
     RELAY_NUMBER = 1        # Define the relay number to use in this example
+    DIGITAL_INPUT = 1       # Define the input number to use in this example
     
     # Define an instance of the oceanControls class
     controller = oceanControls('/dev/tty.usbserial-AL01H195')
     
-    
+    # Turn on a single relay
     controller.turnRelayOn(RELAY_NUMBER)
     
     # Now, check the relay status and print it
@@ -199,25 +255,37 @@ if __name__ == '__main__':
     time.sleep(1)
     
     
+    # Turn off a single relay
     controller.turnRelayOff(RELAY_NUMBER)
+    
     # Now, check the relay status and print it
     # Here, we'll use the convenience method to print the status
     controller.printRelayStatus(RELAY_NUMBER)
-
     
     time.sleep(1)
             
-    # Turn on the relay for 2.2 seconds
-    controller.timedRelayOn(RELAY_NUMBER, 2.2)
+    # Turn on the relay for 5 seconds 
+    # NOTE: The system will not respond to other commands during this time!
+    controller.timedRelayOn(RELAY_NUMBER, 5)
     # Now, check the relay status and print it
     controller.printRelayStatus(1)
-    
-    time.sleep(3)
+    time.sleep(6)
     
     # We can also turn on and off all the relays at once
     controller.turnAllOn()
     time.sleep(1)
     controller.turnAllOff()
+    
+    # We can also check the digital inputs
+    if controller.isDigitalInputOn(1):
+        print('Input {} is High/On.'.format(DIGITAL_INPUT))
+    else:
+        print('Input {} is Low/Off.'.format(DIGITAL_INPUT))
+    time.sleep(1)
+    
+    # There is also a convenience function to print the current status of 
+    # an input
+    controller.printDigitalInputStatus(DIGITAL_INPUT)
     
     
     

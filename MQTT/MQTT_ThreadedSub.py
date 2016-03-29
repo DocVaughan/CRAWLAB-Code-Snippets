@@ -21,6 +21,9 @@
 #       - added __future__ imports
 #       - improved time formatting in status printing
 #
+#   * 03/29/16 - JEV - joshua.vaughan@louisiana.edu
+#       - Python 3 bytes to string conversion
+#
 ##########################################################################################
 
 from __future__ import print_function
@@ -54,7 +57,7 @@ def on_connect(client, userdata, flags, rc):
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     # print(msg.topic + ' Received at: ' + str(time.time()) + ' Sent at: ' + str(msg.payload) + ' Latency: {:0.4f}'.format(time.time() - float(msg.payload)))
-    print('Received Topic: ' + msg.topic + '\t Data: ' + msg.payload)
+    print('Received Topic: ' + msg.topic + '\t Data: ' + msg.payload.decode(encoding='UTF-8'))
 
 # Create the MQTT client instance
 client = mqtt.Client()

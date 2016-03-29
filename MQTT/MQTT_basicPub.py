@@ -14,9 +14,12 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   *
+#   * 03/29/16 - JEV - joshua.vaughan@louisiana.edu
+#       - from __future__ imports for Python 2 users
 #
 ##########################################################################################
+
+from __future__ import print_function
 
 import paho.mqtt.publish as publish
 import datetime

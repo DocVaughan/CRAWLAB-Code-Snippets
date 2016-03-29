@@ -17,22 +17,25 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   *
+#   * 03/29/16 - JEV - joshua.vaughan@louisiana.edu
+#       - from __future__ imports for Python 2 users
+#       - Python 3 bytes to string conversion
 #
 ##########################################################################################
+
+from __future__ import print_function
 
 import paho.mqtt.client as mqtt
 import time
 
  
-# ## Eclipse
+# Eclipse
 HOST = 'iot.eclipse.org'
 PORT = 1883
 USERNAME = None
 PASSWORD = None
 
-
-# MQTT Dashboard
+## MQTT Dashboard
 # HOST = 'broker.mqttdashboard.com'
 # PORT = 1883
 # USERNAME = None
@@ -49,7 +52,7 @@ def on_connect(client, userdata, flags, rc):
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     # print(msg.topic + ' Received at: ' + str(time.time()) + ' Sent at: ' + str(msg.payload) + ' Latency: {:0.4f}'.format(time.time() - float(msg.payload)))
-    print('Received Topic: ' + msg.topic + '\t\t Data: ' + msg.payload)
+    print('Received Topic: ' + msg.topic + '\t\t Data: ' + msg.payload.decode(encoding='UTF-8'))
 
 client = mqtt.Client()
 
