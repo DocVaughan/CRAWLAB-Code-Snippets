@@ -72,7 +72,7 @@ class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
 
 if __name__ == '__main__':
     # Port 0 means to select an arbitrary unused port
-    HOST, PORT = '192.168.0.101', 2390
+    HOST, PORT = '10.0.1.131.1.1', 2390
     
     server = ThreadedUDPServer((HOST, PORT), ThreadedUDPRequestHandler)
     ip, port = server.server_address

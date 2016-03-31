@@ -237,7 +237,7 @@ class oceanControls(object):
 if __name__ == '__main__':
     """ Example Use """
     
-    RELAY_NUMBER = 1        # Define the relay number to use in this example
+    RELAY_NUMBER = 5        # Define the relay number to use in this example
     DIGITAL_INPUT = 1       # Define the input number to use in this example
     
     # Define an instance of the oceanControls class
