@@ -22,6 +22,7 @@ def CRAWLAB_fft(data,time,plotflag):
     '''
     import numpy as np
     from scipy.fftpack import fft
+    import matplotlib.pyplot as plt
     
     # correct for any DC offset
     offset = np.mean(data) 
@@ -39,11 +40,11 @@ def CRAWLAB_fft(data,time,plotflag):
     if plotflag:
         # Plot the relationshiop
         #   Many of these setting could also be made default by the .matplotlibrc file
-        fig = figure(figsize=(6,4))
-        ax = gca()
-        subplots_adjust(bottom=0.17,left=0.17,top=0.96,right=0.96)
-        setp(ax.get_ymajorticklabels(),fontsize=18)
-        setp(ax.get_xmajorticklabels(),fontsize=18)
+        fig = plt.figure(figsize=(6,4))
+        ax = plt.gca()
+        plt.subplots_adjust(bottom=0.17,left=0.17,top=0.96,right=0.96)
+        plt.setp(ax.get_ymajorticklabels(),fontsize=18)
+        plt.setp(ax.get_xmajorticklabels(),fontsize=18)
         ax.spines['right'].set_color('none')
         ax.spines['top'].set_color('none')
         ax.xaxis.set_ticks_position('bottom')
@@ -51,14 +52,14 @@ def CRAWLAB_fft(data,time,plotflag):
         ax.grid(True,linestyle=':',color='0.75')
         ax.set_axisbelow(True)
 
-        xlabel('Frequency (Hz)',fontsize=22,labelpad=8)
-        ylabel('FFT magnitude',fontsize=22,labelpad=10)
+        plt.xlabel('Frequency (Hz)',fontsize=22,labelpad=8)
+        plt.ylabel('FFT magnitude',fontsize=22,labelpad=10)
     
-        plot(fft_freq, fft_mag, linewidth=2, linestyle='-')
+        plt.plot(fft_freq, fft_mag, linewidth=2, linestyle='-')
         
         # Adjust the page layout filling the page using the new tight_layout command
-        tight_layout(pad=0.5)
-        show()
+        plt.tight_layout(pad=0.5)
+        plt.show()
     
     # Uncomment below to find and print the frequency at which the highest peak occurs
 #     freq_index = np.argmax(2.0/n * np.abs(fft_mag[0:n/2]))

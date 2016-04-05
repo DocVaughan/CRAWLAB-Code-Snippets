@@ -30,18 +30,18 @@ import csv
 from scipy import signal
 
 
-# # Read in the text file to parse
+## Read in the text file to parse
 # root = tkinter.Tk()
 # 
-# # This line may need to be commented out in Windows
+## This line may need to be commented out in Windows
 # root.withdraw()
 # 
 # file_name = filedialog.askopenfilename()
 
 # file_name = '/Users/josh/Documents/Research/Cable Driven Systems/Cable Driven Systems - HiBot Direct/Feb 2016 Visit/Data/VibrationData 2016-02-07 at 10 47 52-email.csv'
 # file_name = '/Users/josh/Documents/Research/Cable Driven Systems/Cable Driven Systems - HiBot Direct/Feb 2016 Visit/Data/VibrationData 2016-02-07 at 10 49 23-email.csv'
-# file_name = '/Users/josh/Documents/Research/Cable Driven Systems/Cable Driven Systems - HiBot Direct/Feb 2016 Visit/Data/VibrationData 2016-02-07 at 11 45 19-email.csv'
-file_name = '/Users/josh/Documents/Research/Cable Driven Systems/Cable Driven Systems - HiBot Direct/Feb 2016 Visit/Data/VibrationData 2016-02-07 at 11 48 26-email.csv'
+file_name = '/Users/josh/Documents/Research/Cable Driven Systems/Cable Driven Systems - HiBot Direct/Feb 2016 Visit/Data/VibrationData 2016-02-07 at 11 45 19-email.csv'
+# file_name = '/Users/josh/Documents/Research/Cable Driven Systems/Cable Driven Systems - HiBot Direct/Feb 2016 Visit/Data/VibrationData 2016-02-07 at 11 48 26-email.csv'
 
 # Let's grab the metadata the beginning of the file
 with open(file_name, 'rt') as file:
@@ -119,29 +119,29 @@ ax.set_axisbelow(True)
 
 # Define the X and Y axis labels
 plt.xlabel('Time (s)', fontsize=22, weight='bold', labelpad=5)
-plt.ylabel(r'Acceleration (g)', fontsize=22, weight='bold', labelpad=10)
+plt.ylabel(r'Acceleration ($m/s^2$)', fontsize=22, weight='bold', labelpad=10)
  
-plt.plot(time_data[:,0], time_data[:,1], linewidth=2, linestyle='-', label=r'X')
-plt.plot(time_data[:,0], time_data[:,2], linewidth=2, linestyle='--', label=r'Y')
-plt.plot(time_data[:,0], time_data[:,3], linewidth=2, linestyle='-.', label=r'Z')
+# plt.plot(time_data[:,0], time_data[:,1], linewidth=2, linestyle='-.', label=r'X')
+# plt.plot(time_data[:,0], time_data[:,2], linewidth=2, linestyle='--', label=r'Y')
+plt.plot(time_data[:,0], time_data[:,3] - 1, linewidth=2, linestyle='-', label=r'Z')
 
 # uncomment below and set limits if needed
-# plt.xlim(0,5)
+plt.xlim(0,20)
 # plt.ylim(0,10)
 
 # Create the legend, then fix the fontsize
-leg = plt.legend(loc='upper right', ncol = 3, fancybox=True)
-ltext  = leg.get_texts()
-plt.setp(ltext,fontsize=18)
+# leg = plt.legend(loc='upper right', ncol = 3, fancybox=True)
+# ltext  = leg.get_texts()
+# plt.setp(ltext,fontsize=18)
 
 # Adjust the page layout filling the page using the new tight_layout command
 plt.tight_layout(pad=0.5)
 
 # save the figure as a high-res pdf in the current folder
-# plt.savefig('plot_filename.pdf')
+plt.savefig('example_accel.pdf')
 
 # show the figure
-plt.show()
+# plt.show()
 
 
 # Set the plot size - 3x2 aspect ratio is best
@@ -184,7 +184,7 @@ plt.setp(ltext,fontsize=18)
 plt.tight_layout(pad=0.5)
 
 # save the figure as a high-res pdf in the current folder
-# plt.savefig('plot_filename.pdf')
+plt.savefig('example_freq.pdf')
 
 # show the figure
 plt.show()
