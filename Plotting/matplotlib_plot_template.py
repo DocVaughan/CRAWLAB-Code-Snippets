@@ -19,7 +19,8 @@
 #
 ##################################################################################
 
-from matplotlib.pyplot import * # Import the plotting functions
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 # Make the figure pretty, then plot the results
@@ -28,7 +29,7 @@ from matplotlib.pyplot import * # Import the plotting functions
 
 # Example data so that code will show a plot... 
 # It's best to remove and fill in your own
-x1 = r_[0:5:500j]
+x1 = np.linspace(0, 5, 501)
 x2 = x1
 x3 = x1
 x4 = x1
@@ -38,16 +39,17 @@ y2 = 0.5*sin(x2)
 y3 = 0.75*sin(x3)
 y4 = 1.25*sin(x4)
 
-#-----  Copy from here down into your code, replacing items as needed ----------------
-#
-# Set the plot size - 3x2 aspect ratio is best
-fig = figure(figsize=(6,4))
-ax = gca()
-subplots_adjust(bottom=0.17,left=0.17,top=0.96,right=0.96)
 
-# Change the axis units to CMU Serif
-setp(ax.get_ymajorticklabels(),family='CMU Serif',fontsize=18)
-setp(ax.get_xmajorticklabels(),family='CMU Serif',fontsize=18)
+#-----  Copy from here down into your code, replacing items as needed ----------------
+
+# Set the plot size - 3x2 aspect ratio is best
+fig = plt.figure(figsize=(6,4))
+ax = plt.gca()
+plt.subplots_adjust(bottom=0.17, left=0.17, top=0.96, right=0.96)
+
+# Change the axis units font
+plt.setp(ax.get_ymajorticklabels(),fontsize=18)
+plt.setp(ax.get_xmajorticklabels(),fontsize=18)
 
 ax.spines['right'].set_color('none')
 ax.spines['top'].set_color('none')
@@ -56,32 +58,32 @@ ax.xaxis.set_ticks_position('bottom')
 ax.yaxis.set_ticks_position('left')
 
 # Turn on the plot grid and set appropriate linestyle and color
-ax.grid(True,linestyle=':',color='0.75')
+ax.grid(True,linestyle=':', color='0.75')
 ax.set_axisbelow(True)
 
 # Define the X and Y axis labels
-xlabel('X label (units)',family='CMU Serif',fontsize=22,weight='bold',labelpad=5)
-ylabel('Y label (units)',family='CMU Serif',fontsize=22,weight='bold',labelpad=10)
-
-plot(x1,y1,linewidth=2,label=r'Data 1')
-plot(x2,y2,linewidth=2,linestyle="--",label=r'Data 2')
-plot(x3,y3,linewidth=2,linestyle="-.",label=r'Data 3')
-plot(x4,y4,linewidth=2,linestyle=":",label=r'Data 4')
+plt.xlabel('X label (units)', fontsize=22, weight='bold', labelpad=5)
+plt.ylabel('Y label (units)', fontsize=22, weight='bold', labelpad=10)
+ 
+plt.plot(x1, y1, linewidth=2, linestyle='-', label=r'Data 1')
+plt.plot(x2, y2, linewidth=2, linestyle='--', label=r'Data 2')
+plt.plot(x3, y3, linewidth=2, linestyle='-.', label=r'Data 3')
+plt.plot(x4, y4, linewidth=2, linestyle=':', label=r'Data 4')
 
 # uncomment below and set limits if needed
-# xlim(0,5)
-# ylim(0,10)
+# plt.xlim(0,5)
+# plt.ylim(0,10)
 
 # Create the legend, then fix the fontsize
-leg = legend(loc='upper right', fancybox=True)
-ltext  = leg.get_texts() 
-setp(ltext,family='CMU Serif',fontsize=16)
+leg = plt.legend(loc='upper right', ncol = 1, fancybox=True)
+ltext  = leg.get_texts()
+plt.setp(ltext,fontsize=18)
 
 # Adjust the page layout filling the page using the new tight_layout command
-tight_layout(pad=0.5)
+plt.tight_layout(pad=0.5)
 
 # save the figure as a high-res pdf in the current folder
-savefig('plot_filename.pdf',dpi=600)
+# plt.savefig('plot_filename.pdf')
 
 # show the figure
-show()
+plt.show()
