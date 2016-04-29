@@ -34,7 +34,7 @@ float doZVShaping(float unshapedVelocity)
     #define BUFFER_LENGTH (101)
     
     // Define the buffer to fill with shaped values
-    static float shaped_output_buffer[BUFFER_LENGTH];
+    static float shaped_output_buffer[BUFFER_LENGTH] = {0};
     
     // Define the two buffer locations, the impulse1 location can also be
     // thought of as the "current" output location, the impulse2 location
