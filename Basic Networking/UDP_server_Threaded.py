@@ -72,7 +72,7 @@ class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
 
 if __name__ == '__main__':
     # Port 0 means to select an arbitrary unused port
-    HOST, PORT = '10.0.1.131.1.1', 2390
+    HOST, PORT = '192.168.0.100', 2390
     
     server = ThreadedUDPServer((HOST, PORT), ThreadedUDPRequestHandler)
     ip, port = server.server_address
@@ -91,9 +91,9 @@ if __name__ == '__main__':
     # we can now count and receive UDP packets at the same time
     try:
         if SEND_DATA:
-            UDP_TARGET_IP = "192.168.0.100"
+            UDP_TARGET_IP = '192.168.0.30'
             UDP_PORT = 2390
-            MESSAGE = "Hello from Python"
+            MESSAGE = 'Test'
         
         
             send_sock = socket.socket(socket.AF_INET,    # Internet
@@ -102,11 +102,14 @@ if __name__ == '__main__':
             send_sock.sendto(MESSAGE.encode('utf-8'), (UDP_TARGET_IP, UDP_PORT))
     
         while True:
-            print('{}\n'.format(data))
+            if SEND_DATA:
+                send_sock.sendto(MESSAGE.encode('utf-8'), (UDP_TARGET_IP, UDP_PORT))
+            
             time.sleep(1)
             
     except (KeyboardInterrupt, SystemExit): 
         print('Waiting for server to shtudown and close...')
+        server.socket.close()
         server.shutdown()
         server_thread.join(2) # Wait for the server thread to terminate
         server.server_close()

@@ -15,25 +15,34 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   *
+#   * 05/10/16 - JEV - 05/10/16
+#       - updated for Python 3
 #
 ##########################################################################################
 
 # Send UDP broadcast packets
 import socket
-import threading
 import time
 
-MYPORT = 2390
+PORT = 2390
+count = 0
 
-import sys, time
-# from socket import *
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
+s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+# s.bind(('', PORT))
+# s.setblocking(0)
 
-s = socket(AF_INET, SOCK_DGRAM)
-s.bind(('', 0))
-s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
+try:
+    while 1:
+        data = '{} \n'.format(count)
+#         s.sendto(data.encode('utf-8'), ('<broadcast>', PORT))
+        s.sendto(data.encode('utf-8'), ('255.255.255.255', PORT))
+        print('Sending: {}'.format(data))
 
-while 1:
-    data = repr(time.time()) + '\n'
-    s.sendto(data, ('<broadcast>', MYPORT))
-    time.sleep(2)
+        # Increment counter for sending
+        count = count + 1
+    
+        time.sleep(2)
+except (KeyboardInterrupt, SystemExit):
+    s.close()
