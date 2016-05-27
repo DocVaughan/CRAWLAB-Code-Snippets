@@ -45,6 +45,7 @@ Created: 01/28/16
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
+
 // Update these with values suitable for your network.
 const char* WIFI_SSID = "Doc_Vaughan";
 const char* WIFI_PASSWORD = "rougeourobots";
