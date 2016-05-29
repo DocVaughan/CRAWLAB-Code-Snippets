@@ -5,7 +5,7 @@ esp8266_UDPserver.ino
 
 Basic UDP echo server
 
-From: http://www.esp8266.com/viewtopic.php?f=29&t=2222
+Adapted rom: http://www.esp8266.com/viewtopic.php?f=29&t=2222
 
 Created: 01/27/16
    - Joshua Vaughan
@@ -13,7 +13,9 @@ Created: 01/27/16
    - http://www.ucs.louisiana.edu/~jev9637
 
  Modified:
-   *
+   * 05/29/16 - JEV - joshua.vaughan@louisiana.edu
+     - clean up of code
+     - switch of packetbuffer to char array, we'll always receive strings
 
 ---------------------------------------------------------------------------- */
 
@@ -25,12 +27,12 @@ Created: 01/27/16
 void printWifiStatus();
 
 int status = WL_IDLE_STATUS;
-const char* ssid = "Doc_Vaughan";  //  your network SSID (name)
-const char* pass = "rougeourobots";       // your network password
+const char* ssid = "Doc_Vaughan";         // Network SSID (name)
+const char* pass = "rougeourobots";       // Network password
 
 unsigned int localPort = 2390;      // local port to listen for UDP packets
 
-byte packetBuffer[512]; //buffer to hold incoming and outgoing packets
+char packetBuffer[512];             // buffer to hold incoming and outgoing packets
 
 // A UDP instance to let us send and receive packets over UDP
 WiFiUDP UDP;
@@ -78,36 +80,26 @@ void loop()
   
   if ( numBytes ) {
     Serial.print(millis() / 1000);
-    Serial.print(":Packet of ");
+    Serial.print(": Packet of ");
     Serial.print(numBytes);
     Serial.print(" bytes received from ");
     Serial.print(UDP.remoteIP());
-    Serial.print(":");
+    Serial.print(": ");
     Serial.println(UDP.remotePort());
     
     // We've received a packet, read the data from it
     int len = UDP.read(packetBuffer, numBytes); // read the packet into the buffer
     if (len > 0) packetBuffer[len-1] = 0;
-    Serial.print(packetBuffer);
+    Serial.println(packetBuffer);
 
-    // display the packet contents in HEX
-    for (int i=1; i<=numBytes; i++){
-      Serial.print(packetBuffer[i-1]);
-      
-      if (i % 32 == 0){
-        Serial.println();
-      }
-      
-      else Serial.print(' ');
-    } // end for
-
-    // send a reply to the IP address and port that sent us the packet we received
-    UDP.beginPacket(UDP.remoteIP(), 2390);//UDP.remotePort());
+    // send a reply to port 2390 at the IP address that sent us the packet we received
+    UDP.beginPacket(UDP.remoteIP(), 2390);
     UDP.write(FriendlyReply);
     UDP.endPacket();
     
-  } // end if
+  }
 }
+
 
 void printWifiStatus() {
   // print the SSID of the network you're attached to:
