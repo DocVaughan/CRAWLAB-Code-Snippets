@@ -31,7 +31,7 @@ import time
 data, x_data, y_data = None, None, None
 
 # Send some data to start communication?
-SEND_DATA = True
+SEND_DATA = False
 
 class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
     """
@@ -72,7 +72,7 @@ class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
 
 if __name__ == '__main__':
     # Port 0 means to select an arbitrary unused port
-    HOST, PORT = '192.168.0.100', 2390
+    HOST, PORT = '10.0.1.3', 2390
     
     server = ThreadedUDPServer((HOST, PORT), ThreadedUDPRequestHandler)
     ip, port = server.server_address
