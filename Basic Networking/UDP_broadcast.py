@@ -38,13 +38,14 @@ try:
     start_time = time.time()
     while True:
         dt = time.time() - start_time
-        signal = 100 * np.sin(0.5 * np.pi * dt)
+        signal = 25 * np.sin(0.5 * np.pi * dt) + 25
         
-        data = '{} \r\n'.format(int(signal))
+#         data = '{}, {}'.format(int(signal), int(signal-25))
+        data = '{}\r\n'.format(int(signal))
 #         s.sendto(data.encode('utf-8'), ('<broadcast>', PORT))
         s.sendto(data.encode('utf-8'), ('255.255.255.255', PORT))
         print('Sending: {}'.format(data))
     
-        time.sleep(0.05)
+        time.sleep(0.04)
 except (KeyboardInterrupt, SystemExit):
     s.close()
