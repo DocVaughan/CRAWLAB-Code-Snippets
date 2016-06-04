@@ -24,7 +24,8 @@ from __future__ import print_function
 
 import socket
 
-UDP_IP = '192.168.0.20'
+# UDP_IP = '192.168.4.1'
+UDP_IP = '10.0.1.17'
 UDP_PORT = 2390
 MESSAGE = 'CRAWLAB'
 

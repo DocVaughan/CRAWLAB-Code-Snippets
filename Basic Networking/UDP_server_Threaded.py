@@ -46,13 +46,13 @@ class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
         global data #x_data, y_data
         data = self.request[0].strip()
         socket = self.request[1]
-        string_to_print = "Data from {}: {}".format(self.client_address[0], data)
+        string_to_print = "Data from {}: {}".format(self.client_address, data)
         print(string_to_print)
 #         x,sep,y = data.partition(',')
 #         x_data = float(x)
 #         y_data = float(y)
         
-        #socket.sendto(string_to_send, self.client_address)
+#         socket.sendto(string_to_print.encode('utf-8'), self.client_address)
 
 # Streaming?... change above to SocketServer.StreamRequestHandler
 #     def handle(self):
@@ -72,7 +72,7 @@ class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
 
 if __name__ == '__main__':
     # Port 0 means to select an arbitrary unused port
-    HOST, PORT = '10.0.1.3', 2390
+    HOST, PORT = '0.0.0.0', 2390
     
     server = ThreadedUDPServer((HOST, PORT), ThreadedUDPRequestHandler)
     ip, port = server.server_address
@@ -91,10 +91,9 @@ if __name__ == '__main__':
     # we can now count and receive UDP packets at the same time
     try:
         if SEND_DATA:
-            UDP_TARGET_IP = '192.168.0.30'
+            UDP_TARGET_IP = '192.168.4.1'
             UDP_PORT = 2390
-            MESSAGE = 'Test'
-        
+            MESSAGE = 'From Server'
         
             send_sock = socket.socket(socket.AF_INET,    # Internet
                                       socket.SOCK_DGRAM) # UDP
@@ -105,7 +104,7 @@ if __name__ == '__main__':
             if SEND_DATA:
                 send_sock.sendto(MESSAGE.encode('utf-8'), (UDP_TARGET_IP, UDP_PORT))
             
-            time.sleep(1)
+            time.sleep(0.01)
             
     except (KeyboardInterrupt, SystemExit): 
         print('Waiting for server to shtudown and close...')
