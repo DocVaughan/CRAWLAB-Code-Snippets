@@ -29,7 +29,7 @@ pin = machine.Pin(2, machine.Pin.OUT)
 pin.high() # Turn the pin off to start
 
 WIFI_SSID = "SSID"
-WIFI_PASSWORD = "PASS"
+WIFI_PASSWORD = "PASSWORD"
 
 # Set to true to connect to the WIFI network identified by the parameters above
 # We'll leave the access point open too, for easy debugging/programming
@@ -51,12 +51,11 @@ def do_connect():
     pin.high() # Turn off the LED connected
 
 
-if CONNECT_AS_STATION:
-    do_connect()
-
-
 # Start the webREPL
 # Connect via http://micropython.org/webrepl/
 # or using the .html file from https://github.com/micropython/webrepl
 webrepl.start()
+
+if CONNECT_AS_STATION:
+    do_connect()
 
