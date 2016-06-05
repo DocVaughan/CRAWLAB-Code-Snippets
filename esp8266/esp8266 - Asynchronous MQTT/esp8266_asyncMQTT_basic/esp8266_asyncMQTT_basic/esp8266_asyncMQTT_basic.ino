@@ -30,10 +30,8 @@ Created: 06/05/16
 AsyncMqttClient mqttClient;
 
 // Update these to match desired WiFi network
-//const char* WIFI_SSID = "Doc_Vaughan";
-//const char* WIFI_PASSWORD = "rougeourobots";
-const char* WIFI_SSID = "West Ettrick";
-const char* WIFI_PASSWORD = "LeroyMoney";
+const char* WIFI_SSID = "Doc_Vaughan";
+const char* WIFI_PASSWORD = "rougeourobots";
 
 // Update these to match desired MQTT broker
 const char* MQTT_SERVER = "iot.eclipse.org";
