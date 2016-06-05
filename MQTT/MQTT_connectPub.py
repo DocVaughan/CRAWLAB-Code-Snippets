@@ -60,7 +60,8 @@ while True:
     
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 #     send_time = str(timestamp) + ' Count: ' + str(counter)
-    send_time = str(counter % 8)
+    send_time = str(counter % 49)
+    client.publish("CRAWLAB/from_python", send_time, qos=0)
     print(send_time)
-    client.publish('CRAWLAB/to_cable', send_time, qos = 0)
+        
     time.sleep(0.1)
