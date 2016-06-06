@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Pure Javascript Joystick</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="generator" content="BBEdit 11.0" />
+        <link rel="stylesheet" href="../static/css/normalize.min.css">
+        <link rel="stylesheet" href="../static/css/main.css">
+        <link rel="stylesheet" href="../static/css/JoyStick.css">
+        <link href='http://fonts.googleapis.com/css?family=Fugaz+One' rel='stylesheet' type='text/css'>        
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    </head>
+    
+    <body style="height:100%; overflow: hidden;">
+
+        <div id="tester"></div>
+        <div class="Joy-background">
+            <div id="joystick1" class="JoyStick"></div>
+        </div>
+
+        <div class = "status">
+            Connected:
+            <div class="status_light connected" style="float:right"></div>
+            <br>
+            Sending Data:
+            <div class="status_light sending" style="float:right"></div>
+        </div>
+
+        <button type="submit" class="button control" onclick="toggle_sending();" id="control" style = "left: calc( 50% - 40px ); margin: 10px auto;">Start</button>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../static/js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
+
+        <!-- Get socket.io from CDN -->
+        <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<!--         <script src="../static/js/vendor/socket.io.min.js"></script> -->
+
+        <!-- Load local scripts -->
+        <script src="../static/js/main.js"></script>
+        <script src="../static/js/JoyStick.js"></script>
+        <script src="../static/js/vendor/jquery.ui.touch-punch.min.js"></script>
+        <script src="../static/js/vendor/jquery-ui.min.js"></script>
+        <script src="../static/js/vendor/mqttws31.js"></script>
+
+    </body>
+</html>
+

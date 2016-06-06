@@ -1,10 +1,7 @@
-from gevent import monkey
-monkey.patch_all()
-
 import time
 from threading import Thread
 from flask import Flask, render_template, session, request
-from flask.ext.socketio import SocketIO, emit, join_room, leave_room, \
+from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, disconnect
 
 app = Flask(__name__)
@@ -54,7 +51,7 @@ def test_message(message):
 def test_broadcast_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     
-    print message['data']
+    print(message['data'])
     
     emit('my response',
          {'data': message['data'], 'count': session['receive_count']},
@@ -115,4 +112,4 @@ def test_disconnect():
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, host='0.0.0.0', port=5000)

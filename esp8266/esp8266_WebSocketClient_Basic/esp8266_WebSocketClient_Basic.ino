@@ -34,9 +34,9 @@ const char* WIFI_PASSWORD = "rougeourobots";
 
 
 // Update these to match the desired websocket server
-char* WEBSOCKET_HOST = "echo.websocket.org"; 
+char* WEBSOCKET_HOST = "10.0.1.3"; //"echo.websocket.org"; 
 char* WEBSOCKET_PATH = "/";
-const byte WEBSOCKET_TCPPORT = 80;
+const int WEBSOCKET_TCPPORT = 8080;
 
 
 // set true to print debug statements to serial out
@@ -46,8 +46,8 @@ const bool DEBUGGING = false;
 const byte LED = 2;
 
 // Declare TCP and websocket client objects
-WebSocketClient webSocketClient;
 WiFiClient client;
+WebSocketClient webSocketClient;
 
 // Define the time that we exit setup and start running loop() (approximately)
 float start_time;
@@ -99,27 +99,28 @@ void setup() {
   
   // Initialize the Wi-Fi network
   setup_wifi();
-
-  // Connect to the websocket server
-  if (client.connect(WEBSOCKET_HOST, WEBSOCKET_TCPPORT)) {
-    Serial.println("Connected");
-  } else {
-    Serial.println("Connection failed.");
-    while(1) {
-      // Hang on failure
+  bool not_connected_to_websocket = true;
+  
+  while (not_connected_to_websocket) {
+    // Connect to the websocket server
+    Serial.println("Atttempting to connect to websocket server.");
+    while (!client.connect(WEBSOCKET_HOST, WEBSOCKET_TCPPORT)) {
+          Serial.println("Connection failed. Attempting again in 1 second.");
+          delay(1000);
+    } 
+    Serial.println("Connected.");
+  
+    // Handshake with the server
+    webSocketClient.path = WEBSOCKET_PATH;
+    webSocketClient.host = WEBSOCKET_HOST;
+    
+    if (webSocketClient.handshake(client)) {
+      Serial.println("Handshake successful");
+      not_connected_to_websocket = true;
     }
-  }
-
-  // Handshake with the server
-  webSocketClient.path = WEBSOCKET_PATH;
-  webSocketClient.host = WEBSOCKET_HOST;
-
-  if (webSocketClient.handshake(client)) {
-    Serial.println("Handshake successful");
-  } else {
-    Serial.println("Handshake failed.");
-    while(1) {
-      // Hang on failure
+    else {
+      Serial.println("Handshake failed. Trying again in 1 second");
+      delay(1000);
     }
   }
 
@@ -144,21 +145,15 @@ void loop() {
     if (data.length() > 0) {
       Serial.print("Received data: ");
       Serial.println(data);
-      
     }
 
     // Send some data back
-    // sprintf(send_data, "{4.2f}", test_data);
     send_data = String(test_data);
     webSocketClient.sendData(send_data);
 
   } 
   else {
-
     Serial.println("Client disconnected.");
-    while (1) {
-      // Hang on disconnect.
-    }
   }
 
   // wait 10ms between loops
