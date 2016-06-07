@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 
 ##########################################################################################
-# UDP_simplest_sender.py
+# UDP_looping_sender.py
 #
-# simplest UDP sender possible - just sends one packet, then quits
+# simplest UDP sender possible
 #
 # NOTE: Any plotting is set up for output, not viewing on screen.
 #       So, it will likely be ugly on screen. The saved PDFs should look
@@ -22,18 +22,29 @@
 
 from __future__ import print_function
 
+import numpy as np
 import socket
 import time
 
-UDP_IP = '192.168.0.21'
+UDP_IP = '192.168.0.20'
 UDP_PORT = 2390
-MESSAGE = 'CRAWLAB'
 
 print("UDP target IP: {}".format(UDP_IP))
 print("UDP target port: {}".format(UDP_PORT))
-print("Message: {}".format(MESSAGE))
 
 sock = socket.socket(socket.AF_INET,    # Internet
                      socket.SOCK_DGRAM) # UDP
-                  
-sock.sendto(MESSAGE.encode('utf-8'), (UDP_IP, UDP_PORT))
+
+try:
+    start_time = time.time()
+    while True:
+        dt = time.time() - start_time
+        signal = 25 * np.sin(0.5 * np.pi * dt) + 25
+
+        data = '{}\r\n'.format(int(signal))
+        sock.sendto(data.encode('utf-8'), (UDP_IP, UDP_PORT))
+        print('Sending: {}'.format(data))
+    
+        time.sleep(0.04)
+except (KeyboardInterrupt, SystemExit):
+    sock.close()

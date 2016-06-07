@@ -31,7 +31,7 @@ import time
 data, x_data, y_data = None, None, None
 
 # Send some data to start communication?
-SEND_DATA = False
+SEND_DATA = True
 
 class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
     """
@@ -91,9 +91,9 @@ if __name__ == '__main__':
     # we can now count and receive UDP packets at the same time
     try:
         if SEND_DATA:
-            UDP_TARGET_IP = '192.168.4.1'
+            UDP_TARGET_IP = '192.168.0.20'
             UDP_PORT = 2390
-            MESSAGE = 'From Server'
+            MESSAGE = 'From Server\r\n'
         
             send_sock = socket.socket(socket.AF_INET,    # Internet
                                       socket.SOCK_DGRAM) # UDP
