@@ -48,7 +48,7 @@ logger = logging.getLogger(__name__)
     
 if __name__ == '__main__':
     # serial port will have to change based on configuration
-    PORT = '/dev/tty.usbserial-A603YH10'
+    PORT = '/dev/tty.usbserial-A6001Ko4'
     
     # define the serial communication parameters, 8 bits, no parity, 1 stop bit
     BPS = 115200
@@ -61,16 +61,25 @@ if __name__ == '__main__':
         while True:
             dt = time.time() - time_start
     
-            data = 100 * np.sin(0.5*np.pi * dt)
+            data = 100 * np.sin(0.25*np.pi * dt)
         
             data_string = '{}\r\n'.format(int(data)).encode('utf-8')
         
             ser.write(data_string)
-            print(data_string)
+            print("Sending: {}".format(data_string))
             
+            # We're assuming here that we get properly terminated lines 
+            # over the serial connection. If we are not, either because they
+            # are not properly terminated or we aren't receiving any data at
+            # all, then this call will block indefinitely.
+            line = ser.readline()
+            print(line.decode('utf-8'))
+            
+            # Run the loop roughly every 0.1s, if all data is sent and received
+            # without blocking
             time.sleep(0.1)
-            
-    
+
+
     except (KeyboardInterrupt, SystemExit):
         ser.close()
         
