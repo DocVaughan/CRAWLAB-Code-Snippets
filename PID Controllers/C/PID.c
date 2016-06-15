@@ -6,8 +6,8 @@ PID controller, ideas borrowed heavily from:
   * http://brettbeauregard.com/blog/2011/04/improving-the-beginners-pid-introduction/
   * https://github.com/br3ttb/Arduino-PID-Library/
   
-This implementation assumes that this controller is being called in an interrupt
- meaning it's running in "soft real time", or approximately constant time between
+This implementation assumes that the controller is being called in an interrupt
+ meaning it's running in "soft real time", or there's approx. constant time between
  calls. It also assumes that the sampleTime does not change during operation.
 
 Created: 06/15/16
@@ -24,15 +24,16 @@ Created: 06/15/16
 
 PID set_up_PID(double Kp, double Ki, double Kd, 
                double outMax, double OutMin, double sampleTime) {
-    /* Function fills a PID struct with the necessary parameters to implement
-       a PID controller.
+    /* Convenience function to fill a PID struct with the necessary parameters 
+       to implement a PID controller.
        
        Arguments: 
-         Kp - Proportional gain
-         Ki - Integral gain
-         Kd - Derivative gain
-         outMax - maximum output from the PID controller
-         outMin - minium output from the PID controller
+         Kp : Proportional gain
+         Ki : Integral gain
+         Kd : Derivative gain
+         outMax : maximum output from the PID controller
+         outMin : minium output from the PID controller
+         sampleTime : the sampleTime the control loop is running at
          
        Returns:
          A struct containing all the variables initialized to use the PID 
@@ -41,7 +42,7 @@ PID set_up_PID(double Kp, double Ki, double Kd,
     
     PID pid = {Kp, Kd, Ki, 0.0, 0.0, outMax, outMin, 1, sampleTime};
     
-    return PID;
+    return pid;
 }
     
 
@@ -87,7 +88,7 @@ double compute_PID(double measurement, double desired, PID *pid) {
     }
 }
     
-    
+
 void change_PID_limits(double min, double max, PID *pid) {
     /* Function to adjust the limits of the PID controller in a way that 
        results in continued smooth operation. More elegant than changing the 
