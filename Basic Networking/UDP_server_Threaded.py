@@ -31,7 +31,7 @@ import time
 data, x_data, y_data = None, None, None
 
 # Send some data to start communication?
-SEND_DATA = True
+SEND_DATA = False
 
 class ThreadedUDPRequestHandler(socketserver.BaseRequestHandler):
     """
@@ -72,7 +72,7 @@ class ThreadedUDPServer(socketserver.ThreadingMixIn, socketserver.UDPServer):
 
 if __name__ == '__main__':
     # Port 0 means to select an arbitrary unused port
-    HOST, PORT = '0.0.0.0', 2390
+    HOST, PORT = '10.0.1.6', 2390
     
     server = ThreadedUDPServer((HOST, PORT), ThreadedUDPRequestHandler)
     ip, port = server.server_address
@@ -91,9 +91,9 @@ if __name__ == '__main__':
     # we can now count and receive UDP packets at the same time
     try:
         if SEND_DATA:
-            UDP_TARGET_IP = '192.168.0.20'
+            UDP_TARGET_IP = '10.0.1.99'
             UDP_PORT = 2390
-            MESSAGE = 'From Server\r\n'
+            MESSAGE = 'Hello from the Python server'
         
             send_sock = socket.socket(socket.AF_INET,    # Internet
                                       socket.SOCK_DGRAM) # UDP
@@ -104,7 +104,7 @@ if __name__ == '__main__':
             if SEND_DATA:
                 send_sock.sendto(MESSAGE.encode('utf-8'), (UDP_TARGET_IP, UDP_PORT))
             
-            time.sleep(0.01)
+            time.sleep(0.1)
             
     except (KeyboardInterrupt, SystemExit): 
         print('Waiting for server to shtudown and close...')

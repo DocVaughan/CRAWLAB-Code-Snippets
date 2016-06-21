@@ -26,7 +26,7 @@ import numpy as np
 import socket
 import time
 
-UDP_IP = '192.168.0.20'
+UDP_IP = '10.0.1.99'
 UDP_PORT = 2390
 
 print("UDP target IP: {}".format(UDP_IP))
@@ -45,6 +45,6 @@ try:
         sock.sendto(data.encode('utf-8'), (UDP_IP, UDP_PORT))
         print('Sending: {}'.format(data))
     
-        time.sleep(0.04)
+        time.sleep(0.01)
 except (KeyboardInterrupt, SystemExit):
     sock.close()
