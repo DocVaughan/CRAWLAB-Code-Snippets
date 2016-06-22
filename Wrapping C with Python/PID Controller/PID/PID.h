@@ -10,14 +10,15 @@ Created: 06/15/16
    - http://www.ucs.louisiana.edu/~jev9637
 
  Modified:
-   *
+   * 06/21/16 - JEV - joshua.vaughan@louisiana.edu
+      - changed order of gain terms to PID
 
 ---------------------------------------------------------------------------- */
 
 typedef struct {
     double Kp;                  // Proportional Gain
+    double Ki;                  // Integral Gain
     double Kd;                  // Derivative Gain
-    double Ki;                  // Derivative Gain
     double lastMeasurement;     // Measurement input remembered from last loop
     double integralTerm;        // Running total for integral term
     double outMax;              // Maximum value of output

@@ -40,7 +40,7 @@ PID set_up_PID(double Kp, double Ki, double Kd,
          controller
     */
     
-    PID pid = {Kp, Kd, Ki, 0.0, 0.0, outMax, outMin, 1, sampleTime};
+    PID pid = {Kp, Ki, Kd, 0.0, 0.0, outMax, outMin, 1, sampleTime};
     
     return pid;
 }
@@ -81,8 +81,18 @@ double compute_PID(double measurement, double desired, PID *pid) {
             pid->integralTerm = pid->outMin;
         }
         
+        // Sum the P, I, and D terms to get the total output
         double output = kp * error + pid->integralTerm + kd * error_deriv;
-    
+
+        // Enforce the output being within the bounds specified, between outMin and outMax
+        if (output > pid->outMax) {
+            output = pid->outMax;
+        }
+        else if (output < pid->outMin ) {
+            output = pid->outMin;
+        }
+        
+        // save this measurement for use in the next time step
         pid->lastMeasurement = measurement;
         
         return output;
