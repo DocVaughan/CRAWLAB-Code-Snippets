@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html>
+<head>
+    <title>MQTT Client</title>
+    <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Sending MQTT</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="generator" content="BBEdit 11.0" />
+        <link rel="stylesheet" href="css/normalize.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/JoyStick.css">
+        <link href='http://fonts.googleapis.com/css?family=Fugaz+One' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+</head>
+
+<body>
+    <h1 style="text-align: center;">MQTT Dpad</h1>
+    
+    <div class="dpad">
+        <button type="submit" class="button left" id="left">
+            <i class="fa fa-arrow-left icon-large"></i>
+        </button>
+        
+        <button type="submit" class="button up" id="up">
+            <i class="fa fa-arrow-up icon-large"></i>
+        </button>
+        
+        <div class="middle"></div>
+        
+        <button type="submit" class="button down" id="down">
+            <i class="fa fa-arrow-down icon-large"></i>
+        </button>
+        
+        <button type="submit" class="button right" id="right">
+            <i class="fa fa-arrow-right icon-large"></i>
+        </button>
+    </div>
+        
+    <button onclick="client.connect(options);">1. Connect</button>
+    <button onclick="client.subscribe('CRAWLAB', {qos: 2}); alert('Subscribed');">2. Subscribe</button>
+    <button onclick="publish('CRAWLAB for life!','CRAWLAB',2);">3. Publish</button>
+    <button onclick="client.disconnect();">(4. Disconnect)</button>
+    <button onclick="start_sending();">Start Sending</button>
+    <div id="messages"></div>
+    
+    <!-- Try to get jquery from Google's CDN, else fallback on local version -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
+    
+    <!-- Get socket.io from CDN -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+    <script type="text/javascript" src="http://www.hivemq.com/demos/websocket-client/js/mqttws31.js"></script>
+
+    <!-- Load local scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/vendor/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/vendor/jquery-ui.min.js"></script>
+    <script src="js/vendor/mqttws31.js"></script>
+
+
+</body>
+
+</html>
