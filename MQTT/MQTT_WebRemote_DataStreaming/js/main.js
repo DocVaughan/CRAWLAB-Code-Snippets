@@ -54,7 +54,7 @@ $(document).ready(function(){
         }],
         axisX:{
             title: "Time (s)",
-            interval: 0.5,
+            interval: 1,
          },
         axisY:{
             minimum: -110,
