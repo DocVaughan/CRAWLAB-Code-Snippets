@@ -11,12 +11,9 @@ $(document).ready(function(){
     var start_Time = date.getTime();
     var time_elapsed = date.getTime() - start_Time;
     
-//     tester = $('#tester');
-//     tester.draggable();
+
 
     JoyStick('#joystick1', 120, function(magnitude, theta, ximpulse, yimpulse) {
-//         console.log(magnitude, theta, ximpulse, yimpulse);
-
         vec.x = ximpulse; // 10 * (ximpulse / 80);
         vec.y = yimpulse; // 10 * (yimpulse / 80);
         
@@ -33,6 +30,7 @@ $(document).ready(function(){
         } 
     });
 
+    // Chartjs livestreaming setup and exectution
     var x_received = 0;
     var y_received = 0;
     var dps_x = [];         // dataPoints
@@ -187,7 +185,6 @@ $(document).ready(function(){
         x_received = parseInt(received_string[0]);
         y_received = parseInt(received_string[1]);
         time_elapsed = (new Date() - start_Time) / 1000;
-        console.log(time_elapsed);
         updateChart();
         }
     };

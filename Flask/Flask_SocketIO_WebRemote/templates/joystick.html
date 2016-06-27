@@ -9,6 +9,7 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="../static/favicon.ico" type="image/x-icon" />
 
         <link rel="stylesheet" href="../static/css/normalize.min.css">
         <link rel="stylesheet" href="../static/css/main.css">
@@ -66,8 +67,10 @@
                     
                     <section>
                         <h2>Overview</h2>
-                            <p>This controller utilizes the <a href="http://mqtt.org" name="MQTT">MQTT protocol</a> to publish a comma-separated string of the x and y inputs, <span style="font-family:monospace">x,y</span>, to the <span style="font-family:monospace">CRAWLAB/test</span> topic on the MQTT broker selected in the aside. It utilizes the <a href="https://eclipse.org/paho/clients/js/" name="Paho Javascript Client">Paho Javascript Client</a>.</p>
+                        <p>This controller utilizes the websockets to publish a comma-separated string of the x and y inputs, <span style="font-family:monospace">x,y</span>, to the <span style="font-family:monospace">CRAWLAB/</span> namespace. It utilizes Flask-socketio</a>.</p>
                     </section>
+                    
+<!-- 
                     <aside>
                         <h2>Websockets</h2>
                         <p>A websocket server can be selected below. These are all free, public servers, made available for testing websocket applications.</p>
@@ -78,10 +81,14 @@
                             <option value="broker.mqtt-dashboard.com">HiveMQ</option> 
                         </select>
                     </aside>
+ -->
+                    
                     <section>
                         <h3>Details</h3>
                         <p><em>Coming soon...</em></p>
+                        <div id="chartContainer" style="height: 1px; width:1%; visibility: hidden;"></div>
                     </section>
+                    
                 </article>
 
 <!-- 
@@ -119,6 +126,6 @@
         <script src="../static/js/JoyStick.js"></script>
         <script src="../static/js/vendor/jquery.ui.touch-punch.min.js"></script>
         <script src="../static/js/vendor/jquery-ui.min.js"></script>
-        <script src="../static/js/vendor/mqttws31.js"></script>
+        <script src="../static/js/vendor/canvasjs.min.js"></script>
     </body>
 </html>

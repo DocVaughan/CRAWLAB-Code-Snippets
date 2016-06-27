@@ -9,6 +9,7 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="../static/favicon.ico" type="image/x-icon" />
 
         <link rel="stylesheet" href="../static/css/normalize.min.css">
         <link rel="stylesheet" href="../static/css/main.css">
@@ -52,16 +53,20 @@
                             Connected:
                             <div class="status_light connected" style="float:right"></div>
                             <br>
-                            Subscribed:
-                            <div class="status_light subscribed" style="float:right"></div>
-                            <br>
                             Receiving:
                             <div class="status_light receiving" style="float:right"></div>
-                            <button class="button subscribe" onclick="toggle_subscription();">Subscribe</button>
                             <button class="button receive" onclick="toggle_receiving();" id = "receive">Receive</button>
                         </div>
-                            
                     </header>
+                    
+                    <section>
+                        <h2>Data Stream</h2>
+                        <div id="chartContainer" style="height: 300px; width:100%;"></div>
+                        <br>
+                        <br>
+                    </section>
+                    
+<!-- 
                     <aside>
                         <h2>MQTT Broker</h2>
                         <p>A MQTT broker can be selected from the list below. These are all free, public brokers, made available for testing MQTT applications. The broker provided by <a href="http://iot.eclipse.org" name="Eclipse Internet of Things">Eclipse</a> is used as default.</p>
@@ -72,6 +77,7 @@
                             <option value="broker.mqtt-dashboard.com">HiveMQ</option> 
                         </select>
                     </aside>
+ -->
                     
                     <section>
                         <h2>Data Received:</h2>
@@ -118,6 +124,6 @@
         <script src="../static/js/JoyStick.js"></script>
         <script src="../static/js/vendor/jquery.ui.touch-punch.min.js"></script>
         <script src="../static/js/vendor/jquery-ui.min.js"></script>
-        <script src="../static/js/vendor/mqttws31.js"></script>
+        <script src="../static/js/vendor/canvasjs.min.js"></script>
     </body>
 </html>
