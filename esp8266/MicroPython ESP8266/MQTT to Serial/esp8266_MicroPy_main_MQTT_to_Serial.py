@@ -28,6 +28,11 @@
 from umqtt.simple import MQTTClient
 import ubinascii
 
+# The modules below should have been imported in boot.py
+# import webrepl
+# import time
+# import machine
+
 # Constants for MQTT server 
 # ## Eclipse
 HOST = 'iot.eclipse.org'

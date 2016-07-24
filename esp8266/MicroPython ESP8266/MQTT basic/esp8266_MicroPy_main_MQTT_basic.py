@@ -28,6 +28,11 @@
 from umqtt.simple import MQTTClient
 import ubinascii
 
+# The modules below should have been imported in boot.py
+# import webrepl
+# import time
+# import machine
+
 # Constants for MQTT server 
 # ## Eclipse
 HOST = 'iot.eclipse.org'
@@ -42,10 +47,14 @@ PASSWORD = None
 # PASSWORD = None
 
 CLIENT_ID = ubinascii.hexlify(machine.unique_id())
-TOPIC = b'CRAWLAB/esp8266/LED'
+SUB_TOPIC = b'CRAWLAB/esp8266/LED'          # Subscribe to this topic
+PUB_TOPIC = b'CRAWLAB/esp8266/button'       # Publish to this topic
 
 # global variable to hold the current state of the LED
 state = 0
+
+# Define a button - Many ESP8266 boards have active-low "flash" button on GPIO0
+button = machine.Pin(0, machine.Pin.IN)
 
 def subscriction_callback(topic, msg):
     global state
@@ -79,13 +88,19 @@ mqtt = MQTTClient(CLIENT_ID, HOST, port=PORT)
 # Subscribed messages will be delivered to this callback
 mqtt.set_callback(subscriction_callback)
 mqtt.connect()
-mqtt.subscribe(TOPIC)
-print('Connected to %s, subscribed to %s topic.'.format(HOST, TOPIC))
+mqtt.subscribe(SUB_TOPIC)
+print('Connected to {}, subscribed to {} topic.'.format(HOST, SUB_TOPIC))
 
 try:
-    while 1:
-        #micropython.mem_info()
-        mqtt.wait_msg()
+    while True:
+        while True:
+            mqtt.check_msg()
+            if button.value() == 0: # the button is active low
+                break # if it's pressed break out of the internal while loop
+            time.sleep_ms(20)
+        print('Button Pressed')
+        mqtt.publish(PUB_TOPIC, b'Button Pressed')
+        time.sleep_ms(200)
 finally:
     mqtt.disconnect()
 
