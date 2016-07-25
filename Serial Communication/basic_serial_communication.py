@@ -48,7 +48,7 @@ logger = logging.getLogger(__name__)
     
 if __name__ == '__main__':
     # serial port will have to change based on configuration
-    PORT = '/dev/tty.usbserial-A6001Ko4'
+    PORT = '/dev/tty.usbserial-A603YH10'
     
     # define the serial communication parameters, 8 bits, no parity, 1 stop bit
     BPS = 115200
