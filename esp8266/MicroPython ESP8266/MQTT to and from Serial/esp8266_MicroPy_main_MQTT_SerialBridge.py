@@ -99,7 +99,7 @@ try:
         mqtt.check_msg()
         
         # This attempts to read the UART until a newline character
-        # Because we specified a timeout=0, when initializing the UART. It will
+        # Because we specified a timeout=0, when initializing the UART, it will
         # not block and instead returns the characters that it can read, even
         # if a newline isn't present. This means that we need to check for a newline
         # and be smart about processing the bytes/characters that were able 
@@ -123,6 +123,11 @@ try:
                 # applications this is probably okay. If not, you need to be
                 # more careful here.
                 mqtt_message = ''
+                
+                # Note: This also means that if a command is received in two “chunks”, 
+                # with series of bytes is received without a newline, then the remainder 
+                # with a newline, it will treat the second as the entire command. This 
+                # could be remedied by simply checking for command format and/or length.
 
             elif uart_message != b'\n': 
                 # else if the byte was not a newline character, append it to the 
