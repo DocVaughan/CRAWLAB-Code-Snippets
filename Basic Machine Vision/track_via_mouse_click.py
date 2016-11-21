@@ -44,7 +44,6 @@ waiting_for_click = True
 count = 0
 
 
- 
 def click_and_crop(event, x, y, flags, param):
     # grab references to the global variables
     # TODO: Try to eliminate global variables - 11/18/16 - JEV
@@ -67,8 +66,14 @@ if WEBCAM:
     camera = cv2.VideoCapture(0)
 else: # otherwise, grab a reference to the video file
     camera = cv2.VideoCapture(FILENAME)
+    
+    # NOTE: Be careful with fps, openCV sometimes gets this one wrong.
+    # It seems to depend on the type of encoding used to generate the video.
     fps = camera.get(cv2.CAP_PROP_FPS) 
+    
     num_frames = int(camera.get(cv2.CAP_PROP_FRAME_COUNT))
+    
+    # create an array of zeros to fill with tracking data
     data = np.zeros((num_frames, 3))
 
 try:
