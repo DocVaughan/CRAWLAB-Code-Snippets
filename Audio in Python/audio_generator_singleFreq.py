@@ -48,7 +48,7 @@ import pyaudio
 import wave
 
 # Operational flags
-PLAY_SOUND = True      # set true to play any sounds generated
+PLAY_SOUND = True       # set true to play any sounds generated
 WRITE_WAV = True        # set true to save the sound to a wav file named by 
 
 # Define the desired output filename
@@ -81,20 +81,26 @@ if FREQUENCY > BITRATE:
     BITRATE = FREQUENCY + 100
 
 for sample in range(NUMBER_OF_FRAMES):
-    WAVEDATA = WAVEDATA + chr(int(np.sin(sample / ((BITRATE/FREQUENCY)/np.pi))*127 + 128))
+    WAVEDATA = WAVEDATA + chr(int(np.sin(sample / BITRATE * FREQ * 2 * np.pi)*127 + 128))
 
 for _ in range(RESTFRAMES): 
     WAVEDATA = WAVEDATA + chr(128)
 
 
 if WRITE_WAV: # Write the wave file
-    wf = wave.open(WAV_OUTPUT_FILENAME, 'wb')
+    # open the file
+    wf = wave.open(WAV_OUTPUT_FILENAME, 'wb')   
+    
+    # Set its properties
     wf.setnchannels(NUM_CHANNELS)
     wf.setsampwidth(SAMPLE_WIDTH)
     wf.setframerate(BITRATE)                    
-    wf.writeframes(WAVEDATA.encode('utf-8'))    # Actually write to file
-    wf.close()                                  # Now close the file
-
+    
+    # Actually write to file
+    wf.writeframes(WAVEDATA.encode('utf-8'))    
+    
+    # Now close the file
+    wf.close()    
 
 if PLAY_SOUND: # set up and play the sound through the speakers
     stream = p.open(format = PORT_AUDIO_FORMAT , 
