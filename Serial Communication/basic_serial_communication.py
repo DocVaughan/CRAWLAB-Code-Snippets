@@ -48,12 +48,16 @@ logger = logging.getLogger(__name__)
     
 if __name__ == '__main__':
     # serial port will have to change based on configuration
-    PORT = '/dev/tty.usbserial-A603YH10'
+    PORT = '/dev/tty.usbserial-AK05G8CY'
     
     # define the serial communication parameters, 8 bits, no parity, 1 stop bit
     BPS = 115200
     
-    ser = serial.Serial(PORT, BPS)
+    # Define a Timeout for serial communication
+    TIMEOUT = 0.01
+    
+    # Open the serial port
+    ser = serial.Serial(PORT, BPS, timeout=TIMEOUT)
     
     time_start = time.time()
 
