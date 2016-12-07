@@ -56,7 +56,7 @@ import wave
 # needed for white noise generation
 import random 
 
-# Needed for spectogram plotting
+# Needed for spectrogram plotting
 from scipy import signal
 
 # Operational flags
@@ -298,7 +298,7 @@ if CHECK_FFT:
 
     # show the figure
     plt.show()
-    
+
 if PLOT_SPECT: # Plot the spectrogram
     # see https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.spectrogram.html
     f, t, Sxx = signal.spectrogram(wave_for_plotting[:,1], BITRATE)
