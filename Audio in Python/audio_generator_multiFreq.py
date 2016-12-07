@@ -4,6 +4,12 @@
 # audio_generator_multiFreq.py
 #
 # Script to generate audio files/arrays. Can generate multiple frequencies
+# Also includes:
+#   * Options to add white noise on top of the signal
+#   * Plotting of the waveform
+#   * Checking its frequency content via FFT
+#   * Spectrogram plotting of the signal 
+#       - NOTE: this will not be that cool for constant freq signals like these
 #
 # This script is modified from:
 #  http://stackoverflow.com/questions/9770073/sound-generation-synthesis-with-python
@@ -43,14 +49,25 @@ from __future__ import (absolute_import, division,
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Imports for audio processing and writing
 import pyaudio
 import wave
+
+# needed for white noise generation
+import random 
+
+# Needed for spectogram plotting
+from scipy import signal
 
 # Operational flags
 PLAY_SOUND = False      # set True to play any sounds generated
 WRITE_WAV = True        # set True to save the sound to a wav file named by
 PLOT_WAVE = False       # set True to plot the sound wave
-CHECK_FFT = False       # set True to check the output via FFT
+CHECK_FFT = True       # set True to check the output via FFT
+PLOT_SPECT = True       # set True to plot the spectrogram of the signal
+NOISY = False            # set True to add white noise to the signal
+
+NOISE_AMP = 0.5       # amplitude of the white noise
 
 # Define the desired output filename
 WAV_OUTPUT_FILENAME = 'multi_freq_test.wav'
@@ -58,7 +75,7 @@ WAV_OUTPUT_FILENAME = 'multi_freq_test.wav'
 # Set up the audio specifications
 BITRATE = 44100         # number of frames per second/frameset
 NUM_CHANNELS = 1        # number of channels (usually 1 or 2 = mono or stereo)
-DURATION = 10           # seconds to play sound
+DURATION = 1           # seconds to play sound
 
 def CRAWLAB_fft(data,time,plotflag):
     ''' CRAWLAB_fft.py
@@ -160,13 +177,15 @@ AMP = 1/6 * np.ones((1, 6))           # The relative amplitude of the frequencie
 # AMP = np.array([1])           # The relative amplitude of the frequencies
 
 
-
 if np.max(FREQ) > BITRATE:
     BITRATE = np.max(FREQ) + 100
 
 for sample in range(NUMBER_OF_FRAMES):
     # Get the amplitude of the current sample
     current_sample = np.sum(AMP * np.sin(sample / BITRATE * FREQ * 2 * np.pi))
+    
+    if NOISY:
+        current_sample = current_sample + NOISE_AMP * random.uniform(-1, 1)
     
     # Save the current time and sample amplitude to the plotting array
     wave_for_plotting[sample,:] = [sample/BITRATE, current_sample]
@@ -195,7 +214,7 @@ if WRITE_WAV: # Write the wave file
 
 
 if PLAY_SOUND: # set up and play the sound through the speakers
-    stream = p.open(format = PORT_AUDIO_FORMAT , 
+    stream = p.open(format = PORT_AUDIO_FORMAT, 
                     channels = NUM_CHANNELS, 
                     rate = BITRATE, 
                     output = True)
@@ -270,6 +289,48 @@ if CHECK_FFT:
     # uncomment below and set limits if needed
     plt.xlim(0, 1.5 * np.max(FREQ))
     # plt.ylim(0,10)
+
+    # Adjust the page layout filling the page using the new tight_layout command
+    plt.tight_layout(pad=0.5)
+
+    # save the figure as a high-res pdf in the current folder
+    # plt.savefig('plot_filename.pdf')
+
+    # show the figure
+    plt.show()
+    
+if PLOT_SPECT: # Plot the spectrogram
+    # see https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.spectrogram.html
+    f, t, Sxx = signal.spectrogram(wave_for_plotting[:,1], BITRATE)
+    
+    # Set the plot size - 3x2 aspect ratio is best
+    fig = plt.figure(figsize=(6,4))
+    ax = plt.gca()
+    plt.subplots_adjust(bottom=0.17, left=0.17, top=0.96, right=0.96)
+
+    # Change the axis units font
+    plt.setp(ax.get_ymajorticklabels(),fontsize=18)
+    plt.setp(ax.get_xmajorticklabels(),fontsize=18)
+
+    ax.spines['right'].set_color('none')
+    ax.spines['top'].set_color('none')
+
+    ax.xaxis.set_ticks_position('bottom')
+    ax.yaxis.set_ticks_position('left')
+
+    # Turn on the plot grid and set appropriate linestyle and color
+    ax.grid(True,linestyle=':', color='0.75')
+    ax.set_axisbelow(True)
+
+    # Define the X and Y axis labels
+    plt.xlabel('Frequency (Hz)', fontsize=22, weight='bold', labelpad=5)
+    plt.ylabel('Time (s)', fontsize=22, weight='bold', labelpad=10)
+ 
+    plt.pcolormesh(t, f, Sxx)
+
+    # uncomment below and set limits if needed
+    # plt.xlim(0,5)
+    plt.ylim(0,1.5 * np.max(FREQ))
 
     # Adjust the page layout filling the page using the new tight_layout command
     plt.tight_layout(pad=0.5)
