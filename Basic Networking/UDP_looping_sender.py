@@ -26,7 +26,7 @@ import numpy as np
 import socket
 import time
 
-UDP_IP = '10.0.1.99'
+UDP_IP = '127.0.0.1'
 UDP_PORT = 2390
 
 print("UDP target IP: {}".format(UDP_IP))

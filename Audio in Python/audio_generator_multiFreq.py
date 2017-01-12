@@ -301,7 +301,7 @@ if CHECK_FFT:
 
 if PLOT_SPECT: # Plot the spectrogram
     # see https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.spectrogram.html
-    f, t, Sxx = signal.spectrogram(wave_for_plotting[:,1], BITRATE)
+    f, t, Sxx = signal.spectrogram(wave_for_plotting[:,1], BITRATE, nperseg=1024)
     
     # Set the plot size - 3x2 aspect ratio is best
     fig = plt.figure(figsize=(6,4))
