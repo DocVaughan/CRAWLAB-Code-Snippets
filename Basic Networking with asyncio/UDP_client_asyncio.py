@@ -21,7 +21,8 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   * 
+#   * 01/13/17 - JEV - joshua.vaughan@louisiana.edu
+#       - Added check for event loop to allow running repeatedly in IPython
 #
 # TODO:
 #   * 
@@ -56,13 +57,21 @@ class EchoClientProtocol:
 
 loop = asyncio.get_event_loop()
 
+# This check will allow us to run this multiple times in IPython, without 
+# getting an error about the event loop being closed
+if loop.is_closed():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop = asyncio.get_event_loop()
+
+
 message = 'Hello World!'
 
 # For more info on the create_datagram_endpoint method, see:
 #  https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.AbstractEventLoop.create_datagram_endpoint
 connect = loop.create_datagram_endpoint(
                 lambda: EchoClientProtocol(message, loop),
-                remote_addr=('127.0.0.2', 2390))
+                remote_addr=('127.0.0.1', 2390))
 
 transport, protocol = loop.run_until_complete(connect)
 

@@ -20,7 +20,8 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   * 
+#   * 01/13/17 - JEV - joshua.vaughan@louisiana.edu
+#       - Added check for event loop to allow running repeatedly in IPython
 #
 # TODO:
 #   * Do try...except blocks work in async functions? - 01/11/17
@@ -29,9 +30,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-import asyncio
 from contextlib import suppress
 import time
+
+# Import the asyncio library and uvloop, which promises to improve speed
+import asyncio
+import uvloop
+asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 LOCAL_IP, LOCAL_PORT = '127.0.0.1', 2390
 REMOTE_IP, REMOTE_PORT = '127.0.0.1', 2390
@@ -113,10 +118,10 @@ async def periodic_sender(rate, transport, address_tuple):
 
     # TODO: Do try...except blocks work in async functions? - 01/11/17 - JEV
     try:
+        # repeated calls to start the sender are checked for in this method,
+        # so that they are not damaging
+        await sender.start()
         while True:
-            # repeated calls to start the sender are checked for in this method,
-            # so that they are not damaging
-            await sender.start()
             
             # Sleep for a little while
             await asyncio.sleep(0.1)
@@ -130,6 +135,14 @@ if __name__ == "__main__":
     try:
         # Now use asyncio to manage the sending and receiving of data
         loop = asyncio.get_event_loop()
+        
+        # This check will allow us to run this multiple times in IPython, without 
+        # getting an error about the event loop being closed
+        if loop.is_closed():
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop = asyncio.get_event_loop()
+
     
         server = loop.create_datagram_endpoint(EchoServerProtocol, 
                                                local_addr=(LOCAL_IP, LOCAL_PORT))
@@ -138,16 +151,19 @@ if __name__ == "__main__":
         # forever, because the protocol never closes it
         transport, protocol = loop.run_until_complete(server)
     
-        rate = 10       # Rate at which to send data (Hz)
+        rate = 1000       # Rate at which to send data (Hz)
     
         # Now, start the sender, which also had an internal infinite loop so that 
         # it will keep sending data indefinitely
         loop.run_until_complete(periodic_sender(rate, 
                                                 transport,
                                                 (REMOTE_IP, REMOTE_PORT)))
-
+        while True:
+            print('testing')
+            asyncio.sleep(1)
+            
     except (KeyboardInterrupt, SystemExit):
-        # Let's also cancel all running tasks:
+        # Let's cancel all running tasks:
         pending = asyncio.Task.all_tasks()
         for task in pending:
             task.cancel()

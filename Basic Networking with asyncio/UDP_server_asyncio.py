@@ -18,7 +18,8 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   * 
+#   * 01/13/17 - JEV - joshua.vaughan@louisiana.edu
+#       - Added check for event loop to allow running repeatedly in IPython
 #
 # TODO:
 #   * 
@@ -45,6 +46,14 @@ class EchoServerProtocol:
 
 # Create the asyncio event loop
 loop = asyncio.get_event_loop()
+
+# This check will allow us to run this multiple times in IPython, without 
+# getting an error about the event loop being closed
+if loop.is_closed():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop = asyncio.get_event_loop()
+
 print("Starting UDP server...")
 
 # One protocol instance will be created to serve all client requests
