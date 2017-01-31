@@ -18,6 +18,8 @@
 #   * 12/4/13 - Joshua Vaughan - joshua.vaughan@louisiana.edu
 #       - Better commenting
 #       - Renaming functions to make their purpose more obvious
+#   * 01/30/17 - Joshua Vaughan - joshua.vaughan@louisiana.edu
+#       - added debugger examples, currently commented out
 #
 ##########################################################################################
 
@@ -36,6 +38,12 @@ import numpy as np
 import matplotlib.pyplot as plt 
 from scipy.integrate import odeint
 
+# from IPython.core.debugger import Tracer
+# debug_here = Tracer()
+# or
+# import ipbd  # may need to install
+# or
+# import pdb
 
 
 def eq_of_motion(w, t, p):
@@ -50,12 +58,15 @@ def eq_of_motion(w, t, p):
     x, x_dot = w
     m, k, c, L, StartTime = p
     
-#     import ipdb
 #     ipdb.set_trace()
-    
-    #or 
-    import pdb
-    pdb.set_trace()
+#
+#   or
+#   
+#    debug_here() # import of Tracer needed
+#    
+#   or 
+#
+#     pdb.set_trace()
     
     # Create sysODE = (x',y_dot')
     #  We ignore the xd_dot term, as it is only an impulse as the start of the step
@@ -88,6 +99,7 @@ def xd(t, L, StartTime):
 m = 1.0                 # mass
 k = (2*np.pi)**2        # Spring constants
 c = 0.0                 # damping coefficient
+wn = np.sqrt(k / m)     # natural frequency
 
 # Initial conditions
 x_init = 0.0
