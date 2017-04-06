@@ -30,8 +30,8 @@ import matplotlib.pyplot as plt
 
 
 def bodyFixed_to_trackSpeeds(velocity, angular_velocity, track_width,
-                             right_track_max = 100, right_track_min=-100,
-                             left_track_max = 100, left_track_min = -100):
+                             right_track_max=100, right_track_min=-100,
+                             left_track_max=100, left_track_min=-100):
     """ 
     Function maps speeds issued in the body-fixed system frame to the
     necessary skid-steering track velocities.
