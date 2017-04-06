@@ -62,11 +62,11 @@ def bodyFixed_to_trackSpeeds(velocity, angular_velocity, track_width,
         right_track_speed = right_track_min
     
     if left_track_speed > left_track_max:
-        left_track_speed = left_track_max
         right_track_speed = right_track_speed + (left_track_max - left_track_speed)
+        left_track_speed = left_track_max
     elif left_track_speed < left_track_min:
-        left_track_speed = left_track_min
         right_track_speed = right_track_speed + (left_track_min - left_track_speed)
+        left_track_speed = left_track_min
     
     return right_track_speed, left_track_speed
 
