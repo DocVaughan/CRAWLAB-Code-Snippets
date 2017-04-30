@@ -16,9 +16,7 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   * 04/30/17 - JEV - joshua.vaughan@louisiana.edu
-#     - Added timeout on network connection
-#     - Access point still starts, can connect to the esp8266 "MicroPython-xxxx' network
+#   *
 #
 ###############################################################################
 
