@@ -81,7 +81,7 @@ double compute_PID(double measurement, double desired, PID *pid) {
             pid->integralTerm = pid->outMin;
         }
         
-        double output = kp * error + pid->integralTerm + kd * error_deriv;
+        double output = kp * error + pid->integralTerm - kd * error_deriv;
     
         pid->lastMeasurement = measurement;
         
