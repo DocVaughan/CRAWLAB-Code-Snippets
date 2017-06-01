@@ -25,3 +25,10 @@ typedef struct {
     int controlON;              // 1 if controller is active, allows us to still keep track of controller even if not acting
     double sampleTime;          // the sample time being used in the interrupt
 } PID;
+
+
+PID set_up_PID(double Kp, double Ki, double Kd, double outMax, double outMin, double sampleTime);
+
+double compute_PID(double measurement, double desired, PID *pid);
+
+void change_PID_limits(double min, double max, PID *pid);

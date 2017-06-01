@@ -85,6 +85,14 @@ double compute_PID(double measurement, double desired, PID *pid) {
     
         pid->lastMeasurement = measurement;
         
+        // Limit the output to within the bounds of the controller
+        if (output > pid->outMax) {
+            output = pid->outMax;
+        }
+        else if (output < pid->outMin) {
+            output = pid->outMin;
+        }
+        
         return output;
     }
 }
