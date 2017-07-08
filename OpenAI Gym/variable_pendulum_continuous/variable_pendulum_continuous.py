@@ -1,9 +1,10 @@
 #! /usr/bin/env python
 
 ###############################################################################
-# variable_pendulum.py
+# variable_pendulum_continuous.py
 #
 # Defines a variable-length pendulum environment for use with the openAI Gym.
+# This version has a continuous range of inputs for the cable length accel.
 #
 # NOTE: Any plotting is set up for output, not viewing on screen.
 #       So, it will likely be ugly on screen. The saved PDFs should look
@@ -31,22 +32,18 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 
-class VariablePendulumEnv(gym.Env):
+class VariablePendulumContEnv(gym.Env):
     metadata = {
         'render.modes': ['human', 'rgb_array'],
         'video.frames_per_second' : 50
     }
     
-    # actions available, hoist down, do nothing, hoist up
-    MAX_CABLE_ACCEL = 0.25
-    AVAIL_CABLE_ACCEL =  [-MAX_CABLE_ACCEL, 0, MAX_CABLE_ACCEL]  
-
     def __init__(self):
         self.gravity = 9.8          # accel. due to gravity (m/s^2)
         self.masspend = 1.0         # mass of the pendulum point mass (kg)
         self.max_cable_accel = 0.25 # maximum acceleration of cable (m/s^2)
-        self.counter = 0            # counter to trial duration
         self.tau = 0.02             # seconds between state updates
+        self.counter = 0            # counter to limit number of calls
 
         
         # Define thesholds for failing episode
@@ -55,11 +52,13 @@ class VariablePendulumEnv(gym.Env):
         self.l_min_threshold = 0.5                  # min cable length (m)
 
         # This action space is just hoist down, do nothing, hoist up
-        self.action_space = spaces.Discrete(3)
+        self.action_space = spaces.Box(low=-self.max_cable_accel,
+                                       high=self.max_cable_accel, 
+                                       shape = (1,))
         
         high_limit = np.array([2*self.theta_threshold, # max observable angle 
                                10*2*self.theta_threshold, # max observable angular vel.
-                               10,                     # max observable length
+                               5,                     # max observable length
                                2])                     # max observable cable vel
         
         low_limit = np.array([-2*self.theta_threshold, # max observable angle 
@@ -73,19 +72,16 @@ class VariablePendulumEnv(gym.Env):
         self.viewer = None
         self.state = None
 
-        self.steps_beyond_done = None
-
     def _seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
         return [seed]
 
     def _step(self, action):
-        assert self.action_space.contains(action), "%r (%s) invalid"%(action, type(action))
         self.counter = self.counter + 1
-        state = self.state
-        theta, theta_dot, l, l_dot = state
-        cable_accel = self.AVAIL_CABLE_ACCEL[action]
-                
+        theta, theta_dot, l, l_dot = self.state
+
+        cable_accel = np.clip(action, -self.max_cable_accel, self.max_cable_accel)[0]
+        
         theta_ddot = -l_dot/l * theta_dot - self.gravity/l * np.sin(theta)
         l_ddot = cable_accel
 
@@ -105,17 +101,17 @@ class VariablePendulumEnv(gym.Env):
         
         done = bool(done)
 
-#        if not done:
-#             reward = 100.0 / (theta * 180/np.pi)**2
-#             
-#             if (np.abs(theta) < 2*np.pi/180):
-#                 reward = reward * 10
-#                 if (np.abs(theta_dot) < np.pi/180):
-#                     reward = reward * 10
-#             
-#         else:
-#             reward = 0.0
-        reward = -(theta**2 + 0.1 * theta_dot**2 + 0.001 * cable_accel**2)
+        if not done:
+            reward = 1000.0 / (theta * 180/np.pi)**2
+            
+            if (np.abs(theta) < np.pi/180):
+                reward = reward * 1.2
+            
+                if (np.abs(theta_dot) < np.pi/180):
+                    reward = reward * 1.2
+                
+        else:
+            reward = 0.0
 
         return np.array(self.state), reward, done, {}
 

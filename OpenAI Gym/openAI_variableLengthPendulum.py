@@ -25,6 +25,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import gym
+import time
 import variable_pendulum
 
 env = gym.make('variable_pendulum-v0')
@@ -49,6 +50,8 @@ for i_episode in range(5):
         print("L_dot (m/s).:".ljust(j,d), '{:+8.3f}'.format(observation[3]))
         print("Reward:".ljust(j,d), '{:+8.3f}'.format(reward))
 
+        # if episode finishes before full time range, notify
         if done:
-            print("Episode finished after {} timesteps".format(t+1))
+            print("\r\nEpisode finished after {} timesteps".format(t+1))
+            time.sleep(1)
             break
