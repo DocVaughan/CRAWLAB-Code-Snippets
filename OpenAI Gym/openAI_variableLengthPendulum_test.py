@@ -7,12 +7,12 @@ from keras.layers import Dense, Activation, Flatten
 from keras.optimizers import Adam
 
 from rl.agents.dqn import DQNAgent
-from rl.policy import BoltzmannQPolicy, GreedyQPolicy, EpsGreedyQPolicy
+from rl.policy import BoltzmannQPolicy
 from rl.memory import SequentialMemory
 
 
 ENV_NAME = 'variable_pendulum-v0'
-
+FILENAME = 'dqn_variable_pendulum-v0_weights.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
@@ -38,21 +38,13 @@ print(model.summary())
 # Finally, we configure and compile our agent. You can use every built-in Keras optimizer and
 # even the metrics!
 memory = SequentialMemory(limit=50000, window_length=1)
-train_policy = BoltzmannQPolicy(tau=0.05)
-test_policy = GreedyQPolicy()
-# train_policy = EpsGreedyQPolicy()
+policy = BoltzmannQPolicy()
 dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
-               target_model_update=1e-2, policy=train_policy, test_policy=test_policy)
+               target_model_update=1e-2, policy=policy)
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
-# Okay, now it's time to learn something! We visualize the training here for show, but this
-# slows down training quite a lot. You can always safely abort the training prematurely using
-# Ctrl + C.
-repeat = 2
-dqn.fit(env, nb_steps=50000, visualize=False, action_repetition=repeat, verbose=1, nb_max_episode_steps=500)
+# Load the model weights
+dqn.load_weights(FILENAME)
 
-# After training is done, we save the final weights.
-dqn.save_weights('dqn_{}_weights.h5f'.format(ENV_NAME), overwrite=True)
-
-# Finally, evaluate our algorithm for 5 episodes.
-dqn.test(env, nb_episodes=5, action_repetition=repeat, nb_max_episode_steps=500, visualize=True)
+# Finally, evaluate our algorithm for 1 episode.
+dqn.test(env, nb_episodes=5, visualize=True, nb_max_episode_steps=500)

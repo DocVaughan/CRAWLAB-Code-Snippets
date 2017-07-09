@@ -38,7 +38,7 @@ class VariablePendulumEnv(gym.Env):
     }
     
     # actions available, hoist down, do nothing, hoist up
-    MAX_CABLE_ACCEL = 0.25
+    MAX_CABLE_ACCEL = 10.0
     AVAIL_CABLE_ACCEL =  [-MAX_CABLE_ACCEL, 0, MAX_CABLE_ACCEL]  
 
     def __init__(self):
@@ -51,29 +51,41 @@ class VariablePendulumEnv(gym.Env):
         
         # Define thesholds for failing episode
         self.theta_threshold = 45 * np.pi / 180     # +/- 45 degree limit (rad)
-        self.l_max_threshold = 3.0                  # max cable length (m)
+        self.l_max_threshold = 3.5                  # max cable length (m)
         self.l_min_threshold = 0.5                  # min cable length (m)
 
         # This action space is just hoist down, do nothing, hoist up
         self.action_space = spaces.Discrete(3)
         
-        high_limit = np.array([2*self.theta_threshold, # max observable angle 
-                               10*2*self.theta_threshold, # max observable angular vel.
-                               10,                     # max observable length
+#         high_limit = np.array([2*self.theta_threshold, # max observable angle 
+#                                10*2*self.theta_threshold, # max observable angular vel.
+#                                10,                     # max observable length
+#                                2])                     # max observable cable vel
+#         
+#         low_limit = np.array([-2*self.theta_threshold, # max observable angle 
+#                               -10*2*self.theta_threshold, # max observable angular vel.
+#                               0,                     # max observable length
+#                               -2])                     # max observable cable vel
+
+        high_limit = np.array([1.0, # max observable angle 
+                               1.0, # max observable angular vel.
+                               1.2 * np.sqrt(self.gravity/self.l_min_threshold),
+                               4,                     # max observable length
                                2])                     # max observable cable vel
         
-        low_limit = np.array([-2*self.theta_threshold, # max observable angle 
-                              -10*2*self.theta_threshold, # max observable angular vel.
+        low_limit = np.array([-1.0, # max observable angle 
+                              -1.0, # max observable angular vel.
+                              -1.2*np.sqrt(self.gravity/self.l_min_threshold),
                               0,                     # max observable length
                               -2])                     # max observable cable vel
+        
                              
         self.observation_space = spaces.Box(high_limit, low_limit)
 
         self._seed()
         self.viewer = None
         self.state = None
-
-        self.steps_beyond_done = None
+        self.cable_accel = 0
 
     def _seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
@@ -81,53 +93,61 @@ class VariablePendulumEnv(gym.Env):
 
     def _step(self, action):
         assert self.action_space.contains(action), "%r (%s) invalid"%(action, type(action))
-        self.counter = self.counter + 1
-        state = self.state
-        theta, theta_dot, l, l_dot = state
-        cable_accel = self.AVAIL_CABLE_ACCEL[action]
+
+        theta, theta_dot, l, l_dot = self.state
+        self.cable_accel = self.AVAIL_CABLE_ACCEL[action]
+        
+#         if l >= self.l_max_threshold and self.cable_accel > 0:
+#             self.cable_accel = 0
+#         elif l<=self.l_min_threshold and self.cable_accel < 0:
+#             self.cable_accel = 0
                 
         theta_ddot = -l_dot/l * theta_dot - self.gravity/l * np.sin(theta)
-        l_ddot = cable_accel
+        l_ddot = self.cable_accel
 
         theta = theta + self.tau * theta_dot
         theta_dot = theta_dot + self.tau * theta_ddot
 
         l  = l + self.tau * l_dot
         l_dot = l_dot + self.tau * l_ddot
+        
+        # Uncomment below to clip l and theta- the physics in the sim won't be right.
+        #l = np.clip(l, self.l_min_threshold, self.l_max_threshold)
+        #theta = np.clip(theta, -self.theta_threshold, self.theta_threshold)
+        
         self.state = (theta, theta_dot, l, l_dot)
         
         done =  l > self.l_max_threshold \
                 or l < self.l_min_threshold \
                 or theta < -self.theta_threshold \
                 or theta > self.theta_threshold \
-                or self.counter > 500 \
-                or (np.abs(theta) < np.pi/180 and np.abs(theta_dot) < np.pi/180)
         
         done = bool(done)
 
-#        if not done:
-#             reward = 100.0 / (theta * 180/np.pi)**2
-#             
-#             if (np.abs(theta) < 2*np.pi/180):
-#                 reward = reward * 10
-#                 if (np.abs(theta_dot) < np.pi/180):
-#                     reward = reward * 10
-#             
+#         if not done:
+#             wn = np.sqrt(self.gravity / l)
+#             reward = -(10 * theta**2 + 0.1 * theta_dot**2 + 0.001 * self.cable_accel**2)
 #         else:
-#             reward = 0.0
-        reward = -(theta**2 + 0.1 * theta_dot**2 + 0.001 * cable_accel**2)
-
-        return np.array(self.state), reward, done, {}
+#             reward = -1e6
+        
+        reward = -(10 * theta**2 + 0.1 * theta_dot**2 + 0.001 * self.cable_accel**2) - 100*done
+        
+#         return np.array(self.state), reward, done, {}
+        return self._get_obs(), reward, False, {}
+        
+    def _get_obs(self):
+        theta, theta_dot, l, l_dot = self.state
+        return np.array([np.cos(theta), np.sin(theta), theta_dot, l, l_dot])
 
     def _reset(self):
 #         self.state = self.np_random.uniform(low=-0.05, high=0.05, size=(4,))
         # TODO: 07/07/17 - Probably need more randomness in initial conditions
-        self.state = np.array([self.np_random.uniform(low=-np.pi/12, high=np.pi/12),
-                               0, #self.np_random.uniform(low=-0.5*np.pi/6, high=0.5*np.pi/6),
+        self.state = np.array([self.np_random.uniform(low=-2*np.pi/180, high=2*np.pi/180),
+                               self.np_random.uniform(low=-np.pi/6, high=np.pi/6),
                                self.np_random.uniform(low=1.5*self.l_min_threshold, high=0.5*self.l_max_threshold),
                                0])#self.np_random.uniform(low=-0.5, high=0.5)])
-        self.counter = 0
-        return np.array(self.state)
+#         return np.array(self.state)
+        return self._get_obs()
 
     def _render(self, mode='human', close=False):
         if close:
@@ -140,7 +160,9 @@ class VariablePendulumEnv(gym.Env):
         screen_height = 400
 
         world_width = 2 * self.l_max_threshold# * np.sin(self.theta_threshold)
-        scale = screen_width/world_width
+        world_height = 1.5 * self.l_max_threshold
+#         scale = screen_width/world_width  # Scale according to width
+        scale = screen_height/world_height    # Scale according to height
         cable_pin = screen_height - 10
         payload_size = 10.0
         cable_width = 2.0
@@ -154,8 +176,8 @@ class VariablePendulumEnv(gym.Env):
             self.viewer = rendering.Viewer(screen_width, screen_height)
             
             # define the cable as a polygon, so we can change its length later
-            l,r,t,b = -cable_width/2, cable_width/2, cable_width/2, -l*scale-cable_width/2
-            self.cable = rendering.FilledPolygon([(l,b), (l,t), (r,t), (r,b)])
+            lf,r,t,b = -cable_width/2, cable_width/2, cable_width/2, -l*scale-cable_width/2
+            self.cable = rendering.FilledPolygon([(lf,b), (lf,t), (r,t), (r,b)])
             self.cabletrans = rendering.Transform(translation=(screen_width/2, cable_pin))
             self.cable.add_attr(self.cabletrans)
             self.cable.set_color(0.25,0.25,0.25)    # dark gray
@@ -167,6 +189,13 @@ class VariablePendulumEnv(gym.Env):
             self.payload.add_attr(self.payloadtrans)
             self.payload.set_color(0.5,0.5,0.5)  # mid gray
             self.viewer.add_geom(self.payload)
+            
+            self.hoist = rendering.FilledPolygon([(lf,b), (lf,t), (r,t), (r,b)])
+            self.hoisttrans = rendering.Transform(translation=(screen_width - 10, screen_height/2))
+            self.hoist.add_attr(self.hoisttrans)
+            self.hoist.set_color(0.5,0.6,0.75)
+            self.viewer.add_geom(self.hoist)
+            
 
 
         if self.state is None: 
@@ -182,5 +211,8 @@ class VariablePendulumEnv(gym.Env):
         
         # change its length by scaling its length relative to its initial length
         self.cabletrans.set_scale(1, l/self.l_init)
+        
+        # change the scaling of the hoist indicator to indicate hoist action
+        self.hoisttrans.set_scale(1, np.sign(self.cable_accel))
 
         return self.viewer.render(return_rgb_array = mode=='rgb_array')
