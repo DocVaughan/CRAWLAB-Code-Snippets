@@ -41,7 +41,7 @@ class PlanarCraneEnv(gym.Env):
         'video.frames_per_second' : 50
     }
     
-    # actions available, hoist down, do nothing, hoist up
+    # actions available are accel left, do nothing, accel right
     MAX_TROLLEY_ACCEL = 1.0
     AVAIL_TROLLEY_ACCEL =  [-MAX_TROLLEY_ACCEL, 0, MAX_TROLLEY_ACCEL]  
     
@@ -51,6 +51,7 @@ class PlanarCraneEnv(gym.Env):
         self.cable_length = 2       # cable length (m)
         self.tau = 0.02             # seconds between state updates
         self.counter = 0            # running counter
+        self.time = 0.0             # running time
         
         # Define thesholds for failing episode
         self.theta_threshold = 60 * np.pi / 180     # +/- 45 degree limit (rad)
@@ -77,6 +78,7 @@ class PlanarCraneEnv(gym.Env):
         self._seed()
         self.viewer = None
         self.state = None
+        self.x_accel = 0.0
 
     def _seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
@@ -84,9 +86,13 @@ class PlanarCraneEnv(gym.Env):
 
     def _step(self, action):
         theta, theta_dot, x, x_dot = self.state
+        self.time = self.time + self.tau
         
         # Update the trolley states
-        self.x_accel = self.AVAIL_TROLLEY_ACCEL[action]
+        if self.time > 1.0:
+            self.x_accel = self.AVAIL_TROLLEY_ACCEL[action]
+        else:
+            self.x_accel = 0.0
         x  = x + self.tau * x_dot
         x_dot = x_dot + self.tau * self.x_accel       
         
@@ -97,6 +103,8 @@ class PlanarCraneEnv(gym.Env):
 
         self.state = (theta, theta_dot, x, x_dot)
         
+        # Define a boolean on whether we're exceeding limits or not. We'll just penalize
+        # any of these conditions identically in the reward function
         limits =  x > self.x_max_threshold \
                 or x < 0 \
                 or theta < -self.theta_threshold \
@@ -112,7 +120,7 @@ class PlanarCraneEnv(gym.Env):
 #         reward = 1 / distance_to_target**2 - 0.01*theta**2#- 0.1 * self.counter*self.tau
             
         if np.abs(distance_to_target) >= 0.1:
-            reward = -1.0 - 10*theta**2 - limits*10
+            reward = -1.0 - 10*theta**2 - x**2 - limits*10
         else:  
             reward = 1000.0
         
@@ -126,7 +134,7 @@ class PlanarCraneEnv(gym.Env):
     def _reset(self):
 #         self.state = self.np_random.uniform(low=-0.05, high=0.05, size=(4,))
         # TODO: 07/07/17 - Probably need more randomness in initial conditions
-        self.state = np.array([self.np_random.uniform(low=-np.pi/24, high=np.pi/24),
+        self.state = np.array([self.np_random.uniform(low=-np.pi/12, high=np.pi/12),
                                self.np_random.uniform(low=-0.5*np.pi/6, high=0.5*np.pi/6),
                                0,
                                0])#self.np_random.uniform(low=-0.5, high=0.5)])

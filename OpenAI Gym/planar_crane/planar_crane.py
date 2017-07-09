@@ -42,16 +42,15 @@ class PlanarCraneEnv(gym.Env):
     }
     
     # actions available, hoist down, do nothing, hoist up
-    MAX_TROLLEY_ACCEL = 1.0
-    AVAIL_TROLLEY_ACCEL =  [-MAX_TROLLEY_ACCEL, 0, MAX_TROLLEY_ACCEL]  
+    MAX_TROLLEY_ACCEL = 1.0 # (m/s^2)
+    AVAIL_TROLLEY_ACCEL =  [-MAX_TROLLEY_ACCEL, 0, MAX_TROLLEY_ACCEL]
     
     def __init__(self):
         self.gravity = 9.8          # accel. due to gravity (m/s^2)
         self.masspend = 1.0         # mass of the pendulum point mass (kg)
-        self.cable_length = 2       # cable length (m)
+        self.cable_length = 2.0     # cable length (m)
         self.tau = 0.02             # seconds between state updates
-        self.counter = 0            # running counter
-        self.desired_trolley = 0  # desired final position of payload, offset from starting position)
+        self.desired_trolley = 0    # desired final position of payload
         
         # Define thesholds for failing episode
         self.theta_threshold = 60 * np.pi / 180     # +/- 45 degree limit (rad)
@@ -70,20 +69,15 @@ class PlanarCraneEnv(gym.Env):
                                10*2*self.theta_threshold,   # max observable angular vel.
                                self.x_max_threshold,        # max observable position
                                self.v_max_threshold])       # max observable cable vel
-        
-#         low_limit = np.array([2*self.theta_threshold,      # max observable angle 
-#                               10*2*self.theta_threshold,   # max observable angular vel.
-#                               0,        # max observable position
-#                               self.v_max_threshold])       # max observable cable vel
 
         low_limit = -high_limit # limits are symmetric about 0
         
-                             
         self.observation_space = spaces.Box(high_limit, low_limit)
 
         self._seed()
         self.viewer = None
         self.state = None
+        self.x_accel = 0.0
 
     def _seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
@@ -94,9 +88,9 @@ class PlanarCraneEnv(gym.Env):
         
         # Update the trolley states
         self.x_accel = self.AVAIL_TROLLEY_ACCEL[action]
+        x_dot = x_dot + self.tau * self.x_accel
         x  = x + self.tau * x_dot
-        x_dot = x_dot + self.tau * self.x_accel       
-        
+
         # Update the pendulum states
         theta_ddot = -self.gravity / self.cable_length * theta + 1.0 / self.cable_length * self.x_accel
         theta_dot = theta_dot + self.tau * theta_ddot
@@ -104,6 +98,8 @@ class PlanarCraneEnv(gym.Env):
 
         self.state = (theta, theta_dot, x, x_dot)
         
+        # Define a boolean on whether we're exceeding limits or not. We'll just penalize
+        # any of these conditions identically in the reward function
         limits =  x > self.x_max_threshold \
                 or x < -self.x_max_threshold \
                 or theta < -self.theta_threshold \
@@ -111,33 +107,21 @@ class PlanarCraneEnv(gym.Env):
                 or x_dot > self.v_max_threshold \
                 or x_dot < -self.v_max_threshold \
 
-
-#         if not done:
-#             self.counter = self.counter + 1
+        # TODO: 07/09/17 - This has *huge* effect on the outcome. Decide "optimal" reward scheme.
         distance_to_target = self.desired_trolley - (x - self.cable_length * np.sin(theta))
-        #distance_to_target = self.desired_trolley - x
-#         reward = 1 / distance_to_target**2 - 0.01*theta**2#- 0.1 * self.counter*self.tau
-            
-        if np.abs(distance_to_target) >= 0.1:
-            reward = -1.0 - 10*theta**2 - limits*10
+        
+        if np.abs(distance_to_target) >= 0.05:
+            reward = -1.0 - 10*theta**2 - 0.1*self.x_accel**2 - limits*10
         else:  
             reward = 1000.0
-#         else:
-#             reward = 0
-
-        # Just penalize theta
-#         reward = -theta**2 - 0.1 * theta_dot**2
-            
-
 
         return np.array(self.state), reward, False, {}
 
     def _reset(self):
-#         self.state = self.np_random.uniform(low=-0.05, high=0.05, size=(4,))
         # TODO: 07/07/17 - Probably need more randomness in initial conditions
         self.state = np.array([0, # self.np_random.uniform(low=-np.pi/12, high=np.pi/12),
                                0, # self.np_random.uniform(low=-0.5*np.pi/6, high=0.5*np.pi/6),
-                               self.np_random.uniform(low=-2.5, high=2.5),
+                               self.np_random.uniform(low=-3.0, high=3.0),
                                0])#self.np_random.uniform(low=-0.5, high=0.5)])
         return np.array(self.state)
 
@@ -153,39 +137,41 @@ class PlanarCraneEnv(gym.Env):
 
         world_width = 1.5 * self.x_max_threshold
         scale = screen_width/world_width
-        scale = screen_width/world_width  # Scale according to width
+        scale = screen_width/world_width        # Scale according to width
         # scale = screen_height/world_height    # Scale according to height
+        
+        # Define the payload diameter and cable width in pixels
         payload_size = 10.0
         cable_width = 2.0
         
-        trolley_width = 50.0
+        # Define the trolley size and its offset from the bottom of the screen (pixels)
+        trolley_width = 50.0 
         trolley_height = 30.0
         trolley_yOffset = screen_height-25
-        
 
         theta, theta_dot, x, x_dot = self.state
 
-        if self.viewer is None:
+        if self.viewer is None: # Initial scene setup
             from gym.envs.classic_control import rendering
             self.viewer = rendering.Viewer(screen_width, screen_height)
             
-            # the target is a series of circles.
+            # the target is a series of circles, a bullseye
             self.target = rendering.make_circle(payload_size*2)
             self.targettrans = rendering.Transform(translation=(screen_width/2 + self.desired_trolley*scale, trolley_yOffset-self.cable_length*scale))
             self.target.add_attr(self.targettrans)
-            self.target.set_color(1,0,0)  # really light gray
+            self.target.set_color(1,0,0)  # red
             self.viewer.add_geom(self.target)
             
             self.target = rendering.make_circle(payload_size*1.25)
             self.targettrans = rendering.Transform(translation=(screen_width/2 + self.desired_trolley*scale, trolley_yOffset-self.cable_length*scale))
             self.target.add_attr(self.targettrans)
-            self.target.set_color(1,1,1)  # really light gray
+            self.target.set_color(1,1,1)  # white
             self.viewer.add_geom(self.target)
             
             self.target = rendering.make_circle(payload_size/2)
             self.targettrans = rendering.Transform(translation=(screen_width/2 + self.desired_trolley*scale, trolley_yOffset-self.cable_length*scale))
             self.target.add_attr(self.targettrans)
-            self.target.set_color(1,0,0)  # really light gray
+            self.target.set_color(1,0,0)  # red
             self.viewer.add_geom(self.target)
             
             # Define the trolley polygon
@@ -211,15 +197,14 @@ class PlanarCraneEnv(gym.Env):
             self.payload.set_color(0.5,0.5,0.5)  # mid gray
             self.viewer.add_geom(self.payload)
             
+            # This is a bar that shows the direction of the current accel. command
             l,r,t,b = -10.0, 10.0, cable_width/2, -cable_width/2
             self.accel = rendering.FilledPolygon([(l,b), (l,t), (r,t), (r,b)])
             self.acceltrans = rendering.Transform(translation=(screen_width/2 + x*scale-trolley_width/2, trolley_yOffset))
             self.accel.add_attr(self.acceltrans)
             self.accel.set_color(0.1, 0.1, 0.5)
             self.viewer.add_geom(self.accel)
-            
-        if self.state is None: 
-            return None
+
 
         # calculate the payload position in the window, then move it there
         payload_screen_x = (x - self.cable_length*np.sin(theta))*scale

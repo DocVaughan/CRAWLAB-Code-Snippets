@@ -1,4 +1,33 @@
+#! /usr/bin/env python
+
+###############################################################################
+# openAI_planarCrane_train.py
+#
+# File to train on the CRAWLAB custom OpenAI planar crane environment 
+#
+# Requires:
+#  * CRAWLAB planar_crane Open_AI environment folder to be in the same as this file
+#  * keras, openAI gym, keras-rl packages (all are pip or conda installable)
+#
+# NOTE: Any plotting is set up for output, not viewing on screen.
+#       So, it will likely be ugly on screen. The saved PDFs should look
+#       better.
+#
+# Created: 07/09/17
+#   - Joshua Vaughan
+#   - joshua.vaughan@louisiana.edu
+#   - http://www.ucs.louisiana.edu/~jev9637
+#
+# Modified:
+#   * 
+#
+# TODO:
+#   * 
+###############################################################################
+
 import numpy as np
+import datetime # to generate unique filenames
+
 import gym
 import planar_crane_feedback
 
@@ -10,18 +39,24 @@ from rl.agents.dqn import DQNAgent
 from rl.policy import BoltzmannQPolicy, GreedyQPolicy, EpsGreedyQPolicy
 from rl.memory import SequentialMemory
 
-
+LAYER_SIZE = 128
+NUM_STEPS = 2000000
 ENV_NAME = 'planar_crane_feedback-v0'
-
+TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
+
+# uncomment to record data about the training session, including video if visualize is true
+# MONITOR_FILENAME = 'example_data/dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
+#                                                                  LAYER_SIZE,
+#                                                                  NUM_STEPS,
+#                                                                  TRIAL_ID)
+# env = gym.wrappers.Monitor(env, MONITOR_FILENAME, force=True)
+
 np.random.seed(123)
 env.seed(123)
 nb_actions = env.action_space.n
-
-LAYER_SIZE = 128
-NUM_STEPS = 1000000
 
 # Next, we build a very simple model.
 model = Sequential()
@@ -52,7 +87,8 @@ dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 dqn.fit(env, nb_steps=NUM_STEPS, visualize=False, verbose=1, nb_max_episode_steps=500)
 
 # After training is done, we save the final weights.
-dqn.save_weights('dqn_{}_weights.h5f'.format(ENV_NAME), overwrite=True)
+filename = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
+dqn.save_weights(filename, overwrite=True)
 
 # Finally, evaluate our algorithm for 5 episodes.
 dqn.test(env, nb_episodes=5, nb_max_episode_steps=500, visualize=True)
