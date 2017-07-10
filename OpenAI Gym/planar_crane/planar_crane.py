@@ -109,12 +109,12 @@ class PlanarCraneEnv(gym.Env):
 
         # TODO: 07/09/17 - This has *huge* effect on the outcome. Decide "optimal" reward scheme.
         distance_to_target = self.desired_trolley - (x - self.cable_length * np.sin(theta))
-        reward = -1.0 + 0.001 / (distance_to_target)**2 - 0.0001*self.x_accel**2 - limits*10
+        #reward = -1.0 + 0.001 / (distance_to_target)**2 - 0.0001*self.x_accel**2 - limits*10
         
-#         if np.abs(distance_to_target) >= 0.05:
-#         reward = -1.0 - 10*theta**2 - 0.1*self.x_accel**2 - limits*10
-#         else:  
-#             reward = 1000.0
+        if np.abs(distance_to_target) >= 0.01:
+            reward = -1.0 - 10*theta**2 - 0.1*self.x_accel**2 - limits*10
+        else:  
+            reward = 1000.0
 
         return np.array(self.state), reward, False, {}
 

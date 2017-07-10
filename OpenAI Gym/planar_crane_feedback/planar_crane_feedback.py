@@ -130,7 +130,10 @@ class PlanarCraneEnv(gym.Env):
 #             reward = 1.0
 #             if theta_dot < np.sqrt(self.gravity/self.cable_length) * np.pi/180:
 #                 reward = reward * 10
-        reward = - 1000*theta**2 - theta_dot **2 - 0.1*x_dot**2 - 0.01*self.x_accel**2 - limits*1000 #- x**2
+        if np.abs(theta) < 1*np.pi/180:
+            reward = 1e3
+        else:
+            reward = - 1000*theta**2 - theta_dot **2 - 0.1*x_dot**2 - 0.01*self.x_accel**2 - limits*1000 #- x**2
         
         
         return np.array(self.state), reward, False, {}

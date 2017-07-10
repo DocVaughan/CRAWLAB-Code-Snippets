@@ -42,22 +42,23 @@ from rl.memory import SequentialMemory
 
 ENV_NAME = 'planar_crane-v0'
 
-LAYER_SIZE = 32
-NUM_STEPS = 2500000
-DUEL_DQN =True
+LAYER_SIZE = 2056
+NUM_HIDDEN_LAYERS = 3
+NUM_STEPS = 50000
+DUEL_DQN = False
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # TODO: Add file picker GUI - For now, look for files with the format below
 # FILENAME = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
 # FILENAME = 'weights/dqn_{}_weights_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS)
-FILENAME = 'weights/duel_dqn_planar_crane-v0_weights_32_2500000_2017-07-09_230810.h5f'
+FILENAME = 'weights/dqn_planar_crane-v0_weights_2056_50000_2017-07-10_113850.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
 
 # uncomment to record data about the training session, including video if visualize is true
 if DUEL_DQN:
-    MONITOR_FILENAME = 'example_data/duel)dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
+    MONITOR_FILENAME = 'example_data/duel_dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
                                                                      LAYER_SIZE,
                                                                      NUM_STEPS,
                                                                      TRIAL_ID)
@@ -76,16 +77,20 @@ nb_actions = env.action_space.n
 
 # Next, we build a very simple model.
 model = Sequential()
+
+# Input Layer
 model.add(Flatten(input_shape=(1,) + env.observation_space.shape))
-model.add(Dense(LAYER_SIZE))
-model.add(Activation('relu'))
-model.add(Dense(LAYER_SIZE))
-model.add(Activation('relu'))
-model.add(Dense(LAYER_SIZE))
-model.add(Activation('relu'))
+
+# Hidden layers
+for _ in range(NUM_HIDDEN_LAYERS):
+    model.add(Dense(LAYER_SIZE))
+    model.add(Activation('relu'))
+
+# Output layer
 model.add(Dense(nb_actions))
 model.add(Activation('linear'))
 print(model.summary())
+
 
 # Finally, we configure and compile our agent. You can use every built-in Keras optimizer and
 # even the metrics!

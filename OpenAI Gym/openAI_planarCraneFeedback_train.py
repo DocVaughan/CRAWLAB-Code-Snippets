@@ -39,9 +39,10 @@ from rl.agents.dqn import DQNAgent
 from rl.policy import BoltzmannQPolicy, GreedyQPolicy, EpsGreedyQPolicy
 from rl.memory import SequentialMemory
 
-LAYER_SIZE = 128
-NUM_STEPS = 500000
-DUEL_DQN = True
+LAYER_SIZE = 2056
+NUM_HIDDEN_LAYERS = 3
+NUM_STEPS = 50000
+DUEL_DQN = False
 ENV_NAME = 'planar_crane_feedback-v0'
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
@@ -61,13 +62,16 @@ nb_actions = env.action_space.n
 
 # Next, we build a very simple model.
 model = Sequential()
+
+# Input Layer
 model.add(Flatten(input_shape=(1,) + env.observation_space.shape))
-model.add(Dense(LAYER_SIZE))
-model.add(Activation('relu'))
-model.add(Dense(LAYER_SIZE))
-model.add(Activation('relu'))
-model.add(Dense(LAYER_SIZE))
-model.add(Activation('relu'))
+
+# Hidden layers
+for _ in range(NUM_HIDDEN_LAYERS):
+    model.add(Dense(LAYER_SIZE))
+    model.add(Activation('relu'))
+
+# Output layer
 model.add(Dense(nb_actions))
 model.add(Activation('linear'))
 print(model.summary())

@@ -41,21 +41,28 @@ from rl.memory import SequentialMemory
 
 
 ENV_NAME = 'planar_crane_feedback-v0'
-LAYER_SIZE = 128
-NUM_STEPS = 500000
-DUEL_DQN = True
+LAYER_SIZE = 2056
+NUM_HIDDEN_LAYERS = 3
+NUM_STEPS = 50000
+DUEL_DQN = False
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # TODO: 07/09/17 - Add file picker GUI - For now, look for files with the format below
 # FILENAME = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
 # FILENAME = 'weights/dqn_{}_weights_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS)
-FILENAME = 'weights/dqn_planar_crane_feedback-v0_weights_128_500000_2017-07-09_230157.h5f'
+FILENAME = 'weights/dqn_planar_crane_feedback-v0_weights_2056_50000_2017-07-10_121311.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
 
 # uncomment to record data about the training session, including video if visualize is true
-MONITOR_FILENAME = 'example_data/dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
+if DUEL_DQN:
+    MONITOR_FILENAME = 'example_data/duel_dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
+                                                                     LAYER_SIZE,
+                                                                     NUM_STEPS,
+                                                                     TRIAL_ID)
+else:
+    MONITOR_FILENAME = 'example_data/dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
                                                                  LAYER_SIZE,
                                                                  NUM_STEPS,
                                                                  TRIAL_ID)
@@ -67,13 +74,16 @@ nb_actions = env.action_space.n
 
 # Next, we build a very simple model.
 model = Sequential()
+
+# Input Layer
 model.add(Flatten(input_shape=(1,) + env.observation_space.shape))
-model.add(Dense(LAYER_SIZE))
-model.add(Activation('relu'))
-model.add(Dense(LAYER_SIZE))
-model.add(Activation('relu'))
-model.add(Dense(LAYER_SIZE))
-model.add(Activation('relu'))
+
+# Hidden layers
+for _ in range(NUM_HIDDEN_LAYERS):
+    model.add(Dense(LAYER_SIZE))
+    model.add(Activation('relu'))
+
+# Output layer
 model.add(Dense(nb_actions))
 model.add(Activation('linear'))
 print(model.summary())
