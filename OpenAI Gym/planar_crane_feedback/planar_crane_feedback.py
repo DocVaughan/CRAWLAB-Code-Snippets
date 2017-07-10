@@ -119,16 +119,20 @@ class PlanarCraneEnv(gym.Env):
         #distance_to_target = self.desired_trolley - x
 #         reward = 1 / distance_to_target**2 - 0.01*theta**2#- 0.1 * self.counter*self.tau
             
-        if np.abs(distance_to_target) >= 0.1:
-            reward = -1.0 - 10*theta**2 - x**2 - limits*10
-        else:  
-            reward = 1000.0
+#         if np.abs(distance_to_target) >= 0.05:
+#             reward = -1.0 - 10*theta**2 - 0.1*x_dot**2 - limits*10 #- x**2
+#         else:  
+#             reward = 1000.0
+        
+#         reward = -theta**2 - limits*10 #- x**2
         
 #         if theta < np.pi/180:
 #             reward = 1.0
 #             if theta_dot < np.sqrt(self.gravity/self.cable_length) * np.pi/180:
 #                 reward = reward * 10
-
+        reward = - 1000*theta**2 - theta_dot **2 - 0.1*x_dot**2 - 0.01*self.x_accel**2 - limits*1000 #- x**2
+        
+        
         return np.array(self.state), reward, False, {}
 
     def _reset(self):

@@ -40,7 +40,8 @@ from rl.policy import BoltzmannQPolicy, GreedyQPolicy, EpsGreedyQPolicy
 from rl.memory import SequentialMemory
 
 LAYER_SIZE = 128
-NUM_STEPS = 2000000
+NUM_STEPS = 500000
+DUEL_DQN = True
 ENV_NAME = 'planar_crane_feedback-v0'
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
@@ -74,17 +75,29 @@ print(model.summary())
 # Finally, we configure and compile our agent. You can use every built-in Keras optimizer and
 # even the metrics!
 memory = SequentialMemory(limit=NUM_STEPS, window_length=1)
-train_policy = BoltzmannQPolicy(tau=0.05)
+# train_policy = BoltzmannQPolicy(tau=0.05)
+train_policy = EpsGreedyQPolicy()
 test_policy = EpsGreedyQPolicy()
 # test_policy = GreedyQPolicy()
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
+
+if DUEL_DQN:
+    dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
+               enable_dueling_network=True, dueling_type='avg', target_model_update=1e-2, 
+               policy=train_policy, test_policy=test_policy)
+              
+    filename = 'weights/duel_dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
+else:
+    dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
                target_model_update=1e-2, policy=train_policy, test_policy=test_policy)
+    
+    filename = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
+               
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
 # Okay, now it's time to learn something! We visualize the training here for show, but this
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
-dqn.fit(env, nb_steps=NUM_STEPS, visualize=False, verbose=1, nb_max_episode_steps=500)
+dqn.fit(env, nb_steps=NUM_STEPS, visualize=False, verbose=1, nb_max_episode_steps=1000)
 
 # After training is done, we save the final weights.
 filename = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)

@@ -42,13 +42,14 @@ from rl.memory import SequentialMemory
 
 ENV_NAME = 'planar_crane_feedback-v0'
 LAYER_SIZE = 128
-NUM_STEPS = 2000000
+NUM_STEPS = 500000
+DUEL_DQN = True
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # TODO: 07/09/17 - Add file picker GUI - For now, look for files with the format below
 # FILENAME = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
 # FILENAME = 'weights/dqn_{}_weights_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS)
-FILENAME = 'weights/dqn_planar_crane_feedback-v0_weights_128_2000000.h5f'
+FILENAME = 'weights/dqn_planar_crane_feedback-v0_weights_128_500000_2017-07-09_230157.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
@@ -80,11 +81,22 @@ print(model.summary())
 # Finally, we configure and compile our agent. You can use every built-in Keras optimizer and
 # even the metrics!
 memory = SequentialMemory(limit=NUM_STEPS, window_length=1)
-train_policy = BoltzmannQPolicy(tau=0.05)
+# train_policy = BoltzmannQPolicy(tau=0.05)
 test_policy = GreedyQPolicy()
-# test_policy = EpsGreedyQPolicy()
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
+train_policy = EpsGreedyQPolicy()
+
+if DUEL_DQN:
+    dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
+               enable_dueling_network=True, dueling_type='avg', target_model_update=1e-2, 
+               policy=train_policy, test_policy=test_policy)
+              
+    filename = 'weights/duel_dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
+else:
+    dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
                target_model_update=1e-2, policy=train_policy, test_policy=test_policy)
+    
+    filename = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
+    
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
 # Load the model weights

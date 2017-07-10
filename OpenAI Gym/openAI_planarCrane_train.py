@@ -41,15 +41,23 @@ from rl.memory import SequentialMemory
 
 
 ENV_NAME = 'planar_crane-v0'
-LAYER_SIZE = 128
-NUM_STEPS = 2000000
+LAYER_SIZE = 32
+NUM_STEPS = 2500000
+DUEL_DQN =True
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
 
 # uncomment to record data about the training session, including video if visualize is true
-MONITOR_FILENAME = 'example_data/dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
+
+if DUEL_DQN:
+    MONITOR_FILENAME = 'example_data/duel)dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
+                                                                     LAYER_SIZE,
+                                                                     NUM_STEPS,
+                                                                     TRIAL_ID)
+else:
+    MONITOR_FILENAME = 'example_data/dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
                                                                  LAYER_SIZE,
                                                                  NUM_STEPS,
                                                                  TRIAL_ID)
@@ -75,11 +83,24 @@ print(model.summary())
 # Finally, we configure and compile our agent. You can use every built-in Keras optimizer and
 # even the metrics!
 memory = SequentialMemory(limit=NUM_STEPS, window_length=1)
-train_policy = BoltzmannQPolicy(tau=0.05)
-test_policy = EpsGreedyQPolicy()
-# test_policy = GreedyQPolicy()
-dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
+# train_policy = BoltzmannQPolicy()#tau=0.05)
+train_policy = EpsGreedyQPolicy()
+test_policy = GreedyQPolicy()
+
+if DUEL_DQN:
+    dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
+               enable_dueling_network=True, dueling_type='avg', target_model_update=1e-2, 
+               policy=train_policy, test_policy=test_policy)
+              
+    filename = 'weights/duel_dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
+else:
+    dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
                target_model_update=1e-2, policy=train_policy, test_policy=test_policy)
+    
+    filename = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
+
+               
+               
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
 # Okay, now it's time to learn something! We visualize the training here for show, but this
@@ -88,7 +109,6 @@ dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 dqn.fit(env, nb_steps=NUM_STEPS, visualize=False, verbose=1, nb_max_episode_steps=500)
 
 # After training is done, we save the final weights.
-filename = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
 dqn.save_weights(filename, overwrite=True)
 
 # Finally, evaluate our algorithm for 5 episodes.
