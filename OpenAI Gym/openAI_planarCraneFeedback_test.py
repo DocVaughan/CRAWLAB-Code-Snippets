@@ -44,13 +44,13 @@ ENV_NAME = 'planar_crane_feedback-v0'
 LAYER_SIZE = 2056
 NUM_HIDDEN_LAYERS = 3
 NUM_STEPS = 50000
-DUEL_DQN = False
+DUEL_DQN = True
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # TODO: 07/09/17 - Add file picker GUI - For now, look for files with the format below
 # FILENAME = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
 # FILENAME = 'weights/dqn_{}_weights_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS)
-FILENAME = 'weights/dqn_planar_crane_feedback-v0_weights_2056_50000_2017-07-10_121311.h5f'
+FILENAME = 'weights/duel_dqn_planar_crane-v0_weights_2048_4_50000_2017-07-10_161457.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)

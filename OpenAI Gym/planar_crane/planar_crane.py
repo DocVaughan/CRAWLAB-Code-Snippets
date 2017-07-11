@@ -50,6 +50,7 @@ class PlanarCraneEnv(gym.Env):
         self.masspend = 1.0         # mass of the pendulum point mass (kg)
         self.cable_length = 2.0     # cable length (m)
         self.tau = 0.02             # seconds between state updates
+        self.counter = 0            # counter for number of steps
         self.desired_trolley = 0    # desired final position of payload
         
         # Define thesholds for failing episode
@@ -85,6 +86,7 @@ class PlanarCraneEnv(gym.Env):
 
     def _step(self, action):
         theta, theta_dot, x, x_dot = self.state
+        self.counter = self.counter + 1
         
         # Update the trolley states
         self.x_accel = self.AVAIL_TROLLEY_ACCEL[action]
@@ -116,7 +118,12 @@ class PlanarCraneEnv(gym.Env):
         else:  
             reward = 1000.0
 
-        return np.array(self.state), reward, False, {}
+        if self.counter >= 500:
+            done = True
+        else:
+            done = False
+            
+        return np.array(self.state), reward, done, {}
 
     def _reset(self):
         # TODO: 07/07/17 - Probably need more randomness in initial conditions
@@ -124,6 +131,7 @@ class PlanarCraneEnv(gym.Env):
                                0, # self.np_random.uniform(low=-0.5*np.pi/6, high=0.5*np.pi/6),
                                self.np_random.uniform(low=-3.0, high=3.0),
                                0])#self.np_random.uniform(low=-0.5, high=0.5)])
+        self.counter = 0
         return np.array(self.state)
 
     def _render(self, mode='human', close=False):

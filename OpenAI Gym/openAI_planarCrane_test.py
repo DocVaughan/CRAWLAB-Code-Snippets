@@ -42,8 +42,8 @@ from rl.memory import SequentialMemory
 
 ENV_NAME = 'planar_crane-v0'
 
-LAYER_SIZE = 2056
-NUM_HIDDEN_LAYERS = 3
+LAYER_SIZE = 2048
+NUM_HIDDEN_LAYERS = 8
 NUM_STEPS = 50000
 DUEL_DQN = False
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
@@ -51,20 +51,22 @@ TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 # TODO: Add file picker GUI - For now, look for files with the format below
 # FILENAME = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
 # FILENAME = 'weights/dqn_{}_weights_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS)
-FILENAME = 'weights/dqn_planar_crane-v0_weights_2056_50000_2017-07-10_113850.h5f'
+FILENAME = 'weights/dqn_planar_crane-v0_weights_2048_8_50000_2017-07-10_154335.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
 
 # uncomment to record data about the training session, including video if visualize is true
 if DUEL_DQN:
-    MONITOR_FILENAME = 'example_data/duel_dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
+    MONITOR_FILENAME = 'example_data/duel_dqn_{}_monitor_{}_{}_{}_{}'.format(ENV_NAME,
                                                                      LAYER_SIZE,
+                                                                     NUM_HIDDEN_LAYERS,
                                                                      NUM_STEPS,
                                                                      TRIAL_ID)
 else:
-    MONITOR_FILENAME = 'example_data/dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
+    MONITOR_FILENAME = 'example_data/dqn_{}_monitor_{}_{}_{}_{}'.format(ENV_NAME,
                                                                  LAYER_SIZE,
+                                                                 NUM_HIDDEN_LAYERS,
                                                                  NUM_STEPS,
                                                                  TRIAL_ID)
 env = gym.wrappers.Monitor(env, MONITOR_FILENAME, force=True)
@@ -96,7 +98,7 @@ print(model.summary())
 # even the metrics!
 memory = SequentialMemory(limit=NUM_STEPS, window_length=1)
 # train_policy = BoltzmannQPolicy(tau=0.05)
-test_policy = GreedyQPolicy()
+test_policy = EpsGreedyQPolicy()
 train_policy = EpsGreedyQPolicy()
 
 if DUEL_DQN:
@@ -104,12 +106,12 @@ if DUEL_DQN:
                enable_dueling_network=True, dueling_type='avg', target_model_update=1e-2, 
                policy=train_policy, test_policy=test_policy)
               
-    filename = 'weights/duel_dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
+    filename = 'weights/duel_dqn_{}_weights_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE,  NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
 else:
     dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
                target_model_update=1e-2, policy=train_policy, test_policy=test_policy)
     
-    filename = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
+    filename = 'weights/dqn_{}_weights_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
 
 
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])

@@ -41,10 +41,10 @@ from rl.memory import SequentialMemory
 
 
 ENV_NAME = 'planar_crane-v0'
-LAYER_SIZE = 2056
+LAYER_SIZE =1024
 NUM_HIDDEN_LAYERS = 4
 NUM_STEPS = 100000
-DUEL_DQN = False
+DUEL_DQN = True
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # Get the environment and extract the number of actions.
@@ -52,14 +52,17 @@ env = gym.make(ENV_NAME)
 
 # uncomment to record data about the training session, including video if visualize is true
 
+# uncomment to record data about the training session, including video if visualize is true
 if DUEL_DQN:
-    MONITOR_FILENAME = 'example_data/duel)dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
+    MONITOR_FILENAME = 'example_data/duel_dqn_{}_monitor_{}_{}_{}_{}'.format(ENV_NAME,
                                                                      LAYER_SIZE,
+                                                                     NUM_HIDDEN_LAYERS,
                                                                      NUM_STEPS,
                                                                      TRIAL_ID)
 else:
-    MONITOR_FILENAME = 'example_data/dqn_{}_monitor_{}_{}_{}'.format(ENV_NAME,
+    MONITOR_FILENAME = 'example_data/dqn_{}_monitor_{}_{}_{}_{}'.format(ENV_NAME,
                                                                  LAYER_SIZE,
+                                                                 NUM_HIDDEN_LAYERS,
                                                                  NUM_STEPS,
                                                                  TRIAL_ID)
 # env = gym.wrappers.Monitor(env, MONITOR_FILENAME, force=True)
@@ -87,7 +90,7 @@ print(model.summary())
 # Finally, we configure and compile our agent. You can use every built-in Keras optimizer and
 # even the metrics!
 memory = SequentialMemory(limit=NUM_STEPS, window_length=1)
-# train_policy = BoltzmannQPolicy()#tau=0.05)
+# train_policy = BoltzmannQPolicy(tau=0.05)
 train_policy = EpsGreedyQPolicy()
 test_policy = GreedyQPolicy()
 
@@ -96,12 +99,13 @@ if DUEL_DQN:
                enable_dueling_network=True, dueling_type='avg', target_model_update=1e-2, 
                policy=train_policy, test_policy=test_policy)
               
-    filename = 'weights/duel_dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
+    filename = 'weights/duel_dqn_{}_weights_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE,  NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
 else:
     dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
                target_model_update=1e-2, policy=train_policy, test_policy=test_policy)
     
-    filename = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
+    filename = 'weights/dqn_{}_weights_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
+
 
                
                
