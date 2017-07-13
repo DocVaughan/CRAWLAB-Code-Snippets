@@ -53,32 +53,33 @@ class VariablePendulumEnv(gym.Env):
         self.l_max_threshold = 3.5                  # max cable length (m)
         self.l_min_threshold = 0.5                  # min cable length (m)
         self.l_dot_threshold = 0.5                  # max cable speed (m/s)
+        self.theta_threshold = 90.0                 # max angle
         self.theta_mag_threshold = 45*np.pi/180     # max angle amplitude
 
         # This action space is just hoist down, do nothing, hoist up
         self.action_space = spaces.Discrete(3)
         
-#         high_limit = np.array([2*self.theta_threshold, # max observable angle 
-#                                10*2*self.theta_threshold, # max observable angular vel.
-#                                10,                     # max observable length
-#                                2])                     # max observable cable vel
-#         
-#         low_limit = np.array([-2*self.theta_threshold, # max observable angle 
-#                               -10*2*self.theta_threshold, # max observable angular vel.
-#                               0,                     # max observable length
-#                               -2])                     # max observable cable vel
-
-        high_limit = np.array([1.0, # max observable cos(angle) 
-                               1.0, # max observable sin(angle) 
-                               1.2 * np.sqrt(self.gravity/self.l_min_threshold),
-                               4,                     # max observable length
+        high_limit = np.array([2*self.theta_threshold, # max observable angle 
+                               10*2*self.theta_threshold, # max observable angular vel.
+                               10,                     # max observable length
                                2])                     # max observable cable vel
         
-        low_limit = np.array([-1.0, # min observable cos(angle)
-                              -1.0, # max observable sin(angle)
-                              -1.2*np.sqrt(self.gravity/self.l_min_threshold),
+        low_limit = np.array([-2*self.theta_threshold, # max observable angle 
+                              -10*2*self.theta_threshold, # max observable angular vel.
                               0,                     # max observable length
                               -2])                     # max observable cable vel
+
+#         high_limit = np.array([1.0, # max observable cos(angle) 
+#                                1.0, # max observable sin(angle) 
+#                                1.2 * np.sqrt(self.gravity/self.l_min_threshold),
+#                                4,                     # max observable length
+#                                2])                     # max observable cable vel
+        
+#         low_limit = np.array([-1.0, # min observable cos(angle)
+#                               -1.0, # max observable sin(angle)
+#                               -1.2*np.sqrt(self.gravity/self.l_min_threshold),
+#                               0,                     # max observable length
+#                               -2])                     # max observable cable vel
         
                              
         self.observation_space = spaces.Box(high_limit, low_limit)
@@ -96,6 +97,7 @@ class VariablePendulumEnv(gym.Env):
     def _step(self, action):
         assert self.action_space.contains(action), "%r (%s) invalid"%(action, type(action))
 
+        self.counter = self.counter + 1
         theta, theta_dot, l, l_dot = self.state
         self.cable_accel = self.AVAIL_CABLE_ACCEL[action]
         
@@ -134,21 +136,22 @@ class VariablePendulumEnv(gym.Env):
             
         if distance_from_target_squared >= 0.001: #or np.abs(l_dot) > np.pi/180:
 #             reward = -1.0 - 10*theta**2 - 0.1*self.cable_accel**2 - limits*10
-            reward = -1.0 - 100*distance_from_target_squared - 0.01*self.cable_accel**2 - limits*10
+            reward = -1.0 - 10*distance_from_target_squared - 0.01*self.cable_accel**2 - limits*100
         else:  
             reward = 10000.0
         
-        if self.counter > 500:
+        if self.counter >= 500:
             done = True
         else:
             done = False
 
-        return self._get_obs(), reward, done, {}
+#         return self._get_obs(), reward, done, {}
+        return np.array(self.state), reward, done, {}
         
     def _get_obs(self):
         theta, theta_dot, l, l_dot = self.state
         
-        # For this environment we return the cosine and sine of the angle
+        # If we call this function, we return the cosine and sine of the angle
         # rather than returning the angle directly
         return np.array([np.cos(theta), np.sin(theta), theta_dot, l, l_dot])
 
@@ -161,7 +164,8 @@ class VariablePendulumEnv(gym.Env):
                                0])#self.np_random.uniform(low=-0.5, high=0.5)])
         self.l_init = self.state[2]
         self.counter = 0
-        return self._get_obs()
+#         return self._get_obs()
+        return np.array(self.state)
 
     def _render(self, mode='human', close=False):
         if close:

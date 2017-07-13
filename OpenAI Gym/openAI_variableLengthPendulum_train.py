@@ -47,8 +47,8 @@ ENV_NAME = 'variable_pendulum-v0'
 
 LAYER_SIZE = 1024
 NUM_HIDDEN_LAYERS = 4
-NUM_STEPS = 50000
-DUEL_DQN = False
+NUM_STEPS = 2500000
+DUEL_DQN = True
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # Get the environment and extract the number of actions.
@@ -69,7 +69,7 @@ else:
                                                                  NUM_HIDDEN_LAYERS,
                                                                  NUM_STEPS,
                                                                  TRIAL_ID)
-# env = gym.wrappers.Monitor(env, MONITOR_FILENAME, force=True)
+env = gym.wrappers.Monitor(env, MONITOR_FILENAME, video_callable=False, force=True)
 
 np.random.seed(123)
 env.seed(123)
@@ -111,14 +111,18 @@ else:
     filename = 'weights/dqn_{}_weights_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
 
 
-               
-               
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
+
+# Optionally, we can reload a previous model's weights and continue training from there
+# FILENAME = 'weights/duel_dqn_variable_pendulum-v0_weights_4096_4_50000_2017-07-11_140316.h5f'
+# Load the model weights
+# dqn.load_weights(FILENAME)
+
 
 # Okay, now it's time to learn something! We visualize the training here for show, but this
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
-dqn.fit(env, nb_steps=NUM_STEPS, visualize=False, verbose=1, nb_max_episode_steps=500)
+dqn.fit(env, nb_steps=NUM_STEPS, visualize=False, verbose=2, nb_max_episode_steps=500)
 
 # After training is done, we save the final weights.
 dqn.save_weights(filename, overwrite=True)

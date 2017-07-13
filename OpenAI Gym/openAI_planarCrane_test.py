@@ -43,18 +43,22 @@ from rl.memory import SequentialMemory
 ENV_NAME = 'planar_crane-v0'
 
 LAYER_SIZE = 2048
-NUM_HIDDEN_LAYERS = 8
-NUM_STEPS = 50000
-DUEL_DQN = False
+NUM_HIDDEN_LAYERS = 4
+NUM_STEPS = 100000
+DUEL_DQN = True
+
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # TODO: Add file picker GUI - For now, look for files with the format below
 # FILENAME = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
 # FILENAME = 'weights/dqn_{}_weights_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS)
-FILENAME = 'weights/dqn_planar_crane-v0_weights_2048_8_50000_2017-07-10_154335.h5f'
+FILENAME = 'weights/duel_dqn_planar_crane-v0_weights_2048_4_100000_2017-07-12_185754.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
+
+# Record episode data?
+env.SAVE_DATA = True
 
 # uncomment to record data about the training session, including video if visualize is true
 if DUEL_DQN:
@@ -69,7 +73,7 @@ else:
                                                                  NUM_HIDDEN_LAYERS,
                                                                  NUM_STEPS,
                                                                  TRIAL_ID)
-env = gym.wrappers.Monitor(env, MONITOR_FILENAME, force=True)
+# env = gym.wrappers.Monitor(env, MONITOR_FILENAME, force=True)
 
 
 # np.random.seed(123)
@@ -99,7 +103,7 @@ print(model.summary())
 memory = SequentialMemory(limit=NUM_STEPS, window_length=1)
 # train_policy = BoltzmannQPolicy(tau=0.05)
 test_policy = EpsGreedyQPolicy()
-train_policy = EpsGreedyQPolicy()
+train_policy = GreedyQPolicy()
 
 if DUEL_DQN:
     dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
@@ -120,4 +124,4 @@ dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 dqn.load_weights(FILENAME)
 
 # Finally, evaluate our algorithm for 1 episode.
-dqn.test(env, nb_episodes=5, visualize=True, nb_max_episode_steps=500)
+dqn.test(env, nb_episodes=5, visualize=True, nb_max_episode_steps=501)

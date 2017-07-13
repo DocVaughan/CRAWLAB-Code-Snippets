@@ -41,14 +41,18 @@ from rl.memory import SequentialMemory
 
 
 ENV_NAME = 'planar_crane-v0'
-LAYER_SIZE =1024
+
+LAYER_SIZE = 2048
 NUM_HIDDEN_LAYERS = 4
-NUM_STEPS = 100000
+NUM_STEPS = 2500000
 DUEL_DQN = True
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
+
+# Record episode data?
+env.SAVE_DATA = False
 
 # uncomment to record data about the training session, including video if visualize is true
 
@@ -65,7 +69,7 @@ else:
                                                                  NUM_HIDDEN_LAYERS,
                                                                  NUM_STEPS,
                                                                  TRIAL_ID)
-# env = gym.wrappers.Monitor(env, MONITOR_FILENAME, force=True)
+env = gym.wrappers.Monitor(env, MONITOR_FILENAME, video_callable=False, force=True)
 
 np.random.seed(123)
 env.seed(123)
@@ -111,6 +115,11 @@ else:
                
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
+# Optionally, we can reload a previous model's weights and continue training from there
+# WEIGHTS_FILENAME = 'weights/duel_dqn_planar_crane-v0_weights_1024_4_50000_2017-07-12_160853.h5f'
+# # # Load the model weights
+# dqn.load_weights(WEIGHTS_FILENAME)
+
 # Okay, now it's time to learn something! We visualize the training here for show, but this
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
@@ -120,4 +129,4 @@ dqn.fit(env, nb_steps=NUM_STEPS, visualize=False, verbose=1, nb_max_episode_step
 dqn.save_weights(filename, overwrite=True)
 
 # Finally, evaluate our algorithm for 5 episodes.
-dqn.test(env, nb_episodes=5, nb_max_episode_steps=500, visualize=True)
+# dqn.test(env, nb_episodes=5, nb_max_episode_steps=500, visualize=True)

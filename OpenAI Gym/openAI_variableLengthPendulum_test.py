@@ -47,15 +47,15 @@ ENV_NAME = 'variable_pendulum-v0'
 
 LAYER_SIZE = 1024
 NUM_HIDDEN_LAYERS = 4
-NUM_STEPS = 50000
-DUEL_DQN = False
+NUM_STEPS = 2500000
+DUEL_DQN = True
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 
 # TODO: Add file picker GUI - For now, look for files with the format below
 # FILENAME = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
 # FILENAME = 'weights/dqn_{}_weights_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS)
-FILENAME = 'weights/dqn_variable_pendulum-v0_weights_1024_4_50000_2017-07-10_193827.h5f'
+FILENAME = 'weights/duel_dqn_variable_pendulum-v0_weights_1024_4_2500000_2017-07-11_202608.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
@@ -77,8 +77,8 @@ else:
                                                                  TRIAL_ID)
 # env = gym.wrappers.Monitor(env, MONITOR_FILENAME, force=True)
 
-np.random.seed(123)
-env.seed(123)
+# np.random.seed(123)
+# env.seed(123)
 nb_actions = env.action_space.n
 
 # Next, we build a very simple model.
@@ -122,7 +122,7 @@ dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 # Load the model weights
 dqn.load_weights(FILENAME)
 
-dqn.fit(env, nb_steps=1000, visualize=False, verbose=1, nb_max_episode_steps=500)
+#dqn.fit(env, nb_steps=1000, visualize=False, verbose=1, nb_max_episode_steps=500)
 
 # Finally, evaluate our algorithm for 1 episode.
 dqn.test(env, nb_episodes=5, visualize=True, nb_max_episode_steps=500)

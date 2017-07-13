@@ -31,6 +31,7 @@ from gym import spaces
 from gym.utils import seeding
 import logging
 import numpy as np
+import datetime # for unique filenames
 
 logger = logging.getLogger(__name__)
 
@@ -52,6 +53,7 @@ class PlanarCraneEnv(gym.Env):
         self.tau = 0.02             # seconds between state updates
         self.counter = 0            # counter for number of steps
         self.desired_trolley = 0    # desired final position of payload
+        self.SAVE_DATA = False      # set True to save episode data
         
         # Define thesholds for failing episode
         self.theta_threshold = 60 * np.pi / 180     # +/- 45 degree limit (rad)
@@ -116,12 +118,28 @@ class PlanarCraneEnv(gym.Env):
         if np.abs(distance_to_target) >= 0.01:
             reward = -1.0 - 10*theta**2 - 0.1*self.x_accel**2 - limits*10
         else:  
-            reward = 1000.0
+            if self.x_accel**2 < 1:
+                reward = 100000.0
+            else:
+                reward = 1000.0 
+
+
+        if self.SAVE_DATA:
+            current_data = np.array([self.counter * self.tau, theta, theta_dot, x, x_dot, self.x_accel, reward])
+            self.episode_data[self.counter, :] = current_data
+
 
         if self.counter >= 500:
             done = True
+            
+            if self.SAVE_DATA:
+                header = header='Time (s), Angle (rad), Angle (rad/s), Trolley Pos (m), Trolly Vel (m/s), Trolley Accel (m/s^2), Reward'
+                data_filename = 'example_data/EpisodeData_{}.csv'.format(datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S'))
+                np.savetxt(data_filename, self.episode_data,  header=header, delimiter=',')
         else:
             done = False
+            
+
             
         return np.array(self.state), reward, done, {}
 
@@ -131,7 +149,14 @@ class PlanarCraneEnv(gym.Env):
                                0, # self.np_random.uniform(low=-0.5*np.pi/6, high=0.5*np.pi/6),
                                self.np_random.uniform(low=-3.0, high=3.0),
                                0])#self.np_random.uniform(low=-0.5, high=0.5)])
+        
+        # Reset the counter and the data recorder array
         self.counter = 0
+        
+        if self.SAVE_DATA:
+            self.episode_data = np.zeros((501, 7))
+            self.episode_data[0,:] = np.array([0, self.state[0], self.state[1], self.state[2], self.state[3], 0, 0])
+
         return np.array(self.state)
 
     def _render(self, mode='human', close=False):
