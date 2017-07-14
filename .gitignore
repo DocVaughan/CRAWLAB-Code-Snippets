@@ -5,3 +5,4 @@
 MQTT_ServerAccountInfo.py
 OpenAI Gym/example_data/*
 OpenAI Gym/weights/*
+OpenAI Gym/logs/*
