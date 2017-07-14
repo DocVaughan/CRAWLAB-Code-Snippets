@@ -38,7 +38,7 @@ from keras.optimizers import Adam
 from rl.agents.dqn import DQNAgent
 from rl.policy import BoltzmannQPolicy, GreedyQPolicy, EpsGreedyQPolicy
 from rl.memory import SequentialMemory
-
+from rl.callbacks import FileLogger, ModelIntervalCheckpoint
 
 ENV_NAME = 'planar_crane-v0'
 
@@ -104,16 +104,24 @@ if DUEL_DQN:
                policy=train_policy, test_policy=test_policy)
               
     filename = 'weights/duel_dqn_{}_weights_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE,  NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
+    checkpoint_weights_filename = 'logs/duel_dqn_{}_checkpointWeights_{{step}}_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
+    log_filename = 'logs/duel_dqn_{}_log_{}_{}_{}_{}.json'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
+
 else:
     dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
                target_model_update=1e-2, policy=train_policy, test_policy=test_policy)
     
     filename = 'weights/dqn_{}_weights_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
+    checkpoint_weights_filename = 'weights/dqn_{}_checkpointWeights_{{step}}_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
+    log_filename = 'logs/dqn_{}_log_{}_{}_{}_{}.json'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
 
 
-               
-               
+
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
+
+callbacks = []
+# callbacks += [ModelIntervalCheckpoint(checkpoint_weights_filename, interval=10000)]
+callbacks += [FileLogger(log_filename, interval=100)]
 
 # Optionally, we can reload a previous model's weights and continue training from there
 # WEIGHTS_FILENAME = 'weights/duel_dqn_planar_crane-v0_weights_1024_4_50000_2017-07-12_160853.h5f'
@@ -123,7 +131,7 @@ dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 # Okay, now it's time to learn something! We visualize the training here for show, but this
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
-dqn.fit(env, nb_steps=NUM_STEPS, visualize=False, verbose=1, nb_max_episode_steps=500)
+dqn.fit(env, nb_steps=NUM_STEPS, callbacks=callbacks, visualize=False, verbose=1, nb_max_episode_steps=500)
 
 # After training is done, we save the final weights.
 dqn.save_weights(filename, overwrite=True)

@@ -50,7 +50,7 @@ TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 # TODO: Add file picker GUI - For now, look for files with the format below
 # Remove the _actor or _critic from the filename. The load method automatically
 # appends these.
-FILENAME = 'weights/ddpg_planar_crane_continuous-v0_weights_2048_3_50000_2017-07-13_144811.h5f'
+FILENAME = 'weights/ddpg_planar_crane_continuous-v0_weights_2048_3_50000_2017-07-13_200743.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
@@ -58,6 +58,7 @@ nb_actions = env.action_space.shape[0]
 
 # Record episode data?
 env.SAVE_DATA = True
+env.MAX_STEPS = 500
 
 
 

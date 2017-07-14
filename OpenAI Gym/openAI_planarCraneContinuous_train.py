@@ -38,6 +38,7 @@ from keras.optimizers import Adam
 from rl.agents import DDPGAgent
 from rl.memory import SequentialMemory
 from rl.random import OrnsteinUhlenbeckProcess
+from rl.callbacks import FileLogger, ModelIntervalCheckpoint
 
 
 ENV_NAME = 'planar_crane_continuous-v0'
@@ -55,6 +56,7 @@ nb_actions = env.action_space.shape[0]
 
 # Record episode data?
 env.SAVE_DATA = False
+env.MAX_STEPS = 500
 
 # uncomment to record data about the training session, including video if visualize is true
 MONITOR_FILENAME = 'example_data/ddpg_{}_monitor_{}_{}_{}_{}'.format(ENV_NAME,
@@ -63,7 +65,7 @@ MONITOR_FILENAME = 'example_data/ddpg_{}_monitor_{}_{}_{}_{}'.format(ENV_NAME,
                                                                  NUM_STEPS,
                                                                  TRIAL_ID)
 
-env = gym.wrappers.Monitor(env, MONITOR_FILENAME, video_callable=False, force=True)
+# env = gym.wrappers.Monitor(env, MONITOR_FILENAME, video_callable=False, force=True)
 
 
 
@@ -106,9 +108,11 @@ print(critic.summary())
 # even the metrics!
 memory = SequentialMemory(limit=2*NUM_STEPS, window_length=1)
 random_process = OrnsteinUhlenbeckProcess(size=nb_actions, theta=.15, mu=0., sigma=.3)
+
 agent = DDPGAgent(nb_actions=nb_actions, actor=actor, critic=critic, critic_action_input=action_input,
                   memory=memory, nb_steps_warmup_critic=100, nb_steps_warmup_actor=100,
                   random_process=random_process, gamma=.99, target_model_update=1e-3)
+
 agent.compile(Adam(lr=.001, clipnorm=1.), metrics=['mae'])
 
 
@@ -120,10 +124,17 @@ agent.compile(Adam(lr=.001, clipnorm=1.), metrics=['mae'])
 # WEIGHTS_FILENAME = 'weights/ddpg_planar_crane_continuous-v0_weights_32_4_50000_2017-07-13_134945.h5f'
 # agent.load_weights(WEIGHTS_FILENAME)
 
+
+callbacks = []
+# checkpoint_weights_filename = 'weights/ddpg_{}_checkpointWeights_{{step}}_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
+log_filename = 'logs/ddpg_{}_log_{}_{}_{}_{}.json'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
+# callbacks += [ModelIntervalCheckpoint(checkpoint_weights_filename, interval=10000)]
+callbacks += [FileLogger(log_filename, interval=100)]
+
 # Okay, now it's time to learn something! We visualize the training here for show, but this
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
-agent.fit(env, nb_steps=NUM_STEPS, visualize=False, verbose=1, nb_max_episode_steps=500)
+agent.fit(env, nb_steps=NUM_STEPS, callbacks=callbacks, visualize=False, verbose=1, nb_max_episode_steps=500)
 
 # After training is done, we save the final weights.
 filename = 'weights/ddpg_{}_weights_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
