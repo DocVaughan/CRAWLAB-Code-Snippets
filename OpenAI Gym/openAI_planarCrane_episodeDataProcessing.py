@@ -25,7 +25,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-FILENAME = 'example_data/EpisodeData_2017-07-13_195043.csv'
+FILENAME = 'example_data/EpisodeData_2017-07-14_001641.csv'
 CABLE_LENGTH = 2.0
 
 # Files have data saved as:

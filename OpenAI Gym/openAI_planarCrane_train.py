@@ -42,9 +42,9 @@ from rl.callbacks import FileLogger, ModelIntervalCheckpoint
 
 ENV_NAME = 'planar_crane-v0'
 
-LAYER_SIZE = 2048
+LAYER_SIZE = 1024
 NUM_HIDDEN_LAYERS = 4
-NUM_STEPS = 2500000
+NUM_STEPS = 100000
 DUEL_DQN = True
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
@@ -120,7 +120,7 @@ else:
 dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
 callbacks = []
-# callbacks += [ModelIntervalCheckpoint(checkpoint_weights_filename, interval=10000)]
+callbacks += [ModelIntervalCheckpoint(checkpoint_weights_filename, interval=10000)]
 callbacks += [FileLogger(log_filename, interval=100)]
 
 # Optionally, we can reload a previous model's weights and continue training from there

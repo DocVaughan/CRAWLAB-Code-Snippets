@@ -42,16 +42,16 @@ from rl.memory import SequentialMemory
 
 ENV_NAME = 'planar_crane-v0'
 
-LAYER_SIZE = 2048
+LAYER_SIZE = 1024
 NUM_HIDDEN_LAYERS = 4
-NUM_STEPS = 2500000
+NUM_STEPS = 100000
 DUEL_DQN = True
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # TODO: Add file picker GUI - For now, look for files with the format below
 # FILENAME = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
 # FILENAME = 'weights/dqn_{}_weights_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS)
-FILENAME = 'weights/duel_dqn_planar_crane-v0_weights_2048_4_2500000_2017-07-12_194502.h5f'
+FILENAME = 'weights/duel_dqn_planar_crane-v0_weights_1024_4_100000_2017-07-13_222427.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
