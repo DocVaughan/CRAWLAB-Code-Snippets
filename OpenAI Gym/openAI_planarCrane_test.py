@@ -35,9 +35,11 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation, Flatten
 from keras.optimizers import Adam
 
+from rl.agents.cem import CEMAgent
 from rl.agents.dqn import DQNAgent
+from rl.agents.sarsa import SarsaAgent
 from rl.policy import BoltzmannQPolicy, GreedyQPolicy, EpsGreedyQPolicy
-from rl.memory import SequentialMemory
+from rl.memory import SequentialMemory, EpisodeParameterMemory
 
 
 ENV_NAME = 'planar_crane-v0'
@@ -45,34 +47,23 @@ ENV_NAME = 'planar_crane-v0'
 LAYER_SIZE = 1024
 NUM_HIDDEN_LAYERS = 4
 NUM_STEPS = 100000
-DUEL_DQN = True
+METHOD = 'CEM' # can be DQN, DUEL_DQN, SARSA, or CEM
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
-# TODO: Add file picker GUI - For now, look for files with the format below
-# FILENAME = 'weights/dqn_{}_weights_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS, TRIAL_ID)
-# FILENAME = 'weights/dqn_{}_weights_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_STEPS)
-FILENAME = 'weights/duel_dqn_planar_crane-v0_weights_1024_4_100000_2017-07-13_222427.h5f'
+# TODO: 07/14/17 - JEV - Add GUI, argparser, or CLI for this selection
+WEIGHT_FILENAME = 'weights/SARSA_planar_crane-v0_weights_1024_4_100000_2017-07-14_160523.h5f'
+
+# Define the filenames to use for this session
+MONITOR_FILENAME = 'example_data/{}_{}_monitor_{}_{}_{}_{}'.format(METHOD, ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
 
 # Record episode data?
-env.SAVE_DATA = True
+env.SAVE_DATA = False
 
-# uncomment to record data about the training session, including video if visualize is true
-if DUEL_DQN:
-    MONITOR_FILENAME = 'example_data/duel_dqn_{}_monitor_{}_{}_{}_{}'.format(ENV_NAME,
-                                                                     LAYER_SIZE,
-                                                                     NUM_HIDDEN_LAYERS,
-                                                                     NUM_STEPS,
-                                                                     TRIAL_ID)
-else:
-    MONITOR_FILENAME = 'example_data/dqn_{}_monitor_{}_{}_{}_{}'.format(ENV_NAME,
-                                                                 LAYER_SIZE,
-                                                                 NUM_HIDDEN_LAYERS,
-                                                                 NUM_STEPS,
-                                                                 TRIAL_ID)
-# env = gym.wrappers.Monitor(env, MONITOR_FILENAME, force=True)
+# uncomment to record data about the training session, including video if video_callable is true
+env = gym.wrappers.Monitor(env, MONITOR_FILENAME, video_callable=False, force=True)
 
 
 # np.random.seed(123)
@@ -101,26 +92,41 @@ print(model.summary())
 # even the metrics!
 memory = SequentialMemory(limit=NUM_STEPS, window_length=1)
 # train_policy = BoltzmannQPolicy(tau=0.05)
-test_policy = EpsGreedyQPolicy()
-train_policy = GreedyQPolicy()
+train_policy = EpsGreedyQPolicy()
+test_policy = GreedyQPolicy()
 
-if DUEL_DQN:
-    dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
+
+# Compile the agent based on method specified. We use .upper() to convert to 
+# upper case for comparison
+if METHOD.upper() == 'DUEL_DQN': 
+    agent = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
                enable_dueling_network=True, dueling_type='avg', target_model_update=1e-2, 
                policy=train_policy, test_policy=test_policy)
-              
-    filename = 'weights/duel_dqn_{}_weights_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE,  NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
-else:
-    dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
+    agent.compile(Adam(lr=1e-3), metrics=['mae'])
+
+elif METHOD.upper() == 'DQN':
+    agent = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
                target_model_update=1e-2, policy=train_policy, test_policy=test_policy)
+    agent.compile(Adam(lr=1e-3), metrics=['mae'])
+
+elif METHOD.upper() == 'SARSA':
+     # SARSA does not require a memory.
+    policy = BoltzmannQPolicy()
+    agent = SarsaAgent(model=model, nb_actions=nb_actions, nb_steps_warmup=10, policy=train_policy)
+    agent.compile(Adam(lr=1e-3), metrics=['mae'])
     
-    filename = 'weights/dqn_{}_weights_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
+elif METHOD.upper() == 'CEM':
+    agent = CEMAgent(model=model, nb_actions=nb_actions, memory=memory,
+               batch_size=50, nb_steps_warmup=2000, train_interval=50, elite_frac=0.05)
+    agent.compile()
+    
+else:
+    raise('Please select  DQN, DUEL_DQN, SARSA, or CEM for your method type.')
 
 
-dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
 # Load the model weights
-dqn.load_weights(FILENAME)
+agent.load_weights(WEIGHT_FILENAME)
 
 # Finally, evaluate our algorithm for 1 episode.
-dqn.test(env, nb_episodes=5, visualize=True, nb_max_episode_steps=501)
+agent.test(env, nb_episodes=5, visualize=True, nb_max_episode_steps=500)

@@ -44,13 +44,13 @@ ENV_NAME = 'planar_crane_continuous-v0'
 
 LAYER_SIZE = 2048
 NUM_HIDDEN_LAYERS = 3
-NUM_STEPS = 50000
+NUM_STEPS = 1000000
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # TODO: Add file picker GUI - For now, look for files with the format below
 # Remove the _actor or _critic from the filename. The load method automatically
 # appends these.
-FILENAME = 'weights/ddpg_planar_crane_continuous-v0_weights_2048_3_50000_2017-07-13_200743.h5f'
+FILENAME = 'weights/ddpg_planar_crane_continuous-v0_weights_2048_3_100000_2017-07-14_175832.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
@@ -60,7 +60,12 @@ nb_actions = env.action_space.shape[0]
 env.SAVE_DATA = True
 env.MAX_STEPS = 500
 
-
+MONITOR_FILENAME = 'example_data/ddpg_{}_monitor_{}_{}_{}_{}'.format(ENV_NAME,
+                                                                 LAYER_SIZE,
+                                                                 NUM_HIDDEN_LAYERS,
+                                                                 NUM_STEPS,
+                                                                 TRIAL_ID)
+env = gym.wrappers.Monitor(env, MONITOR_FILENAME, force=True)
 
 # Next, we build a very simple actor model.
 actor = Sequential()
@@ -99,7 +104,8 @@ print(critic.summary())
 # Finally, we configure and compile our agent. You can use every built-in Keras optimizer and
 # even the metrics!
 memory = SequentialMemory(limit=2*NUM_STEPS, window_length=1)
-random_process = OrnsteinUhlenbeckProcess(size=nb_actions, theta=.15, mu=0., sigma=.3)
+# random_process = OrnsteinUhlenbeckProcess(size=nb_actions, theta=.15, mu=0., sigma=.3)
+random_process = OrnsteinUhlenbeckProcess(size=nb_actions, theta=0.6, mu=0., sigma=.1)
 agent = DDPGAgent(nb_actions=nb_actions, actor=actor, critic=critic, critic_action_input=action_input,
                   memory=memory, nb_steps_warmup_critic=100, nb_steps_warmup_actor=100,
                   random_process=random_process, gamma=.99, target_model_update=1e-3)

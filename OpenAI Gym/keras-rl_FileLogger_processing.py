@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 import json # the data files generated are json
 
 # TODO: 07/13/17 - JEV - Add GUI, argparse, or CLI for selecting file
-FILENAME = 'logs/duel_dqn_planar_crane-v0_log_128_4_100000_2017-07-13_215831.json'
+FILENAME = 'logs/ddpg_planar_crane_continuous-v0_log_2048_3_100000_2017-07-14_175832.json'
 
 
 

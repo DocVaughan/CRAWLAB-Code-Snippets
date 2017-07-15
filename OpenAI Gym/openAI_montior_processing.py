@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 import json # the data files generated are json
 
 # TODO: 07/12/17 - JEV - Add GUI, argparse, or CLI for selecting file
-FILENAME = "example_data/duel_dqn_planar_crane-v0_monitor_2048_4_2500000_2017-07-12_194502/openaigym.episode_batch.0.41178.stats.json"
+FILENAME = "example_data/duel_dqn_planar_crane-v0_monitor_1024_4_100000_2017-07-13_222427/openaigym.episode_batch.0.5356.stats.json"
 
 
 

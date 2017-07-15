@@ -118,9 +118,6 @@ class PlanarCraneEnv(gym.Env):
         if np.abs(distance_to_target) >= 0.01:
             reward = -1.0 - 10*theta**2 - 0.1*self.x_accel**2 - limits*10
         else:  
-#             if self.x_accel**2 < 1:
-#                 reward = 100000.0
-#             else:
             reward = 1000.0 
 
 

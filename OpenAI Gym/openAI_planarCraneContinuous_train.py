@@ -6,7 +6,7 @@
 # File to train on the CRAWLAB custom OpenAI planar crane environment 
 #
 # Requires:
-#  * CRAWLAB planar_crane Open_AI environment folder to be in the same as this file
+#  * CRAWLAB planar_crane_continuous Open_AI environment folder to be in the same as this file
 #  * keras, openAI gym, keras-rl packages (all are pip or conda installable)
 #
 # NOTE: Any plotting is set up for output, not viewing on screen.
@@ -45,7 +45,7 @@ ENV_NAME = 'planar_crane_continuous-v0'
 
 LAYER_SIZE = 2048
 NUM_HIDDEN_LAYERS = 3
-NUM_STEPS = 50000
+NUM_STEPS = 100000
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # Get the environment and extract the number of actions.
@@ -87,7 +87,7 @@ actor.add(Activation('linear'))
 print(actor.summary())
 
 
-# critic model
+# critic model - TODO: 07/14/17 - update this to sequential model style
 action_input = Input(shape=(nb_actions,), name='action_input')
 observation_input = Input(shape=(1,) + env.observation_space.shape, name='observation_input')
 flattened_observation = Flatten()(observation_input)
@@ -113,22 +113,22 @@ agent = DDPGAgent(nb_actions=nb_actions, actor=actor, critic=critic, critic_acti
                   memory=memory, nb_steps_warmup_critic=100, nb_steps_warmup_actor=100,
                   random_process=random_process, gamma=.99, target_model_update=1e-3)
 
-agent.compile(Adam(lr=.001, clipnorm=1.), metrics=['mae'])
+agent.compile(Adam(lr=.001), metrics=['mae'])
 
 
 
 
 # Optionally, we can reload a previous model's weights and continue training from there
 # Remove the _actor or _critic from the filename. The load method automatically
-# appends these.
-# WEIGHTS_FILENAME = 'weights/ddpg_planar_crane_continuous-v0_weights_32_4_50000_2017-07-13_134945.h5f'
-# agent.load_weights(WEIGHTS_FILENAME)
+# appends these.        
+WEIGHTS_FILENAME = 'weights/ddpg_planar_crane_continuous-v0_weights_2048_3_100000_2017-07-14_171736.h5f'
+agent.load_weights(WEIGHTS_FILENAME)
 
 
 callbacks = []
-# checkpoint_weights_filename = 'weights/ddpg_{}_checkpointWeights_{{step}}_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
+checkpoint_weights_filename = 'weights/ddpg_{}_checkpointWeights_{{step}}_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
 log_filename = 'logs/ddpg_{}_log_{}_{}_{}_{}.json'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
-# callbacks += [ModelIntervalCheckpoint(checkpoint_weights_filename, interval=10000)]
+#callbacks += [ModelIntervalCheckpoint(checkpoint_weights_filename, interval=100000)]
 callbacks += [FileLogger(log_filename, interval=100)]
 
 # Okay, now it's time to learn something! We visualize the training here for show, but this

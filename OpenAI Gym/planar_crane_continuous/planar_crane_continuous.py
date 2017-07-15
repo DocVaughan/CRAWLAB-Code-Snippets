@@ -91,6 +91,10 @@ class PlanarCraneContEnv(gym.Env):
         
         # Update the trolley states
         x_dot = x_dot + self.tau * self.x_accel
+        
+        # Get the action and clip it to the min/max trolley accel
+        x_dot = np.clip(x_dot, -self.v_max_threshold, self.v_max_threshold)
+        
         x  = x + self.tau * x_dot
 
         # Update the pendulum states
@@ -113,9 +117,16 @@ class PlanarCraneContEnv(gym.Env):
         distance_to_target = self.desired_trolley - (x - self.cable_length * np.sin(theta))
         
         #- 10.0/theta**2
-        reward = 0.01/distance_to_target**2 - 1.0 - 0.1 * self.x_accel**2 - limits*10
+#         if distance_to_target == 0.0: # protect against division by 0
+#            distance_to_target = 1e-6
+        
+#         reward = -distance_to_target**2 - limits*100
+        reward = -(1/0.1) * x**2 - 1/(1 * np.pi/180)*theta**2 - limits*100
         #reward = np.clip(reward, -np.inf, 1000.0)
-
+#         if np.abs(distance_to_target) >= 0.1:
+#             reward = -1.0 - 10*theta**2 - 0.1*self.x_accel**2 - limits*10
+#         else:  
+#             reward = 1000.0 
 
         if self.SAVE_DATA:
             current_data = np.array([self.counter * self.tau, theta, theta_dot, x, x_dot, self.x_accel, reward])
