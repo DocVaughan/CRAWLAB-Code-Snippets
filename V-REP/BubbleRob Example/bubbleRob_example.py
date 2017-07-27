@@ -58,55 +58,69 @@ except:
 
 import time
 
-print ('Program started')
-
 vrep.simxFinish(-1) # just in case, close all opened connections
 clientID=vrep.simxStart('127.0.0.1',19997,True,True,5000,5) # Connect to V-REP
 
-
-if clientID!=-1:
+if clientID != -1:
     print ('Connected to remote API server')
 
     # enable the synchronous mode on the client:
     vrep.simxSynchronous(clientID, True)
 
+   
+    # Get the handles for the objects in the scene we want to interact with. The 
+    # names here should match the names in the scene in V-REP
+    # Get the handles for the two motors
     motors = ['leftMotor', 'rightMotor']
-    
-    motor_speeds = np.ones(len(motors)) * 10.0
-    
-    # get the handles for each joint and set up streaming
     motor_handles = [vrep.simxGetObjectHandle(clientID, name, vrep.simx_opmode_blocking)[1] for name in motors]
 
-    # get handle for target and set up streaming
-    _, target_handle = vrep.simxGetObjectHandle(clientID, 'target', vrep.simx_opmode_blocking)
-
-    dt = 0.05 # timestep of the simluation
+    # Get the handle for the body
+    body_handle = vrep.simxGetObjectHandle(clientID, 'body', vrep.simx_opmode_blocking)[1]
+    
+    # Get the sensor handle
+    sensor_handle = vrep.simxGetObjectHandle(clientID, 'BubbleRobSensingNose', vrep.simx_opmode_blocking)[1]
+    
+    dt = 0.05 # timestep of the simulation
     vrep.simxSetFloatingParameter(clientID,
                                   vrep.sim_floatparam_simulation_time_step,
                                   dt, # specify a simulation time step
                                   vrep.simx_opmode_oneshot)
  
 
-    # start the simulation in lockstep with our code
+    # start the simulation sychronized with our code
     vrep.simxStartSimulation(clientID, vrep.simx_opmode_blocking)
 
     sim_time = 0
+    
     try:
         while sim_time < 10: # run for 10 simulated seconds
  
-            if sim_time < 2:
-                right_motor_speed = 180 * np.pi/180
-                left_motor_speed = 180 * np.pi/180
-            elif sim_time < 5:
-                right_motor_speed = 180 * np.pi/180
-                left_motor_speed = -180 * np.pi/180
-            else:
-                right_motor_speed = -180 * np.pi/180
-                left_motor_speed = -180 * np.pi/180
+            if sim_time < 7:
+                right_motor_speed = 360 * np.pi/180
+                left_motor_speed = 360 * np.pi/180
+            elif sim_time < 8:
+                right_motor_speed = 360 * np.pi/180
+                left_motor_speed = -360 * np.pi/180
             
+
+            # Get the position of the boddy at each timestep and print it out, 
+            # -1 in this call means absolute position
+            _, (x, y, z) = vrep.simxGetObjectPosition(clientID, body_handle, -1, vrep.simx_opmode_blocking)
+            print('x: {:5.2f} \t y: {:5.2f} \t z: {:5.2f}'.format(x, y, z))
+            
+            # Get the sensor data
+            _, sensor_status, detected_point, detected_object, dectected_normal_vector = vrep.simxReadProximitySensor(clientID, sensor_handle, vrep.simx_opmode_blocking)
+
+            # If there is something in front of the BubbleRob, then turn
+            if sim_time > 0 and detected_point[0] < 0.5:
+                right_motor_speed = 720 * np.pi/180
+                left_motor_speed = -720 * np.pi/180
+                print('Detected object at ({:5.2f}, {:5.2f}, {:5.2f})\r\n'.format(detected_point[0], detected_point[1], detected_point[2]))
+
+            # Set the motor velocities
             vrep.simxSetJointTargetVelocity(clientID, motor_handles[0], left_motor_speed, vrep.simx_opmode_blocking)
             vrep.simxSetJointTargetVelocity(clientID, motor_handles[1], right_motor_speed, vrep.simx_opmode_blocking)
-        
+            
             # move simulation ahead one time step
             vrep.simxSynchronousTrigger(clientID)
             sim_time += dt
@@ -135,4 +149,3 @@ if clientID!=-1:
         
 else:
     print ('Failed connecting to remote API server')
-print ('Program ended')
