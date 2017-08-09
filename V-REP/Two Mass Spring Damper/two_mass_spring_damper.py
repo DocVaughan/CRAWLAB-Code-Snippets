@@ -74,11 +74,11 @@ if clientID != -1:
     motor_handles = [vrep.simxGetObjectHandle(clientID, name, vrep.simx_opmode_blocking)[1] for name in motors]
 
     # Get the handle for the mass
-    masses = ['Mass_1', 'Mass_2']
+    masses = ['Mass_1', 'Mass_2', 'Mass_3', 'Mass_4']
     mass_handles = [vrep.simxGetObjectHandle(clientID, name, vrep.simx_opmode_blocking)[1] for name in masses]
     
     # Get the handle for the spring
-    joints = ['spring']
+    joints = ['spring', 'spring2']
     joint_handles = [vrep.simxGetObjectHandle(clientID, name, vrep.simx_opmode_blocking)[1] for name in joints]
 
     dt = 0.05 # timestep of the simulation
@@ -91,14 +91,16 @@ if clientID != -1:
     # start the simulation sychronized with our code
     vrep.simxStartSimulation(clientID, vrep.simx_opmode_blocking)
 
+    
+
     sim_time = 0
     
     try:
         while sim_time < 10: # run for 10 simulated seconds
         
-            if sim_time < 4:
-                right_motor_speed = -720 * np.pi/180
-                left_motor_speed = -720 * np.pi/180
+            if sim_time < 1:
+                right_motor_speed = 720 * 3 * np.pi/180
+                left_motor_speed = 720 * 3 * np.pi/180
                 
                 # Set the motor velocities 
                 vrep.simxSetJointTargetVelocity(clientID, motor_handles[0], left_motor_speed, vrep.simx_opmode_blocking)
@@ -106,12 +108,31 @@ if clientID != -1:
                 
                 #vrep.simxSetJointForce(clientID, motor_handles[2], 0, vrep.simx_opmode_blocking)
                 #vrep.simxSetJointForce(clientID, motor_handles[3], 0, vrep.simx_opmode_blocking)
+                
+                # Get mass 3's position at the start
+                # _, (x3, y3, z3) = vrep.simxGetObjectPosition(clientID, mass_handles[2], -1, vrep.simx_opmode_blocking)
 
-            else:
+            elif sim_time < 5:
+                right_motor_speed = 0 * np.pi/180
+                left_motor_speed = 0 * np.pi/180
+                
+                # Set the motor velocities 
+                vrep.simxSetJointTargetVelocity(clientID, motor_handles[0], left_motor_speed, vrep.simx_opmode_blocking)
+                vrep.simxSetJointTargetVelocity(clientID, motor_handles[1], right_motor_speed, vrep.simx_opmode_blocking)
+                
+                            
+                # mass3_parent =  vrep.simxGetObjectParent(clientID, mass_handles[2], vrep.simx_opmode_blocking)[1]
+                # vrep.simxSetObjectPosition(clientID, mass_handles[2], -1, (x3-0.1*(sim_time-2), y3, z3), vrep.simx_opmode_blocking)
+                
+                # Set the motor forces to zero - let them freewheel? 
+                for motor in motor_handles:
+                    vrep.simxSetJointForce(clientID, motor, 1e-3, vrep.simx_opmode_blocking)
+                
+            else:           
                 #Set the motor forces to zero - let them freewheel? 
                 for motor in motor_handles:
-#                     vrep.simxSetJointForce(clientID, motor, 0, vrep.simx_opmode_blocking)
-                    vrep.simxSetJointTargetVelocity(clientID, motor, 0, vrep.simx_opmode_blocking)
+                    vrep.simxSetJointForce(clientID, motor, 0.01, vrep.simx_opmode_blocking)
+#                     vrep.simxSetJointTargetVelocity(clientID, motor, 0, vrep.simx_opmode_blocking)
             
             # Get the spring/damper forces
             _, force = vrep.simxGetJointForce(clientID, joint_handles[0], vrep.simx_opmode_blocking)
@@ -124,7 +145,7 @@ if clientID != -1:
             
             _, (x, y, z) = vrep.simxGetObjectPosition(clientID, mass_handles[1], -1, vrep.simx_opmode_blocking)
             print('Mass 2 -- x: {:5.2f} \t y: {:5.2f} \t z: {:5.2f}\r\n'.format(x, y, z))
-            
+
             
             # move simulation ahead one time step
             vrep.simxSynchronousTrigger(clientID)
