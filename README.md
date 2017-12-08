@@ -1,7 +1,7 @@
 CRAWLAB Code Snippets
 -----
 
-Small pieces of code for use in C.R.A.W.LAB research
+Small pieces of code for use in C.R.A.W.LAB research. Larger projects can be found at the [CRAWLAB's organization page](https://github.com/crawlab).
 
 
 #### Licenses
