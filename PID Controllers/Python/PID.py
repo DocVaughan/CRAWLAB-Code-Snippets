@@ -16,7 +16,8 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   * 
+#   * 01/24/18 - JEV - joshua.vaughan@louisiana.edu
+#       - Added integral windup check
 #
 ##########################################################################################
 
@@ -99,6 +100,13 @@ class PID(object):
             
             self.integral_term += self.ki * self.error
             
+            # limit the integral to within the range of possible values to 
+            # prevent integral windup
+            if self.integral_term > self.max_output:
+                self.integral_term = self.max_output
+            elif self.integral_term < self.min_output:
+                self.integral_term = self.min_output
+            
             self.state_change = current_state - self.last_state
             self.last_state = current_state
             
@@ -106,8 +114,6 @@ class PID(object):
             logging.debug('Integral term: {:.4f}'.format(self.integral_term))
             
             self.output = self.kp * self.error + self.integral_term - self.kd * self.state_change
-            
-            # TODO: 01/24/18 - JEV - Add integral windup check
             
             # limit the output to within the range of possible values
             if self.output > self.max_output:
