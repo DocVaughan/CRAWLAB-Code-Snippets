@@ -107,6 +107,8 @@ class PID(object):
             
             self.output = self.kp * self.error + self.integral_term - self.kd * self.state_change
             
+            # TODO: 01/24/18 - JEV - Add integral windup check
+            
             # limit the output to within the range of possible values
             if self.output > self.max_output:
                 self.output = self.max_output
