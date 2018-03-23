@@ -71,7 +71,7 @@ class Camera(object):
         return frame
         
 if __name__ == "__main__":
-    IP_ADDRESS = '10.50.61.62'
+    IP_ADDRESS = '10.50.61.168'
     USER = 'guest'
     PASSWORD = 'viewandmove'
 

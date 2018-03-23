@@ -34,7 +34,7 @@ import cv2
 
 
 FILENAME = 'Tipover_Unsecure_CWs_CloseUp_trimmed.mov'
-WEBCAM = False
+WEBCAM = True
 
 # global that gets changed to false after we click the mouse button on each 
 # frame of the video
