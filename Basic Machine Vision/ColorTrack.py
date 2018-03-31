@@ -1,5 +1,11 @@
 #! /usr/bin/env python 
  
+ 
+# NOTE: Do *NOT* use this version. It is uses the old openCV python bindings.
+# It is just kept here for archival purposes.
+#
+# Use basic_color_tracking.py instead
+ 
 import cv 
  
 color_tracker_window = "Color Tracker" 
