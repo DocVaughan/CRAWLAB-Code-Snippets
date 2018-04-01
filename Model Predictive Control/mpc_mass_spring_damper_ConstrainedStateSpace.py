@@ -3,15 +3,16 @@
 ###############################################################################
 # mpc_mass_spring_damper_UnconstrainedStateSpace.py
 #
-# This is an unconstrained Model Predictive Controller for a simple 
-# mass-spring-damper system.
+# This is a constrained Model Predictive Controller for a simple 
+# mass-spring-damper system. Constraints are placed on the magnitude of the 
+# control input
 #
 # Code largely implemented while following the notes at:
 #  http://engineering.utsa.edu/ataha/wp-content/uploads/sites/38/2017/07/EE5143_Module9.pdf
 # 
 # So, the notation there is used for most of the matrix operations
 #
-# Created: 03/30/18
+# Created: 03/31/18
 #   - Joshua Vaughan
 #   - joshua.vaughan@louisiana.edu
 #   - http://www.ucs.louisiana.edu/~jev9637
@@ -52,6 +53,11 @@ wn = np.sqrt(k/m)            # natural frequency (rad/s)
 # Select damping ratio and use it to choose an appropriate c
 zeta = 0.00                   # damping ratio
 c = 2*zeta*wn*m               # damping coeff.
+
+# Define the minimum and maximum actuator effort
+U_max = 10                    # N
+U_min = -U_max                # N
+
 
 # Form the continuous time version of the system
 A_cont = np.array([[0,       1],
@@ -126,6 +132,25 @@ Q = 10*np.eye(Np)
 R = 0.01 * np.eye(Np)
 # R = np.kron(np.eye(Np), R)
 
+# See page 11 of the pdf below for reasoning for these E and H matrices:
+#   https://engineering.purdue.edu/~zak/ECE680/MPC_handout.pdf
+E = np.ones((Np, num_inputs))
+
+#
+H = np.zeros((Np, Np))
+row, col = np.indices(H.shape)
+
+for index in range(np.shape(H)[1]):
+    H[row == col + index*2] = 1.0
+
+# This matrix will be used for the case where we only want to limit the first
+# output value of the calculated horizon. We call it Input_A because it will
+# become part of Ax<=b type constraint
+Input_A_I = np.block([[-np.eye(num_inputs), np.zeros((num_inputs, Np-num_inputs))],
+                      [np.eye(num_inputs), np.zeros((num_inputs, Np-num_inputs))]])
+
+
+
 
 # Define the initial state of the system
 x1_init = 0.0
@@ -156,6 +181,14 @@ for sample in range(int(num_samples)):
 
     # Now, compute the optimal series of inputs
     deltaU = inv(R + Z.T @ Q @ Z) @ Z.T @ Q @ (XD - W @ xa)
+    
+    Input_b = np.array([[-U_min + E * u_total[sample]],
+                        [U_max - E * u_total[sample]]])
+
+    Input_A = Input_A_I @ deltaU
+    
+    
+
 
 #     # TODO - 03/30/18 - JEV - Do we need to calculate these gains for anything?
 #     #Compute the gain matrices Kr and Kmpc
