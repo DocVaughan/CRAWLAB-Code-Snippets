@@ -50,7 +50,7 @@ def on_connect(client, userdata, flags, rc):
 client = mqtt.Client()
 
 # check for a defined username. If we have defined one, set the username and 
-# password for the server
+# password for the server,
 if USERNAME is not None:
     client.username_pw_set(USERNAME, PASSWORD)
 
