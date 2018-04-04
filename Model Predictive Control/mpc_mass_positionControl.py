@@ -16,16 +16,14 @@
 #       So, it will likely be ugly on screen. The saved PDFs should look
 #       better.
 #
-# Created: 03/29/18
+# Created: 04/04/18
 #   - Joshua Vaughan
 #   - joshua.vaughan@louisiana.edu
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
 #   * 04/04/18 - JEV - joshua.vaughan@louisiana.edu
-#       - General cleanup
-#       - Simplification of program logic around looping over full duration
-#       - 
+#       - Using the discrete model for simluation too
 #
 # TODO:
 #   * 
@@ -51,8 +49,8 @@ num_samples = stop_time / dt # Determine the number of samples in the sim time
 
 # Define the system parameters
 m = 1.0                     # mass (kg)
-c = 1                       # oefficient to represent the viscous friction
-U_max = 50                  # Maximum actuator effort (N)
+c = 5                       # coefficient to represent the viscous friction
+U_max = 10                  # Maximum actuator effort (N)
 
 A = np.array([[0, 1], [0, -c/m]])
 B = np.array([[0], [1/m]])
@@ -122,7 +120,7 @@ for _ in range(int(num_samples)):
     # sums problem objectives and concatenates constraints.
     prob = sum(states)
     prob.constraints += [x[:,0] == x_0]
-    prob.solve(solver=cvx.ECOS)
+    prob.solve()
 
     u_total = np.append(u_total, u[0].value)
     x1_total = np.append(x1_total, x[0,1].value)
@@ -144,12 +142,14 @@ time = np.arange(0, stop_time, new_dt)
 
 sampling_offset = np.ones(int(sampling_multiple),)
 
-u_newDt = np.kron(u_total, sampling_offset)
+u_newDt = np.repeat(u_total, sampling_multiple)
 u_newDt = u_newDt[int(sampling_multiple):]
 
+# Convert the system to digital using the faster sampling rate.
+new_digital_sys = control.sample_system(sys, new_dt)
 
-t_out, y_out, x_out = control.forced_response(sys, time, u_newDt)
-
+# Now, simulate the systema at the new higher sampling rate
+t_out, y_out, x_out = control.forced_response(new_digital_sys, time, u_newDt)
 
 
 # I'm including a message here, so that I can tell from the terminal when it's
@@ -180,7 +180,7 @@ ax.set_axisbelow(True)
 plt.xlabel('Time (s)', fontsize=22, weight='bold', labelpad=5)
 plt.ylabel('Position (m)', fontsize=22, weight='bold', labelpad=10)
  
-plt.plot(t_out, y_out[0,:], linewidth=2, linestyle='-', label=r'Position')
+plt.plot(t_out, y_out[:,0], linewidth=2, linestyle='-', label=r'Position')
 
 # uncomment below and set limits if needed
 # plt.xlim(0,5)

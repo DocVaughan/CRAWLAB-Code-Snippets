@@ -24,7 +24,7 @@
 #   * 04/04/18 - JEV - joshua.vaughan@louisiana.edu
 #       - General cleanup
 #       - Simplification of program logic around looping over full duration
-#       - 
+#       - Using the discrete model for simluation too
 #
 # TODO:
 #   * 
@@ -38,7 +38,7 @@ import cvxpy as cvx
 
 
 # Define the time oriented parameters for the problem
-prediction_horizon = 20     # Number of samples to use in prediction
+prediction_horizon = 10     # Number of samples to use in prediction
 dt = 0.1                    # Sampling time (s)
 
 stop_time = 5.0             # Time to end the simulation
@@ -154,8 +154,11 @@ u_newDt = np.kron(u_total, sampling_offset)
 u_newDt = u_newDt[int(sampling_multiple):]
 
 
-t_out, y_out, x_out = control.forced_response(sys, time, u_newDt)
+# Convert the system to digital using the faster sampling rate.
+new_digital_sys = control.sample_system(sys, new_dt)
 
+# Now, simulate the systema at the new higher sampling rate
+t_out, y_out, x_out = control.forced_response(new_digital_sys, time, u_newDt)
 
 
 # I'm including a message here, so that I can tell from the terminal when it's
@@ -186,7 +189,7 @@ ax.set_axisbelow(True)
 plt.xlabel('Time (s)', fontsize=22, weight='bold', labelpad=5)
 plt.ylabel('Position (m)', fontsize=22, weight='bold', labelpad=10)
  
-plt.plot(t_out, y_out[0,:], linewidth=2, linestyle='-', label=r'Position')
+plt.plot(t_out, y_out[:,0], linewidth=2, linestyle='-', label=r'Position')
 
 # uncomment below and set limits if needed
 # plt.xlim(0,5)
