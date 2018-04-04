@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 ###############################################################################
-# mpc_planarCrane.py
+# mpc_planarCrane_nonlinear.py
 #
 # Solving a Model Predictive Controller for a simple planar crane system
 # using the cvxpy module. The solution has a constraint on maximum
@@ -166,7 +166,7 @@ for _ in range(int(num_samples)):
     x_0 = np.array(x[:,1].value.A.flatten())
 
 
-# Now, we'll use the command we generated with MPC in the full nonlinear simluation
+# Now, we'll use the command we generated with MPC in the full nonlinear simulation
 
 def eq_of_motion(w, t, p):
     """
@@ -178,7 +178,7 @@ def eq_of_motion(w, t, p):
         p :  vector of the parameters:
     """
     theta, theta_dot, x, x_dot = w
-    l, g, u_newDt, time = p
+    l, g, u_mpc, time = p
 
     # Create sysODE = (theta', theta_dot')
     sysODE = [theta_dot,
