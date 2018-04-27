@@ -53,6 +53,7 @@ class PlanarCraneContEnv(gym.Env):
         self.max_trolley_accel = 1.0    # maximum allowed accel of trolley
         self.SAVE_DATA = False          # set True to save episode data
         self.MAX_STEPS = 500            # maximum number of steps to run
+        self.wn = np.sqrt(self.gravity / self.cable_length) # natural freq. (rad)
         
         # Define thesholds for trial limits, penalized heavily for exceeding these
         self.theta_threshold = 60 * np.pi / 180     # +/- 60 degree limit (rad)
@@ -76,6 +77,7 @@ class PlanarCraneContEnv(gym.Env):
         self._seed()
         self.viewer = None
         self.state = None
+        self.done = False
         self.x_accel = 0.0
 
     def _seed(self, seed=None):
@@ -120,44 +122,58 @@ class PlanarCraneContEnv(gym.Env):
 #         if distance_to_target == 0.0: # protect against division by 0
 #            distance_to_target = 1e-6
         
-#         reward = -distance_to_target**2 - limits*100
-        reward = -(1/0.1) * x**2 - 1/(1 * np.pi/180)*theta**2 - limits*100
-        #reward = np.clip(reward, -np.inf, 1000.0)
+        # -distance_to_target**2 - limits*100
+        # -(1/self.v_max_threshold)*x_dot**2
+        # - 0.001 * self.x_accel**2
+        # - 1.0/(1.0 * self.wn*np.pi/180)*theta_dot**2
+        #reward = -(1/0.01) * x**2 - 1/(0.05 * np.pi/180)*theta**2 - 0.01 * self.x_accel**2 - limits*100
+        
+        reward = -0.1*x**2 - theta**2 - 0.01*self.x_accel**2
+        #reward = -distance_to_target**2 - 0.1*self.x_accel**2
+        
+        if (x**2 < 0.05) and (x_dot**2 < 0.01) and (theta**2 < 0.1*np.pi/180) and (theta_dot**2 < 0.1*self.wn*np.pi/180):
+            self.done = True
+            # reward = 10000.0
+        #else:
+         #   reward = -0.1*x**2 - theta**2 - 0.1*self.x_accel**2
+        
+        # reward = np.clip(reward, -np.inf, 1000.0)
 #         if np.abs(distance_to_target) >= 0.1:
-#             reward = -1.0 - 10*theta**2 - 0.1*self.x_accel**2 - limits*10
+#             reward = -1.0 -(1/0.1) * x**2 - 1/(2 * np.pi/180)*theta**2 - 0.1 * self.x_accel**2 - limits*100
 #         else:  
-#             reward = 1000.0 
+#             reward = 100.0 - (1/0.01) * x**2 - 1/(0.5 * np.pi/180)*theta**2 - 0.1 * self.x_accel**2 - limits*100
+
+#         if np.abs(distance_to_target) >= 0.01:
+#             reward = -np.clip(self.counter*self.tau, 1, 50) - 10*theta**2 - 0.1*self.x_accel**2 - limits*10
+#         else:  
+#             reward = 1000.0 - 250*self.x_accel**2 #- 10*theta**2 - 0.1*self.x_accel**2 - limits*10
 
         if self.SAVE_DATA:
             current_data = np.array([self.counter * self.tau, theta, theta_dot, x, x_dot, self.x_accel, reward])
             self.episode_data[self.counter, :] = current_data
 
-
-#         if self.counter >= self.MAX_STEPS or x > self.x_max_threshold \
-#                                or x < -self.x_max_threshold:
-#                                
         if self.counter >= self.MAX_STEPS:
-            done = True
-            
-            if self.SAVE_DATA:
-                header = header='Time (s), Angle (rad), Angle (rad/s), Trolley Pos (m), Trolly Vel (m/s), Trolley Accel (m/s^2), Reward'
-                data_filename = 'example_data/EpisodeData_{}.csv'.format(datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S'))
-                np.savetxt(data_filename, self.episode_data,  header=header, delimiter=',')
-        else:
-            done = False
+            self.done = True
+        
+        if self.done == True and self.SAVE_DATA:
+            header = header='Time (s), Angle (rad), Angle (rad/s), Trolley Pos (m), Trolly Vel (m/s), Trolley Accel (m/s^2), Reward'
+            data_filename = 'example_data/EpisodeData_{}.csv'.format(datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S'))
+            np.savetxt(data_filename, self.episode_data,  header=header, delimiter=',')
 
-
-        return np.array(self.state), reward, done, {}
+        return np.array(self.state), reward, self.done, {}
 
     def _reset(self):
         # TODO: 07/07/17 - Probably need more randomness in initial conditions
-        self.state = np.array([0, # self.np_random.uniform(low=-np.pi/12, high=np.pi/12),
+        self.state = np.array([0, # self.np_random.uniform(low=-5*np.pi/180, high=5*np.pi/180),
                                0, # self.np_random.uniform(low=-0.5*np.pi/6, high=0.5*np.pi/6),
-                               self.np_random.uniform(low=-2.0, high=2.0),
+                               np.sign(self.np_random.uniform(low=-1.0, high=1.0)) * self.np_random.uniform(low=1.0, high=3.0),
                                0])#self.np_random.uniform(low=-0.5, high=0.5)])
 
         # Reset the counter and the data recorder array
         self.counter = 0
+        
+        # Reset the done flag
+        self.done = False
 
         if self.SAVE_DATA:
             self.episode_data = np.zeros((self.MAX_STEPS+1, 7))

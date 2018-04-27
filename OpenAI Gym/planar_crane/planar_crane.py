@@ -42,9 +42,9 @@ class PlanarCraneEnv(gym.Env):
         'video.frames_per_second' : 50
     }
     
-    # actions available, hoist down, do nothing, hoist up
     MAX_TROLLEY_ACCEL = 1.0 # (m/s^2)
-    AVAIL_TROLLEY_ACCEL =  [-MAX_TROLLEY_ACCEL, 0, MAX_TROLLEY_ACCEL]
+    NUM_ACTIONS = 9         # Need to use an odd number to include 0
+    AVAIL_TROLLEY_ACCEL = np.linspace(-MAX_TROLLEY_ACCEL, MAX_TROLLEY_ACCEL, NUM_ACTIONS)
     
     def __init__(self):
         self.gravity = 9.8          # accel. due to gravity (m/s^2)
@@ -53,6 +53,7 @@ class PlanarCraneEnv(gym.Env):
         self.tau = 0.02             # seconds between state updates
         self.counter = 0            # counter for number of steps
         self.desired_trolley = 0    # desired final position of payload
+        self.MAX_STEPS = 500        # maximum number of steps to run
         self.SAVE_DATA = False      # set True to save episode data
         
         # Define thesholds for failing episode
@@ -66,7 +67,7 @@ class PlanarCraneEnv(gym.Env):
 #                                        shape = (1,))
 
         # This action space is just accel left, do nothing, accel right
-        self.action_space = spaces.Discrete(3)
+        self.action_space = spaces.Discrete(self.NUM_ACTIONS)
         
         high_limit = np.array([2*self.theta_threshold,      # max observable angle 
                                10*2*self.theta_threshold,   # max observable angular vel.
@@ -116,17 +117,20 @@ class PlanarCraneEnv(gym.Env):
         #reward = -1.0 + 0.001 / (distance_to_target)**2 - 0.0001*self.x_accel**2 - limits*10
         
         if np.abs(distance_to_target) >= 0.01:
-            reward = -1.0 - 10*theta**2 - 0.1*self.x_accel**2 - limits*10
+#             reward = -1.0 - 10*theta**2 - 0.1*self.x_accel**2 - limits*10
+            reward = -np.clip(self.counter*self.tau, 1, 50) - 10*theta**2 - 0.1*self.x_accel**2 - limits*10
         else:  
-            reward = 1000.0 
+            reward = 1000.0 - 250*self.x_accel**2 #- 10*theta**2 - 0.1*self.x_accel**2 - limits*10
 
-
+        # - 0.01 * self.x_accel**2
+        # reward = -(1/0.01) * x**2 - 1/(0.5 * np.pi/180)*theta**2 - limits*100
+        
         if self.SAVE_DATA:
             current_data = np.array([self.counter * self.tau, theta, theta_dot, x, x_dot, self.x_accel, reward])
             self.episode_data[self.counter, :] = current_data
 
 
-        if self.counter >= 500:
+        if self.counter >= self.MAX_STEPS:
             done = True
             
             if self.SAVE_DATA:
@@ -142,8 +146,8 @@ class PlanarCraneEnv(gym.Env):
 
     def _reset(self):
         # TODO: 07/07/17 - Probably need more randomness in initial conditions
-        self.state = np.array([0, # self.np_random.uniform(low=-np.pi/12, high=np.pi/12),
-                               0, # self.np_random.uniform(low=-0.5*np.pi/6, high=0.5*np.pi/6),
+        self.state = np.array([0,#self.np_random.uniform(low=-5*np.pi/180, high=5*np.pi/180),
+                               0, #self.np_random.uniform(low=-0.5*np.pi/6, high=0.5*np.pi/6),
                                self.np_random.uniform(low=-3.0, high=3.0),
                                0])#self.np_random.uniform(low=-0.5, high=0.5)])
         
@@ -250,6 +254,12 @@ class PlanarCraneEnv(gym.Env):
         self.trolleytrans.set_translation(screen_width/2 + x*scale, trolley_yOffset)
         
         # show the accel direction
-        self.acceltrans.set_translation(screen_width/2 + (x*scale + np.sign(self.x_accel)*(trolley_width/2+10)), trolley_yOffset)
+        #self.acceltrans.set_translation(screen_width/2 + (x*scale + np.sign(self.x_accel)*(trolley_width/2+10)), trolley_yOffset)
+
+        # show the accel direction
+        accel_scaling = 0.025*self.x_accel*scale
+        # self.acceltrans.set_translation(screen_width/2 + (x*scale + np.sign(self.x_accel)*(trolley_width/2+10)), trolley_yOffset)
+        self.acceltrans.set_translation(screen_width/2 + (x*scale + (20*accel_scaling/2)), trolley_yOffset)
+        self.acceltrans.set_scale(accel_scaling, 1)
 
         return self.viewer.render(return_rgb_array = mode=='rgb_array')

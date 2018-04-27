@@ -25,7 +25,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-FILENAME = 'example_data/EpisodeData_2017-07-14_001608.csv'
+FILENAME = 'example_data/EpisodeData_2017-07-20_052501.csv'
 CABLE_LENGTH = 2.0
 
 # Files have data saved as:
@@ -102,8 +102,8 @@ ax.set_axisbelow(True)
 plt.xlabel('Time (s)', fontsize=22, weight='bold', labelpad=5)
 plt.ylabel('Position (m)', fontsize=22, weight='bold', labelpad=10)
 
-plt.plot(t, x, linewidth=2, linestyle='--', label=r'Trolley') 
-plt.plot(t, x - CABLE_LENGTH * np.sin(theta), linewidth=2, linestyle='-', label=r'Payload')
+plt.plot(t, 2-x, linewidth=2, linestyle='--', label=r'Trolley') 
+plt.plot(t, 2- (x - CABLE_LENGTH * np.sin(theta)), linewidth=2, linestyle='-', label=r'Payload')
 
 # uncomment below and set limits if needed
 # plt.xlim(0,5)
@@ -118,7 +118,7 @@ plt.setp(ltext,fontsize=18)
 plt.tight_layout(pad=0.5)
 
 # save the figure as a high-res pdf in the current folder
-# plt.savefig('OpenAI_planarCrane_position.pdf')
+plt.savefig('OpenAI_planarCrane_position.pdf')
 
 
 

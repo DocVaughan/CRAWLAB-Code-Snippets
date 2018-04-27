@@ -44,14 +44,17 @@ from rl.memory import SequentialMemory, EpisodeParameterMemory
 
 ENV_NAME = 'planar_crane-v0'
 
-LAYER_SIZE = 1024
-NUM_HIDDEN_LAYERS = 4
-NUM_STEPS = 100000
-METHOD = 'CEM' # can be DQN, DUEL_DQN, SARSA, or CEM
+LAYER_SIZE = 128
+NUM_HIDDEN_LAYERS = 3
+NUM_STEPS = 50000
+LOG_INTERVAL = 10000
+MAX_STEPS = 500
+METHOD = 'DUEL_DQN' # can be DQN, DUEL_DQN, SARSA, or CEM
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # TODO: 07/14/17 - JEV - Add GUI, argparser, or CLI for this selection
-WEIGHT_FILENAME = 'weights/SARSA_planar_crane-v0_weights_1024_4_100000_2017-07-14_160523.h5f'
+# WEIGHT_FILENAME = 'weights/DUEL_DQN_planar_crane-v0_weights_128_3_250000_2017-07-18_161858.h5f'
+WEIGHT_FILENAME = 'weights/{}_{}_weights.h5f'.format(METHOD, ENV_NAME)
 
 # Define the filenames to use for this session
 MONITOR_FILENAME = 'example_data/{}_{}_monitor_{}_{}_{}_{}'.format(METHOD, ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
@@ -60,10 +63,11 @@ MONITOR_FILENAME = 'example_data/{}_{}_monitor_{}_{}_{}_{}'.format(METHOD, ENV_N
 env = gym.make(ENV_NAME)
 
 # Record episode data?
-env.SAVE_DATA = False
+env.SAVE_DATA = True
+env.MAX_STEPS = MAX_STEPS
 
 # uncomment to record data about the training session, including video if video_callable is true
-env = gym.wrappers.Monitor(env, MONITOR_FILENAME, video_callable=False, force=True)
+# env = gym.wrappers.Monitor(env, MONITOR_FILENAME, video_callable=False, force=True)
 
 
 # np.random.seed(123)
@@ -99,23 +103,25 @@ test_policy = GreedyQPolicy()
 # Compile the agent based on method specified. We use .upper() to convert to 
 # upper case for comparison
 if METHOD.upper() == 'DUEL_DQN': 
+    memory = SequentialMemory(limit=NUM_STEPS, window_length=1)
     agent = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
                enable_dueling_network=True, dueling_type='avg', target_model_update=1e-2, 
                policy=train_policy, test_policy=test_policy)
-    agent.compile(Adam(lr=1e-3), metrics=['mae'])
+    agent.compile(Adam(lr=1e-3, clipnorm=1.0), metrics=['mae'])
 
 elif METHOD.upper() == 'DQN':
+    memory = SequentialMemory(limit=NUM_STEPS, window_length=1)
     agent = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
                target_model_update=1e-2, policy=train_policy, test_policy=test_policy)
-    agent.compile(Adam(lr=1e-3), metrics=['mae'])
+    agent.compile(Adam(lr=1e-3, clipnorm=1.0), metrics=['mae'])
 
 elif METHOD.upper() == 'SARSA':
      # SARSA does not require a memory.
-    policy = BoltzmannQPolicy()
     agent = SarsaAgent(model=model, nb_actions=nb_actions, nb_steps_warmup=10, policy=train_policy)
-    agent.compile(Adam(lr=1e-3), metrics=['mae'])
+    agent.compile(Adam(lr=1e-3, clipnorm=1.0), metrics=['mae'])
     
 elif METHOD.upper() == 'CEM':
+    memory = EpisodeParameterMemory(limit=1000, window_length=1)
     agent = CEMAgent(model=model, nb_actions=nb_actions, memory=memory,
                batch_size=50, nb_steps_warmup=2000, train_interval=50, elite_frac=0.05)
     agent.compile()
@@ -129,4 +135,4 @@ else:
 agent.load_weights(WEIGHT_FILENAME)
 
 # Finally, evaluate our algorithm for 1 episode.
-agent.test(env, nb_episodes=5, visualize=True, nb_max_episode_steps=500)
+agent.test(env, nb_episodes=5, visualize=True, action_repetition=5)#, nb_max_episode_steps=500)

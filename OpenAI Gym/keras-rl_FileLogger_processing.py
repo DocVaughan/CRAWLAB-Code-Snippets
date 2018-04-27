@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 import json # the data files generated are json
 
 # TODO: 07/13/17 - JEV - Add GUI, argparse, or CLI for selecting file
-FILENAME = 'logs/ddpg_planar_crane_continuous-v0_log_2048_3_100000_2017-07-14_175832.json'
+FILENAME = 'logs/ddpg_planar_crane_continuous-v0_log_32_3_100000_2017-07-20_012022.json'
 
 
 
@@ -47,6 +47,7 @@ mean_q = np.array(data['mean_q'])
 episode_steps = np.array(data['nb_episode_steps'])
 cumulative_steps = np.array(data['nb_steps'])
 
+# time = 
 
 # ---- Plot evolution of reward over episodes --------------------------------
 # Set the plot size - 3x2 aspect ratio is best

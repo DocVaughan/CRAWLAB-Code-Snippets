@@ -43,9 +43,9 @@ from rl.callbacks import FileLogger, ModelIntervalCheckpoint
 
 ENV_NAME = 'planar_crane_continuous-v0'
 
-LAYER_SIZE = 2048
+LAYER_SIZE = 1024
 NUM_HIDDEN_LAYERS = 3
-NUM_STEPS = 100000
+NUM_STEPS = 50000
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # Get the environment and extract the number of actions.
@@ -108,12 +108,14 @@ print(critic.summary())
 # even the metrics!
 memory = SequentialMemory(limit=2*NUM_STEPS, window_length=1)
 random_process = OrnsteinUhlenbeckProcess(size=nb_actions, theta=.15, mu=0., sigma=.3)
+# random_process = OrnsteinUhlenbeckProcess(size=nb_actions, dt = env.tau, theta=1.0, mu=0.0, sigma=0.5, sigma_min=0.3, n_steps_annealing=NUM_STEPS)
 
 agent = DDPGAgent(nb_actions=nb_actions, actor=actor, critic=critic, critic_action_input=action_input,
                   memory=memory, nb_steps_warmup_critic=100, nb_steps_warmup_actor=100,
-                  random_process=random_process, gamma=.99, target_model_update=1e-3)
+                  random_process=random_process, gamma=.999, target_model_update=1e-3,
+                  delta_clip=1.0)
 
-agent.compile(Adam(lr=.001), metrics=['mae'])
+agent.compile(Adam(lr=.001, clipnorm=1.0), metrics=['mae'])
 
 
 
@@ -121,8 +123,8 @@ agent.compile(Adam(lr=.001), metrics=['mae'])
 # Optionally, we can reload a previous model's weights and continue training from there
 # Remove the _actor or _critic from the filename. The load method automatically
 # appends these.        
-WEIGHTS_FILENAME = 'weights/ddpg_planar_crane_continuous-v0_weights_2048_3_100000_2017-07-14_171736.h5f'
-agent.load_weights(WEIGHTS_FILENAME)
+WEIGHTS_FILENAME = 'weights/ddpg_planar_crane_continuous-v0_weights.h5f'
+# agent.load_weights(WEIGHTS_FILENAME)
 
 
 callbacks = []
@@ -134,11 +136,16 @@ callbacks += [FileLogger(log_filename, interval=100)]
 # Okay, now it's time to learn something! We visualize the training here for show, but this
 # slows down training quite a lot. You can always safely abort the training prematurely using
 # Ctrl + C.
-agent.fit(env, nb_steps=NUM_STEPS, callbacks=callbacks, visualize=False, verbose=1, nb_max_episode_steps=500)
+agent.fit(env, nb_steps=NUM_STEPS, callbacks=callbacks, visualize=False, verbose=1)#, nb_max_episode_steps=500)
 
 # After training is done, we save the final weights.
 filename = 'weights/ddpg_{}_weights_{}_{}_{}_{}.h5f'.format(ENV_NAME, LAYER_SIZE, NUM_HIDDEN_LAYERS, NUM_STEPS, TRIAL_ID)
 agent.save_weights(filename, overwrite=True)
 
+# We'll also save a simply named version to make running test immediately
+# following training easier. 
+filename = 'weights/ddpg_{}_weights.h5f'.format(ENV_NAME)
+agent.save_weights(filename, overwrite=True)
+
 # Finally, evaluate our algorithm for 5 episodes.
-agent.test(env, nb_episodes=5, nb_max_episode_steps=500, visualize=True)
+agent.test(env, visualize=True) #nb_max_episode_steps=500,

@@ -29,7 +29,7 @@ import numpy as np
 import datetime     # used to generate unique filenames
 
 import gym
-import planar_crane_continuous
+import mass_spring_damper_continuous
 
 from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Flatten, Input, merge
@@ -40,9 +40,9 @@ from rl.memory import SequentialMemory
 from rl.random import OrnsteinUhlenbeckProcess
 
 
-ENV_NAME = 'planar_crane_continuous-v0'
+ENV_NAME = 'mass_spring_damper_continuous-v0'
 
-LAYER_SIZE = 1024
+LAYER_SIZE = 32
 NUM_HIDDEN_LAYERS = 3
 NUM_STEPS = 100000
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
@@ -50,7 +50,7 @@ TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 # TODO: Add file picker GUI - For now, look for files with the format below
 # Remove the _actor or _critic from the filename. The load method automatically
 # appends these.
-FILENAME = 'weights/ddpg_planar_crane_continuous-v0_weights.h5f'
+FILENAME = 'weights/ddpg_mass_spring_damper_continuous-v0_weights.h5f'
 
 # Get the environment and extract the number of actions.
 env = gym.make(ENV_NAME)
@@ -58,7 +58,7 @@ nb_actions = env.action_space.shape[0]
 
 # Record episode data?
 env.SAVE_DATA = True
-env.MAX_STEPS = 1000
+env.MAX_STEPS = 500
 
 MONITOR_FILENAME = 'example_data/ddpg_{}_monitor_{}_{}_{}_{}'.format(ENV_NAME,
                                                                  LAYER_SIZE,
@@ -122,4 +122,4 @@ agent.load_weights(FILENAME)
 
 
 # Finally, evaluate our algorithm for 5 episodes.
-agent.test(env, nb_episodes=5, visualize=True) #nb_max_episode_steps=500, 
+agent.test(env, nb_episodes=5, visualize=True,action_repetition=5) #nb_max_episode_steps=500, 
