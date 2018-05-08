@@ -31,7 +31,7 @@ import numpy as np
 import datetime # for unique filenames
 
 # Import the ODE solver
-from scipy.integrate import solve_ivp
+from scipy.integrate import odeint
 
 logger = logging.getLogger(__name__)
 
