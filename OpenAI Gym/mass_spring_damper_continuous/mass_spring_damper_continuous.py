@@ -109,6 +109,7 @@ class MassSpringDamperContEnv(gym.Env):
     
         return sysODE
 
+
     def _seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
         return [seed]
@@ -124,14 +125,14 @@ class MassSpringDamperContEnv(gym.Env):
         x0 = [x1, x1_dot, x2, x2_dot]
 
         # Call the ODE solver.
-        solution = odeint(self.eq_of_motion, 
-                             [0, self.tau], 
-                             x0, 
-                             max_step=self.max_step, 
-                             atol=self.abserr, 
-                             rtol=self.relerr)
-
-        resp = solution.y
+        resp = odeint(self.eq_of_motion, 
+                      x0, 
+                      [0, self.tau], 
+                      hmax=self.max_step, 
+                      atol=self.abserr, 
+                      rtol=self.relerr)
+        
+        print(resp)
         
         # Update m1 states
 #         x1_accel = 1 / self.m1 * (self.k * (x2 - x1 - self.spring_equil) + 
@@ -158,10 +159,10 @@ class MassSpringDamperContEnv(gym.Env):
 #        
 #         x2  = x2 + self.tau * x2_dot
         
-        x1 = resp[0, -1]
-        x1_dot = resp[1, -1]
-        x2 = resp[2, -1]
-        x2_dot = resp[3, -1]
+        x1 = resp[-1, 0]
+        x1_dot = resp[-1, 0]
+        x2 = resp[-1, 2]
+        x2_dot = resp[-1, 3]
 
         self.state = (x1, x1_dot, x2, x2_dot)
         
