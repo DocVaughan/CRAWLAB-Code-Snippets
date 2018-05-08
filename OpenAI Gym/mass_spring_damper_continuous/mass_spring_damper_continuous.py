@@ -87,7 +87,7 @@ class MassSpringDamperContEnv(gym.Env):
         self.done = False
         self.force = 0.0
         
-    def eq_of_motion(self, t, w):
+    def eq_of_motion(self, w, t):
         """
         Defines the differential equations for the coupled spring-mass system.
 
@@ -124,7 +124,7 @@ class MassSpringDamperContEnv(gym.Env):
         x0 = [x1, x1_dot, x2, x2_dot]
 
         # Call the ODE solver.
-        solution = solve_ivp(self.eq_of_motion, 
+        solution = odeint(self.eq_of_motion, 
                              [0, self.tau], 
                              x0, 
                              max_step=self.max_step, 
