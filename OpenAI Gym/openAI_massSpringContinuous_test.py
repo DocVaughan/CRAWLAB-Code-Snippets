@@ -44,7 +44,7 @@ ENV_NAME = 'mass_spring_damper_continuous-v0'
 
 LAYER_SIZE = 32
 NUM_HIDDEN_LAYERS = 3
-NUM_STEPS = 100000
+NUM_STEPS = 10000
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # TODO: Add file picker GUI - For now, look for files with the format below

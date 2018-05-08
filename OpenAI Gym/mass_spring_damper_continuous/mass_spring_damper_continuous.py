@@ -30,6 +30,9 @@ import logging
 import numpy as np
 import datetime # for unique filenames
 
+# Import the ODE solver
+from scipy.integrate import solve_ivp
+
 logger = logging.getLogger(__name__)
 
 
@@ -57,6 +60,12 @@ class MassSpringDamperContEnv(gym.Env):
         # Define thesholds for trial limits, penalized heavily for exceeding these
         self.mass_pos_threshold = 4.0                 # max mass position (m)
         self.mass_vel_threshold = 0.5                 # max mass velocity (m/s)
+        
+        # Set up solver parameters
+        # ODE solver parameters
+        self.abserr = 1.0e-9
+        self.relerr = 1.0e-9
+        self.max_step = 0.1
 
         # This action space is the range of acceleration of the trolley
         self.action_space = spaces.Box(low=-self.max_force,
@@ -77,10 +86,33 @@ class MassSpringDamperContEnv(gym.Env):
         self.state = None
         self.done = False
         self.force = 0.0
+        
+    def eq_of_motion(self, t, w):
+        """
+        Defines the differential equations for the coupled spring-mass system.
+
+        Arguments:
+            w :  vector of the state variables:
+            t :  time
+        """
+    
+        x1 = w[0]
+        x1_dot = w[1]
+        x2 = w[2]
+        x2_dot = w[3]
+
+        # Create sysODE = (x', x_dot', y', y_dot')
+        sysODE = np.array([x1_dot,
+                           1 / self.m1 * (self.k * (x2 - x1 - self.spring_equil) + self.c * (x2_dot - x1_dot) + self.force),
+                           x2_dot,
+                           1 / self.m2 * (-self.k * (x2 - x1 - self.spring_equil) + -self.c * (x2_dot - x1_dot))])
+    
+        return sysODE
 
     def _seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
         return [seed]
+
 
     def _step(self, action):
         x1, x1_dot, x2, x2_dot = self.state
@@ -89,31 +121,47 @@ class MassSpringDamperContEnv(gym.Env):
         # Get the action and clip it to the min/max trolley accel
         self.force = np.clip(action[0], -self.max_force, self.max_force)
         
+        x0 = [x1, x1_dot, x2, x2_dot]
+
+        # Call the ODE solver.
+        solution = solve_ivp(self.eq_of_motion, 
+                             [0, self.tau], 
+                             x0, 
+                             max_step=self.max_step, 
+                             atol=self.abserr, 
+                             rtol=self.relerr)
+
+        resp = solution.y
         
         # Update m1 states
-        x1_accel = 1 / self.m1 * (self.k * (x2 - x1 - self.spring_equil) + 
-                                  self.c * (x2_dot - x1_dot) + 
-                                  self.force)
+#         x1_accel = 1 / self.m1 * (self.k * (x2 - x1 - self.spring_equil) + 
+#                                   self.c * (x2_dot - x1_dot) + 
+#                                   self.force)
+#         
+#         
+#         x1_dot = x1_dot + self.tau * x1_accel
+#         
+#         # Get the action and clip it to the min/max m1 vel
+#         x1_dot = np.clip(x1_dot, -self.mass_vel_threshold, self.mass_vel_threshold)
+#         
+#         x1  = x1 + self.tau * x1_dot
+# 
+#         # Update m2 states
+#         x2_accel = 1 / self.m2 * (-self.k * (x2 - x1 - self.spring_equil) + 
+#                                   -self.c * (x2_dot - x1_dot))
+#         
+#         
+#         x2_dot = x2_dot + self.tau * x2_accel
+#         
+#         # Get the action and clip it to the min/max m2 accel
+#         x2_dot = np.clip(x2_dot, -self.mass_vel_threshold, self.mass_vel_threshold)
+#        
+#         x2  = x2 + self.tau * x2_dot
         
-        
-        x1_dot = x1_dot + self.tau * x1_accel
-        
-        # Get the action and clip it to the min/max m1 vel
-        x1_dot = np.clip(x1_dot, -self.mass_vel_threshold, self.mass_vel_threshold)
-        
-        x1  = x1 + self.tau * x1_dot
-
-        # Update m2 states
-        x2_accel = 1 / self.m2 * (-self.k * (x2 - x1 - self.spring_equil) + 
-                                  -self.c * (x2_dot - x1_dot))
-        
-        
-        x2_dot = x2_dot + self.tau * x2_accel
-        
-        # Get the action and clip it to the min/max m2 accel
-        x2_dot = np.clip(x2_dot, -self.mass_vel_threshold, self.mass_vel_threshold)
-        
-        x2  = x2 + self.tau * x2_dot
+        x1 = resp[0, -1]
+        x1_dot = resp[1, -1]
+        x2 = resp[2, -1]
+        x2_dot = resp[3, -1]
 
         self.state = (x1, x1_dot, x2, x2_dot)
         

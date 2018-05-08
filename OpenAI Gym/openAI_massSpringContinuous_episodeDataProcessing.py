@@ -25,7 +25,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-FILENAME = 'example_data/EpisodeData_2018-04-08_212624.csv'
+FILENAME = 'example_data/EpisodeData_2018-04-27_174916.csv'
 
 # Files have data saved as:
 # Time (s), Angle (rad), Angle (rad/s), Trolley Pos (m), Trolly Vel (m/s), Trolley Accel (m/s^2), Reward
