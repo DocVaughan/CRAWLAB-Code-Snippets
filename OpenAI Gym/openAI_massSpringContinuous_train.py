@@ -43,9 +43,9 @@ from rl.callbacks import FileLogger, ModelIntervalCheckpoint
 
 ENV_NAME = 'mass_spring_damper_continuous-v0'
 
-LAYER_SIZE = 32
+LAYER_SIZE = 512
 NUM_HIDDEN_LAYERS = 3
-NUM_STEPS = 10000
+NUM_STEPS = 1000000
 TRIAL_ID = datetime.datetime.now().strftime('%Y-%m-%d_%H%M%S')
 
 # Get the environment and extract the number of actions.
@@ -65,7 +65,7 @@ MONITOR_FILENAME = 'example_data/ddpg_{}_monitor_{}_{}_{}_{}'.format(ENV_NAME,
                                                                  NUM_STEPS,
                                                                  TRIAL_ID)
 
-# env = gym.wrappers.Monitor(env, MONITOR_FILENAME, video_callable=False, force=True)
+env = gym.wrappers.Monitor(env, MONITOR_FILENAME, video_callable=False, force=True)
 
 
 
@@ -148,4 +148,4 @@ filename = 'weights/ddpg_{}_weights.h5f'.format(ENV_NAME)
 agent.save_weights(filename, overwrite=True)
 
 # Finally, evaluate our algorithm for 5 episodes.
-agent.test(env, visualize=True) #nb_max_episode_steps=500,
+# agent.test(env, visualize=True) #nb_max_episode_steps=500,

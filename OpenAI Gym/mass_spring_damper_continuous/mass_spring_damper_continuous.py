@@ -31,7 +31,7 @@ import numpy as np
 import datetime # for unique filenames
 
 # Import the ODE solver
-from scipy.integrate import odeint
+from scipy.integrate import solve_ivp
 
 logger = logging.getLogger(__name__)
 
@@ -87,7 +87,7 @@ class MassSpringDamperContEnv(gym.Env):
         self.done = False
         self.force = 0.0
         
-    def eq_of_motion(self, w, t):
+    def eq_of_motion(self, t, w):
         """
         Defines the differential equations for the coupled spring-mass system.
 
@@ -125,15 +125,23 @@ class MassSpringDamperContEnv(gym.Env):
         x0 = [x1, x1_dot, x2, x2_dot]
 
         # Call the ODE solver.
-        resp = odeint(self.eq_of_motion, 
-                      x0, 
-                      [0, self.tau], 
-                      hmax=self.max_step, 
-                      atol=self.abserr, 
-                      rtol=self.relerr)
+        solution = solve_ivp(self.eq_of_motion,
+                             [0, self.tau], 
+                              x0, 
+                              max_step=self.max_step, 
+                              atol=self.abserr, 
+                              rtol=self.relerr)
         
-        print(resp)
+        resp = solution.y
         
+        x1 = resp[0, -1]
+        x1_dot = resp[1, -1]
+        x2 = resp[2, -1]
+        x2_dot = resp[3, -1]
+        
+        # TODO: 05/08/18 - JEV - 
+        # Remove after testing. Using a proper ODE solver as above is the more
+        # scalable approach
         # Update m1 states
 #         x1_accel = 1 / self.m1 * (self.k * (x2 - x1 - self.spring_equil) + 
 #                                   self.c * (x2_dot - x1_dot) + 
@@ -158,11 +166,8 @@ class MassSpringDamperContEnv(gym.Env):
 #         x2_dot = np.clip(x2_dot, -self.mass_vel_threshold, self.mass_vel_threshold)
 #        
 #         x2  = x2 + self.tau * x2_dot
-        
-        x1 = resp[-1, 0]
-        x1_dot = resp[-1, 0]
-        x2 = resp[-1, 2]
-        x2_dot = resp[-1, 3]
+#       End of block to remove after testing
+
 
         self.state = (x1, x1_dot, x2, x2_dot)
         
@@ -186,13 +191,17 @@ class MassSpringDamperContEnv(gym.Env):
         distance_to_target = self.desired_position - x2
         
         # clip the reward to +/-10
-        reward = np.clip(-10*distance_to_target**2 - self.force**2, -10, 1)
+        reward = np.clip(-10*distance_to_target**2 - 0.01*self.force**2, -1, 1)
         
         if self.SAVE_DATA:
             current_data = np.array([self.counter * self.tau, x1, x1_dot, x2, x2_dot, self.force, reward])
             self.episode_data[self.counter, :] = current_data
 
         if self.counter >= self.MAX_STEPS:
+            self.done = True
+            
+        if limits:
+            reward = -1000
             self.done = True
         
         if self.done == True and self.SAVE_DATA:
