@@ -16,7 +16,16 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   * 
+#   * 05/22/18 - EEV
+#       - Additional ODE solver options. Still settling on best set
+#       - Improved commenting
+#       - 
+#
+# TODO:
+#   * 05/22/18 - JEV - What is the best set of solver parameters for 
+#                      a baseline, default, 1st-try solution?
+#   * 05/22/18 - JEV - Explore vectorized option
+#   * 05/22/18 - JEV - What is the best way to pass parameters?
 #
 ##########################################################################################
 
@@ -43,7 +52,6 @@ def eq_of_motion(t, w):
     Arguments:
         w :  vector of the state variables:
         t :  time
-        p :  vector of the parameters:
     """
     
     x = w[0]
@@ -58,12 +66,7 @@ def eq_of_motion(t, w):
                        k/m * (y - x) + c/m * (y_dot - x_dot) - f(t, p)/m,
                        y_dot,
                        y_ddot(t, p)])
-                       
-#     sysODE = np.array([w[1],
-#                    k/m * (w[2] - w[0]) + c/m * (w[3] - w[1]) - f(t, p)/m,
-#                    w[3],
-#                    y_ddot(t, p)])
-    
+
     return sysODE
 
 
@@ -112,8 +115,10 @@ def y_ddot(t, p):
         accel = Amax*(t > t1) - Amax*(t > t2) - Amax*(t > t3) + Amax*(t > t4)
 
     return accel
-    
 
+# Note: For some problems you should define the Jacobian of the equations of
+# motion and pass it to the ODE solver. This is especially true if the system
+# is stiff - https://en.wikipedia.org/wiki/Stiff_equation
 
 
 #---- Main script -----------------------------------------------------------------------
@@ -133,10 +138,10 @@ abserr = 1.0e-9
 relerr = 1.0e-9
 max_step = 0.1
 stoptime = 10.0
-numpoints = 10001
+numpoints = 1001
 
 # Create the time samples for the output of the ODE solver
-t = np.linspace(0.,stoptime,numpoints)
+t = np.linspace(0.0, stoptime, numpoints)
 
 # Initial conditions
 x_init = 0.0                        # initial position
@@ -156,10 +161,23 @@ F_amp = 100.0                 # Amplitude of Disturbance force (N)
 p = [m, k, c, Distance, StartTime, Amax, Vmax, DistStart, F_amp]
 x0 = [x_init, x_dot_init, y_init, y_dot_init]
 
-# Call the ODE solver.
-solution = solve_ivp(eq_of_motion, [0, 10], x0, t_eval=t, max_step=max_step, atol=abserr, rtol=relerr)
+# Call the ODE solver. 
+# TODO: 05/22/18 - JEV - What is the best set of solver parameters for 
+# a baseline, default, 1st-try solution?
+solution = solve_ivp(eq_of_motion, 
+                     [0, 10], 
+                     x0, 
+                     #dense_output=True,
+                     #t_eval=t, 
+                     max_step=max_step, 
+                     atol=abserr, 
+                     rtol=relerr
+                     )
 
+# Parse the time and response arrays from the OdeResult object
+sim_time = solution.t
 resp = solution.y
+
 
 #----- Plot the response
 # Make the figure pretty, then plot the results
@@ -182,8 +200,8 @@ plt.ylabel('Position (m)',family='serif',fontsize=22,weight='bold',labelpad=10)
 # ylim(-1.,1.)
 
 # plot the response
-plt.plot(t,resp[0,:], linewidth=2, linestyle = '-', label=r'$x$')
-plt.plot(t,resp[2,:], linewidth=2, linestyle = '--', label=r'$y$')
+plt.plot(sim_time, resp[0,:], linewidth=2, linestyle = '-', label=r'$x$')
+plt.plot(sim_time, resp[2,:], linewidth=2, linestyle = '--', label=r'$y$')
 
 # If there is a non-zero force disturbance show where it began via an annotation
 if F_amp > 0:
@@ -212,10 +230,10 @@ Fd =  c * (resp[3,:] - resp[1,:])       # Damping Force (N)
 F_pos = Fsp + Fd                        # Total force from position input
 
 # Calculate the disturbance force over time by calling the disturbance force function
-F_dist = np.zeros_like(t)
+F_dist = np.zeros_like(sim_time)
 
-for ii in range(len(t)):
-    F_dist[ii] = -f(t[ii],p)
+for ii in range(len(sim_time)):
+    F_dist[ii] = -f(t[ii], p)
     
 # Now, let's plot the forces    
 # Make the figure pretty, then plot the results
@@ -241,8 +259,8 @@ ymax = 1.1 * np.max([np.max(np.abs(F_pos)), np.max(np.abs(F_dist))])
 plt.ylim(-ymax, ymax)
 
 # plot the response
-plt.plot(t,F_pos, linewidth=2, linestyle = '-', label=r'Spring-Damper')
-plt.plot(t,F_dist, linewidth=2, linestyle = '--', label=r'Disturbance')
+plt.plot(sim_time, F_pos, linewidth=2, linestyle = '-', label=r'Spring-Damper')
+plt.plot(sim_time, F_dist, linewidth=2, linestyle = '--', label=r'Disturbance')
 
 leg = plt.legend(loc='best', fancybox=True)
 ltext  = leg.get_texts() 
