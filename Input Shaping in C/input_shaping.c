@@ -35,8 +35,8 @@ input_shaper createZVShaper(float nat_freq, float damping, int sample_rate)
     //   input_shaper : a struct representing the ZV shaper
     // 
     
-    input_shaper ZV_shaper = {2, 	            // Number of impulses
-                              sample_rate		// 100Hz
+    input_shaper ZV_shaper = {2,                // Number of impulses
+                              sample_rate       // 100Hz
                               };
 
     float wn = nat_freq * HZ_TO_RADS;
@@ -84,8 +84,8 @@ input_shaper createZVDShaper(float nat_freq, float damping, int sample_rate)
     //   input_shaper : a struct representing the ZVD shaper
     // 
     
-    input_shaper ZVD_shaper = {3, 	            // Number of impulses
-                              sample_rate		// 100Hz
+    input_shaper ZVD_shaper = {3,               // Number of impulses
+                              sample_rate       // 100Hz
                               };
 
     float wn = nat_freq * HZ_TO_RADS;
@@ -137,8 +137,8 @@ input_shaper createEIShaper(float nat_freq, float damping, float vib_tol, int sa
     //   input_shaper : a struct representing the EI shaper
     // 
     
-    input_shaper EI_shaper = {3, 	            // Number of impulses
-                              sample_rate		
+    input_shaper EI_shaper = {3,                // Number of impulses
+                              sample_rate       
                               };
 
     float wn = nat_freq * HZ_TO_RADS;
@@ -196,8 +196,8 @@ float doInputShaping(float unshapedCommand, input_shaper *shaper)
     Arguments:
         * float unshaped_command : the unshaped command command at 
                                     current timeste
-	    * three_impulse_shaper *shaper : pointer to struct holding all the
-									   key shaper parameters
+        * three_impulse_shaper *shaper : pointer to struct holding all the
+                                       key shaper parameters
     
     Returns:
         * float shaped_command : the input shaped command at 
@@ -208,12 +208,12 @@ float doInputShaping(float unshapedCommand, input_shaper *shaper)
     Created: 02/08/16 - Joshua Vaughan - joshua.vaughan@louisiana.edu
     
     Modified:
-		* 
+        * 
     -------------------------------------------------------------------------*/     
-	
-	// During first time the function is called, initialize the buffer positions
-	if (shaper->impulse_buffer_pos[0] == -1 ) 
-	{
+    
+    // During first time the function is called, initialize the buffer positions
+    if (shaper->impulse_buffer_pos[0] == -1 ) 
+    {
         // Define the starting buffer locations, the impulse_buffer_pos[0] location  
         // can also be thought of as the "current" output, the impulse_buffer_pos[1] 
         // location is offset by the time of the 2nd impulse (* samples/s), etc
@@ -225,27 +225,27 @@ float doInputShaping(float unshapedCommand, input_shaper *shaper)
     }
     
 
-	// Increment the current positions in the buffers
-	for (int ii = 0; ii < shaper->NUM_IMPULSES; ii++)
-	{
-	    shaper->impulse_buffer_pos[ii]++;
-	}
-	
-	// For each impulse, multiple the current input by the impulse amplitude 
-	// and add it to the place in the buffer corresponding to the time offset
-	// of the impulse. If the desired buffer position (from the time offset)
-	// is outside of the buffer, wrap to the beginning. 
-	for (int ii = 0; ii < shaper->NUM_IMPULSES; ii++)
-	{
-	    // wrap the buffer location, if necessary
-	    if (shaper->impulse_buffer_pos[ii] > shaper->BUFFER_LENGTH) 
-	    {
-	        shaper->impulse_buffer_pos[ii] = 0;
-	    }
-	    
-	    shaper->shaped_output_buffer[shaper->impulse_buffer_pos[ii]] += shaper->AMPS[ii] * unshapedCommand;
-	}
-	
+    // Increment the current positions in the buffers
+    for (int ii = 0; ii < shaper->NUM_IMPULSES; ii++)
+    {
+        shaper->impulse_buffer_pos[ii]++;
+    }
+    
+    // For each impulse, multiple the current input by the impulse amplitude 
+    // and add it to the place in the buffer corresponding to the time offset
+    // of the impulse. If the desired buffer position (from the time offset)
+    // is outside of the buffer, wrap to the beginning. 
+    for (int ii = 0; ii < shaper->NUM_IMPULSES; ii++)
+    {
+        // wrap the buffer location, if necessary
+        if (shaper->impulse_buffer_pos[ii] > shaper->BUFFER_LENGTH) 
+        {
+            shaper->impulse_buffer_pos[ii] = 0;
+        }
+        
+        shaper->shaped_output_buffer[shaper->impulse_buffer_pos[ii]] += shaper->AMPS[ii] * unshapedCommand;
+    }
+    
     // set up the current output
     float current_shaped_output = shaper->shaped_output_buffer[shaper->impulse_buffer_pos[0]];
     
