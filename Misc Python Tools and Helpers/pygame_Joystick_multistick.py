@@ -6,6 +6,8 @@
 # script to read and process multiple axis of a gamepad for throttle and 
 # steering inputs
 #
+# NOTE: As of 06/12/18, button numbers, etc are for Logitech F310 gamepad
+#
 # In one mode, when LB (left shoulder button) is held down, the left analog stick
 # controls throttle and steering, up/down is throttle and left/right is steering
 # 
