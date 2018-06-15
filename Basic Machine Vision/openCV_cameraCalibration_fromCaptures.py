@@ -35,7 +35,6 @@
 
 import numpy as np
 import cv2
-import glob  # For getting files in a directory
 
 # For saving calibration data, you may need to install via 'conda install pyyaml'
 import yaml  
