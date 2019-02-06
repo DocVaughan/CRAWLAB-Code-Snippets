@@ -32,6 +32,8 @@ import time
 import pca9685
 import servo
 
+print('Entered main script...')
+
 # Construct an I2C bus
 i2c = I2C(scl=Pin(5), sda=Pin(4), freq=100000)
 
@@ -44,9 +46,13 @@ SERVO_NUMBER = 0
 DESIRED_ANGLE = 84
 
 try:
+    print('Holding servo number {:d} at {:.2f} degrees.'.format(SERVO_NUMBER,
+                                                                DESIRED_ANGLE))
     while(True):
         # Move the servo in position DESIRED_ANGLE degrees and hold there indefinitely
         servos.position(SERVO_NUMBER, DESIRED_ANGLE)
+
 finally:
+    print('Releasing servo number {:d}'.format(SERVO_NUMBER))
     # Now, release the servo
     servos.release(SERVO_NUMBER)
