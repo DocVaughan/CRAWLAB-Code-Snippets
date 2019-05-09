@@ -1,0 +1,2 @@
+# LoRa communications
+This sub-folder contains code to communicate over [LoRa](https://lora-alliance.org) using [Adafruit Feather M0 with RFM95 LoRa Radio - 900MHz - RadioFruit](https://www.adafruit.com/product/3178) boards.
