@@ -2,8 +2,8 @@
 
 LoRa_HeartBeat_receiver.ino
 
-Arduino sketch to receive heartbeat messages and change the color of the onboard 
-LED based on current status. 
+Arduino sketch to send heartbeat messages, then receive an acknowledgement 
+of their receipt.
 
 Intended for use with the Feather M0 with LoRa Radio:
   * https://www.adafruit.com/product/3178
@@ -68,13 +68,13 @@ Created: 05/09/19
 
 #elif defined(NRF52)  
   /* nRF52832 feather w/wing */
-  #define RFM95_RST     7   // "A"
+  #define RFM95_RST     7    // "A"
   #define RFM95_CS      11   // "B"
   #define RFM95_INT     31   // "C"
   
 #elif defined(TEENSYDUINO)
   /* Teensy 3.x w/wing */
-  #define RFM95_RST     9   // "A"
+  #define RFM95_RST     9    // "A"
   #define RFM95_CS      10   // "B"
   #define RFM95_INT     4    // "C"
 #endif
@@ -132,11 +132,15 @@ void setup()
 }
 
 void loop() {
-    const char HEARTBEAT_MESSAGE[] = "$ULheartbeat";
-    const int HEARTBEAT_MESSAGE_LENGTH = sizeof(HEARTBEAT_MESSAGE) - 1;
-    static int num_missed_heartbeats = 0;
-    const int MAX_MISSED_HEARTBEATS = 5;
-    
+    const uint8_t HEARTBEAT_MESSAGE[] = "$ULheartbeat";
+    const char ACKNOWLEDGE_MESSAGE[] = "$UL_ACK";
+    const int ACKNOWLEDGE_MESSAGE_LENGTH = sizeof(ACKNOWLEDGE_MESSAGE) - 1;
+                    
+    rf95.send(HEARTBEAT_MESSAGE, sizeof(HEARTBEAT_MESSAGE));
+    rf95.waitPacketSent();
+    digitalWrite(LED, LOW);
+
+    // Now, check for the acknowledgement of it
     if (rf95.available()) {
         // Should be a message for us now
         uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
@@ -149,50 +153,20 @@ void loop() {
             RH_RF95::printBuffer("Received: ", buf, len);
             Serial.print("Got: ");
             Serial.println((char*)buf);
-            
-            // This will print the signal strength of the last message received.
-            // TODO: 05/09/19 - JEV - We probably want to move this to apply only
-            //                        to messages we have identified as properly-
-            //                        formatted heartbeats
             Serial.print("RSSI: ");
             Serial.println(rf95.lastRssi(), DEC);
 
-            // Compare the message received with the HEARTBEAT_MESSAGE expected
-            // If it doesn't match, increment the num_missed_heartbeats counter
-            // If it does, reset the counter and send an acknowledgement message
-            if (strncmp((char*)buf, HEARTBEAT_MESSAGE, HEARTBEAT_MESSAGE_LENGTH) != 0) {
-              Serial.println("Heartbeat missed");
-              num_missed_heartbeats = num_missed_heartbeats + 1;
+            // Compare the message received with the ACKNOWLEDGE_MESSAGE expected
+            if (strncmp((char*)buf, ACKNOWLEDGE_MESSAGE, ACKNOWLEDGE_MESSAGE_LENGTH) == 0) {
+                Serial.println("Heartbeat acknowledged.");
             }
             else {
-                // reset missed heartbeat counter 
-                num_missed_heartbeats = 0;
-                
-                // Send a reply
-                uint8_t data[] = "$UL_ACK";
-                rf95.send(data, sizeof(data));
-                rf95.waitPacketSent();
-                Serial.println("Sent a reply");
-                digitalWrite(LED, LOW);
+                Serial.println("Message was not an acknowledgement.");
             }
         }
     }
-    else { 
-        // If there was no data availalbe, we also increment the num_missed_heartbeats counter
-        num_missed_heartbeats = num_missed_heartbeats + 1;
-    }
-
-    // Now, check if we've exceeded the maximum number of missed beats
-    if (num_missed_heartbeats < MAX_MISSED_HEARTBEATS) {
-        Serial.println("Heartbeat missed");
-    }
-    else if (num_missed_heartbeats == MAX_MISSED_HEARTBEATS) {
-        Serial.println("Heartbeat missed");
-        Serial.println("Missed too many heartbeats!!!");
-        digitalWrite(LED, HIGH);
-    }
     else {
-        digitalWrite(LED, HIGH);
+        Serial.println("Received nothing.");
     }
 
     delay(100); // sleep 100ms

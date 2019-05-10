@@ -182,6 +182,10 @@ void loop() {
 
     static uint8_t going = 1;
     static uint8_t pixel_index = 0;
+
+    unsigned long start_time;
+    unsigned long elapsed_time;
+    start_time = millis();
     
     if (rf95.available()) {
         // Should be a message for us now
@@ -207,7 +211,7 @@ void loop() {
             // If it doesn't match, increment the num_missed_heartbeats counter
             // If it does, reset the counter and send an acknowledgement message
             if (strncmp((char*)buf, HEARTBEAT_MESSAGE, HEARTBEAT_MESSAGE_LENGTH) != 0) {
-              Serial.println("Heartbeat missed");
+              Serial.println("Heartbeat didn't match.");
               num_missed_heartbeats = num_missed_heartbeats + 1;
             }
             else {
@@ -288,5 +292,10 @@ void loop() {
     }
     
     strip.show();  // Update NeoPixel strip
-    delay(50);     // sleep 50ms
+
+    elapsed_time = millis() - start_time;
+
+    if (elapsed_time < 100) {
+        delay(100 - elapsed_time);
+    }
 }

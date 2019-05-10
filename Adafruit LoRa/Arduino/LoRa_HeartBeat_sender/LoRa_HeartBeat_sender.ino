@@ -2,8 +2,7 @@
 
 LoRa_HeartBeat_receiver.ino
 
-Arduino sketch to receive heartbeat messages and change the color of the onboard 
-LED based on current status. 
+Arduino sketch to send heartbeat messages. 
 
 Intended for use with the Feather M0 with LoRa Radio:
   * https://www.adafruit.com/product/3178
@@ -96,9 +95,6 @@ void setup()
   digitalWrite(RFM95_RST, HIGH);
 
   Serial.begin(115200);
-
-  // Wait for the serial monitor to open
-  // Be sure to comment this out in application
   while (!Serial) {
     delay(1);
   }
@@ -132,68 +128,10 @@ void setup()
 }
 
 void loop() {
-    const char HEARTBEAT_MESSAGE[] = "$ULheartbeat";
-    const int HEARTBEAT_MESSAGE_LENGTH = sizeof(HEARTBEAT_MESSAGE) - 1;
-    static int num_missed_heartbeats = 0;
-    const int MAX_MISSED_HEARTBEATS = 5;
-    
-    if (rf95.available()) {
-        // Should be a message for us now
-        uint8_t buf[RH_RF95_MAX_MESSAGE_LEN];
-        uint8_t len = sizeof(buf);
-    
-        if (rf95.recv(buf, &len)) {
-            // Here, we'll always indicate that we received a message
-            // In operation, we probably don't want to always print this out
-            digitalWrite(LED, HIGH);
-            RH_RF95::printBuffer("Received: ", buf, len);
-            Serial.print("Got: ");
-            Serial.println((char*)buf);
-            
-            // This will print the signal strength of the last message received.
-            // TODO: 05/09/19 - JEV - We probably want to move this to apply only
-            //                        to messages we have identified as properly-
-            //                        formatted heartbeats
-            Serial.print("RSSI: ");
-            Serial.println(rf95.lastRssi(), DEC);
-
-            // Compare the message received with the HEARTBEAT_MESSAGE expected
-            // If it doesn't match, increment the num_missed_heartbeats counter
-            // If it does, reset the counter and send an acknowledgement message
-            if (strncmp((char*)buf, HEARTBEAT_MESSAGE, HEARTBEAT_MESSAGE_LENGTH) != 0) {
-              Serial.println("Heartbeat missed");
-              num_missed_heartbeats = num_missed_heartbeats + 1;
-            }
-            else {
-                // reset missed heartbeat counter 
-                num_missed_heartbeats = 0;
-                
-                // Send a reply
-                uint8_t data[] = "$UL_ACK";
-                rf95.send(data, sizeof(data));
-                rf95.waitPacketSent();
-                Serial.println("Sent a reply");
-                digitalWrite(LED, LOW);
-            }
-        }
-    }
-    else { 
-        // If there was no data availalbe, we also increment the num_missed_heartbeats counter
-        num_missed_heartbeats = num_missed_heartbeats + 1;
-    }
-
-    // Now, check if we've exceeded the maximum number of missed beats
-    if (num_missed_heartbeats < MAX_MISSED_HEARTBEATS) {
-        Serial.println("Heartbeat missed");
-    }
-    else if (num_missed_heartbeats == MAX_MISSED_HEARTBEATS) {
-        Serial.println("Heartbeat missed");
-        Serial.println("Missed too many heartbeats!!!");
-        digitalWrite(LED, HIGH);
-    }
-    else {
-        digitalWrite(LED, HIGH);
-    }
+    const uint8_t HEARTBEAT_MESSAGE[] = "$ULheartbeat";
+                    
+    rf95.send(HEARTBEAT_MESSAGE, sizeof(HEARTBEAT_MESSAGE));
+    rf95.waitPacketSent();
 
     delay(100); // sleep 100ms
 }
