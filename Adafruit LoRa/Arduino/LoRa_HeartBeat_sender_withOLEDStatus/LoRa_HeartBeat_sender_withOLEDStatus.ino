@@ -133,9 +133,9 @@ void setup()
 
   // Wait for the serial monitor to open
   // Be sure to comment this out in application
-  while (!Serial) {
-    delay(1);
-  }
+//  while (!Serial) {
+//    delay(1);
+//  }
   delay(100);
 
   // manual reset

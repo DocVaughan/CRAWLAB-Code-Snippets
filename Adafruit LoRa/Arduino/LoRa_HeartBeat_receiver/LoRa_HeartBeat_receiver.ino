@@ -195,5 +195,5 @@ void loop() {
         digitalWrite(LED, HIGH);
     }
 
-    delay(100); // sleep 100ms
+    delay(250); // sleep 100ms
 }
