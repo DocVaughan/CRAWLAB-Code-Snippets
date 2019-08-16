@@ -16,7 +16,7 @@
 #   - http://www.ucs.louisiana.edu/~jev9637
 #
 # Modified:
-#   * 05/22/18 - EEV
+#   * 05/22/18 - JEV
 #       - Additional ODE solver options. Still settling on best set
 #       - Improved commenting
 #       - 
@@ -151,11 +151,11 @@ y_dot_init = 0.0
 
 # Set up the parameters for the input function
 Distance = 1.0               # Desired move distance (m)
-Amax = 20.0                   # acceleration limit (m/s^2)
+Amax = 20.0                  # acceleration limit (m/s^2)
 Vmax = 2.0                   # velocity limit (m/s)
 StartTime = 0.5              # Time the y(t) input will begin
 DistStart = 4.5              # Time the disturbance input will begin
-F_amp = 100.0                 # Amplitude of Disturbance force (N)
+F_amp = 100.0                # Amplitude of Disturbance force (N)
 
 # Pack the parameters and initial conditions into arrays 
 p = [m, k, c, Distance, StartTime, Amax, Vmax, DistStart, F_amp]
@@ -206,10 +206,15 @@ plt.plot(sim_time, resp[2,:], linewidth=2, linestyle = '--', label=r'$y$')
 # If there is a non-zero force disturbance show where it began via an annotation
 if F_amp > 0:
     plt.annotate(r'Force Disturbance Begins',
-         xy=(DistStart,resp[2,-1]), xycoords='data',
-         ha='center',
-         xytext=(DistStart, 1.05*np.max(resp[0,:])), textcoords='data', fontsize=16,
-         arrowprops=dict(arrowstyle="simple, head_width = 0.35, tail_width=0.05", connectionstyle="arc3", color="black"),color = "black")
+                 xy=(DistStart,resp[2,-1]), 
+                 xycoords='data',
+                 ha='center',
+                 xytext=(DistStart, 1.05*np.max(resp[0,:])), 
+                 textcoords='data', 
+                 fontsize=16,
+                 arrowprops=dict(arrowstyle="simple, head_width = 0.35, tail_width=0.05", 
+                                 connectionstyle="arc3", color="black"),
+                 color = "black")
     
 leg = plt.legend(loc='upper right', fancybox=True)
 ltext  = leg.get_texts() 

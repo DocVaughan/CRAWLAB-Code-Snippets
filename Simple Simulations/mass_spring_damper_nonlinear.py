@@ -85,9 +85,9 @@ def eq_of_motion_linear(t, w, p):
 
     # Create sysODE = (x', x_dot', y', y_dot')
     sysODE = np.array([x_dot,
-                       k/m1 * (y - x)**3 + c/m1 * (y_dot - x_dot)**3 + f(t, p)/m1,
+                       k/m1 * (y - x) + c/m1 * (y_dot - x_dot) + f(t, p)/m1,
                        y_dot,
-                       -k/m2 * (y - x)**3 - c/m2 * (y_dot - x_dot)**3])
+                       -k/m2 * (y - x) - c/m2 * (y_dot - x_dot)])
 
     return sysODE
 
@@ -100,7 +100,7 @@ def f(t, p):
     
 
     # A simple bang-bang command in force beginning at t=StartTime
-    f = F_amp * (t >= StartTime) * (t <= StartTime + 0.5) - F_amp * (t > StartTime + 0.5) * (t <= StartTime + 1.0)
+    f = F_amp * (t >= StartTime) * (t <= StartTime + 0.25) - F_amp * (t > StartTime + 0.25) * (t <= StartTime + 0.5)
     
     return f
 
@@ -118,7 +118,7 @@ m2 = 1.0                     # mass (kg)
 k = (1.0 * 2 * np.pi)**2     # spring constant (N/m)
 
 # Select damping ratio and use it to choose an appropriate c
-c = 2.0                      # damping coeff. (N/m/s)
+c = 1.0                      # damping coeff. (N/m/s)
 
 # ODE solver parameters
 abserr = 1.0e-9
@@ -138,11 +138,10 @@ y_dot_init = 0.0                    # initial velocity
 
 # Set up the parameters for the input function
 Distance = 1.0               # Desired move distance (m)
-Amax = 20.0                   # acceleration limit (m/s^2)
+Amax = 20.0                  # acceleration limit (m/s^2)
 Vmax = 2.0                   # velocity limit (m/s)
 StartTime = 0.5              # Time the y(t) input will begin
-StartTime = 4.5              # Time the disturbance input will begin
-F_amp = 100.0                 # Amplitude of Disturbance force (N)
+F_amp = 100.0                # Amplitude of Disturbance force (N)
 
 # Pack the parameters and initial conditions into arrays 
 p = [m1, m2, k, c, Distance, StartTime, Amax, Vmax, F_amp]
@@ -166,8 +165,8 @@ if not linear_solution.success:
     print('Message: {}'.format(solution.message))
 
 # Parse the time and response arrays from the OdeResult object
-linear_sim_time = nonlinear_solution.t
-linear_resp = nonlinear_solution.y
+linear_sim_time = linear_solution.t
+linear_resp = linear_solution.y
 
 # Call the ODE solver using the nonlinear equations of motion
 nonlinear_solution = solve_ivp(fun=lambda t, w: eq_of_motion_nonlinear(t, w, p), 
@@ -212,14 +211,17 @@ plt.ylabel('Position (m)',family='serif',fontsize=22,weight='bold',labelpad=10)
 
 # plot the linear response
 plt.plot(linear_sim_time, linear_resp[0,:], linewidth=2, linestyle = '-', label=r'$x$ -- Lin')
-plt.plot(linear_sim_time, linear_resp[2,:], linewidth=2, linestyle = '--', label=r'$y$ -- Lin.'')
+plt.plot(linear_sim_time, linear_resp[2,:], linewidth=2, linestyle = '--', label=r'$y$ -- Lin.')
 
 # Plot the nonlinear response, matching the colors
-plt.plot(nonlinear_sim_time, nonlinear_resp[0,:], linewidth=2, linestyle = '-.', linecolor = '#e41a1c', label=r'$x$ -- Nonlin')
-plt.plot(nonlinear_sim_time, nonlinear_resp[2,:], linewidth=2, linestyle = ':', linecolr = '#377eb8', label=r'$y$ -- Nonlin.'')
+#plt.plot(nonlinear_sim_time, nonlinear_resp[0,:], linewidth=2, linestyle = '-.', color = '#e41a1c', label=r'$x$ -- Nonlin')
+#plt.plot(nonlinear_sim_time, nonlinear_resp[2,:], linewidth=2, linestyle = ':', color = '#377eb8', label=r'$y$ -- Nonlin.')
+
+plt.plot(nonlinear_sim_time, nonlinear_resp[0,:], linewidth=2, linestyle = '-.', label=r'$x$ -- Nonlin')
+plt.plot(nonlinear_sim_time, nonlinear_resp[2,:], linewidth=2, linestyle = ':', label=r'$y$ -- Nonlin.')
 
 
-leg = plt.legend(loc='upper right', ncol=2, fancybox=True)
+leg = plt.legend(loc='lower right', ncol=2, fancybox=True)
 ltext  = leg.get_texts() 
 plt.setp(ltext,family='Serif',fontsize=16)
 
