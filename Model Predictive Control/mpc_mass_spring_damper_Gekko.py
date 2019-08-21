@@ -151,6 +151,13 @@ m.Equation(mass_1 * x_dot.dt() == k * (y - x) + c * (y_dot - x_dot) + u)
 m.Equation(y.dt() == y_dot)
 m.Equation(mass_2 * y_dot.dt() == -k * (y - x) - c * (y_dot - x_dot))
 
+# We can also explicitly define (or add components to) the objective function
+#  Here, we add a objective to penalize deflection, with a weight defined by
+#  DEFLECTION_COST
+#  https://gekko.readthedocs.io/en/latest/quick_start.html#objectives
+DEFLECTION_COST = 1e3
+m.Obj(DEFLECTION_COST * (x-y)**2)
+
 m.options.IMODE = 6 # MPC control
 #m.solve(disp=False, GUI=False)  # Cold start
 m.solve(disp=True)              # Now full solution
