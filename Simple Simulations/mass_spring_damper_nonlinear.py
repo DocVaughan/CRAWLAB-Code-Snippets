@@ -57,7 +57,7 @@ def eq_of_motion_nonlinear(t, w, p):
     y_dot = w[3]
     
     m1, m2, k, c, Distance, StartTime, Amax, Vmax, F_amp = p
-
+    
     # Create sysODE = (x', x_dot', y', y_dot')
     sysODE = np.array([x_dot,
                        k/m1 * (y - x)**3 + c/m1 * (y_dot - x_dot)**3 + f(t, p)/m1,
@@ -124,8 +124,8 @@ c = 1.0                      # damping coeff. (N/m/s)
 abserr = 1.0e-9
 relerr = 1.0e-9
 max_step = 0.1
-stoptime = 10.0
-numpoints = 1001
+stoptime = 5.0
+numpoints = 501
 
 # Create the time samples for the output of the ODE solver
 t = np.linspace(0.0, stoptime, numpoints)
