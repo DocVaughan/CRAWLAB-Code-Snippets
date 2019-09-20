@@ -35,6 +35,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import interpolate
+from scipy.misc import derivative
 from scipy.integrate import solve_ivp
 
 PLOT_INTERP = True  # Set true to plot a comparison of the array and interpolation
@@ -63,6 +64,34 @@ Fd = interpolate.interp1d(force_time,
                           force, 
                           kind='linear',
                           fill_value='extrapolate')
+
+
+# We can also generate functional forms of the derivatives. We can calculate
+# the derivative at each point in the time array to generate an array 
+# repreenting the derivative. We then use that data to generate a function 
+# using the SciPy interp1d method.
+deriv_data = derivative(Fd, time, dx=1e-6)
+deriv_func = interpolate.interp1d(time, 
+                                  deriv_data, 
+                                  kind='linear',
+                                  fill_value='extrapolate')
+
+# Do the same for the 2nd deriv
+# double_deriv_data = derivative(deriv_func, time, dx=1e-6)
+# double_deriv_func = interpolate.interp1d(time, 
+#                                          double_deriv_data, 
+#                                          kind='linear',
+#                                          fill_value='extrapolate')
+
+# An alternate way to do this would be to use one of the Numpy.diff methods
+# then use the interpolation methods. This is probably worse on sparse arrays
+# like the force one here. It may be better on denser ones like y_ddot above. 
+# Here, we'll do it for the second derivative of Fd
+double_deriv_data = np.diff(deriv_data) / (time[1] - time[0])
+double_deriv_func = interpolate.interp1d(time[:-1], 
+                                         double_deriv_data, 
+                                         kind='linear',
+                                         fill_value='extrapolate')
 
 
 if PLOT_INTERP:
