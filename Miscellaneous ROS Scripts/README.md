@@ -1,0 +1,1 @@
+Folder contains miscellaneous ROS scripts, used largely for testing ideas prior to integration with other projects. See file headers for description of each script's functionality/purpose.
