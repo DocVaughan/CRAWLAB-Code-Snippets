@@ -69,7 +69,7 @@ camera_matrix = np.array([[813.18292644,   0.        , 318.76403921],
 dist_coeffs = np.array([[-1.01845774e-01, 3.58089018e-01, -1.67284171e-04,  
                           2.08061053e-03, 7.48716318e-02]])
 
-markerLength = 3.75
+markerLength = 3.75  # TODO: 10/21/19 - JEV - correct for actual markers
 
 # Estimate the pose of the markers in the frame
 rvec, tvec, _ = aruco.estimatePoseSingleMarkers(corners, 
