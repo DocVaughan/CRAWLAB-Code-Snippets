@@ -54,17 +54,17 @@ while (True):
                                     borderColor=(0, 0, 255, 255))
 
 
-    # We'll use a "fake" camera calibration matrix for now. It might mess up the results.
+    # This calibration is for the monocular camera used in the rotors_simulator
+    #  ROS package - https://github.com/CRAWlab/rotors_simulator
     # TODO: 10/21/19 - JEV - Provide instructions for generating calibration
     # NOTE; See https://github.com/CRAWlab/camera_calibration for one way to generate
-    camera_matrix = np.array([[813.18292644,   0.        , 318.76403921],
-                              [  0.        , 812.39009204, 239.16050615],
+    camera_matrix = np.array([[218.02853116,   0.        , 320.6379542 ],
+                              [  0.        , 217.78473815, 240.27390847],
                               [  0.        ,   0.        ,   1.        ]])
 
-    dist_coeffs = np.array([[-1.01845774e-01, 3.58089018e-01, -1.67284171e-04,  
-                              2.08061053e-03, 7.48716318e-02]])
+    dist_coeffs = np.array([[-0.00894801, 0.00303889, 0.00012614, 0.00035685, -0.00083798]])
 
-    markerLength = 3.75  # TODO: 10/21/19 - JEV - correct for actual markers
+    markerLength = 0.1778  # m?? TODO: 10/21/19 - JEV - correct for actual markers
 
     # Estimate the pose of the markers in the frame
     rvec, tvec, _ = aruco.estimatePoseSingleMarkers(corners, 
