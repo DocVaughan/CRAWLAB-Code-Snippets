@@ -33,7 +33,7 @@ import cv2.aruco as aruco
 import os
 
 # Define the filename containing the markers
-FILENAME = 'ArUco_test_markers_skewed.png'
+FILENAME = 'left0000.jpg'
 
 # Get the base of the filenmae. We'll use it to save the processed image with
 # a similar name later
@@ -47,7 +47,7 @@ img = cv2.imread(FILENAME)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 # Define the type of marker to look for and any parameters in processing
-aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_250)
+aruco_dict = aruco.Dictionary_get(aruco.DICT_ARUCO_ORIGINAL)
 parameters =  aruco.DetectorParameters_create()
 
 # Get the list of ids detected and their corners
