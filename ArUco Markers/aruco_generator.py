@@ -30,17 +30,18 @@ import matplotlib.pyplot as plt
 import cv2
 import cv2.aruco as aruco
  
-MARKER_ID = 2           # ID for generated maker
-MARKER_SIZE = 640       # Pixel size of (square) marker
+MARKER_IDS = [0, 1, 2, 3]   # IDs for generated maker
+MARKER_SIZE = 144           # Pixel size of (square) marker
  
 aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_250)
 
-img = aruco.drawMarker(aruco_dict, MARKER_ID, MARKER_SIZE)
+for id in MARKER_IDS:
+    img = aruco.drawMarker(aruco_dict, id, MARKER_SIZE)
 
-# Write the generated image to a file
-cv2.imwrite(f"test_marker_{MARKER_ID}.jpg", img)
+    # Write the generated image to a file
+    cv2.imwrite(f"test_marker_{id}.svg", img)
  
-# Then, show is
-cv2.imshow('frame', img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    # Then, show is
+    cv2.imshow('frame', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()

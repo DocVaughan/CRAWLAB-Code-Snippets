@@ -34,14 +34,15 @@ import cv2
 from cv2 import aruco
 
 # Define the type of ArUco markers to make the board from
-aruco_dict = aruco.Dictionary_get(aruco.DICT_ARUCO_ORIGINAL)
+# aruco_dict = aruco.Dictionary_get(aruco.DICT_ARUCO_ORIGINAL)
+aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_250)
 
 # Define the board's setup and create it
 NUM_SQUARES_X = 7
 NUM_SQUARES_Y = 5
 
 # We're using inches to match opencv dpi saving
-SQUARE_LENGTH = 3                       # absolute length of a square (inch) 
+SQUARE_LENGTH = 1.5                       # absolute length of a square (inch) 
 MARKER_LENGTH = 0.8 * SQUARE_LENGTH     # absolute length of a marker (inch)
 
 # CharucoBoard_create(squaresX, squaresY, squareLength, markerLength, dictionary)

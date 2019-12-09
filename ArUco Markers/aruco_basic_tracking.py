@@ -48,7 +48,7 @@ while (True):
                                                           parameters=parameters)
 
     # Draw the corners and ids on the original, color image
-    img = aruco.drawDetectedMarkers(img, 
+    img = aruco.drawDetectedMarkers(frame, 
                                     corners, 
                                     ids, 
                                     borderColor=(0, 0, 255, 255))
@@ -74,11 +74,11 @@ while (True):
 
     # Loop through all the markers found and draw the axes on them
     for index, ID in enumerate(ids):
-        aruco.drawAxis(img, camera_matrix, dist_coeffs, 
+        aruco.drawAxis(frame, camera_matrix, dist_coeffs, 
                        rvec[index], tvec[index], 0.5)
     
     # Display the resulting frame
-    cv2.imshow('frame', img)
+    cv2.imshow('frame', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
