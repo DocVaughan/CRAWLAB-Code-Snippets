@@ -164,6 +164,23 @@ def train_eval(root_dir,
             fc_layer_params=fc_layer_params)
     
         optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=learning_rate)
+        
+        # Uncomment out the lines below to add exponential decay to learning rate or 
+        # the epsilon greedy parameter
+        # Add an exponential decay to the learning rate
+#         learning_rate = tf.compat.v1.train.exponential_decay(learning_rate,
+#                                                              global_step,
+#                                                              25000, # decay_steps,
+#                                                              0.96, # decay_rate,
+#                                                              staircase=True,
+#                                                              name=None)
+        # Add an exponential decay to the epsilon greedy value
+#         epsilon_greedy = tf.compat.v1.train.exponential_decay(epsilon_greedy,
+#                                                               global_step,
+#                                                               5000, # decay_steps,
+#                                                               0.9, # decay_rate,
+#                                                               staircase=True,
+#                                                               name=None)
 
         tf_agent = categorical_dqn_agent.CategoricalDqnAgent(
             tf_env.time_step_spec(),
