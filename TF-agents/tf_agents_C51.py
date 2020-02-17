@@ -326,6 +326,17 @@ def train_eval(root_dir,
                                             data=steps_per_sec, 
                                             step=global_step)
 
+                # Uncomment below to publish the changes in epsilon_greedy 
+                # and learning rate to the tensorboard log. Useful to make sure
+                # any decay is doing as you intend
+                tf.compat.v2.summary.scalar(name='epsilon_greedy', 
+                                            data=epsilon_greedy(), 
+                                            step=global_step)
+                                            
+                tf.compat.v2.summary.scalar(name='learning_rate', 
+                                            data=learning_rate(), 
+                                            step=global_step)
+
                 timed_at_step = global_step.numpy()
                 time_acc = 0
 
