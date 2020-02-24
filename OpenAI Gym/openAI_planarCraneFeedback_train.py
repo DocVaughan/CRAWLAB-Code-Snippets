@@ -81,8 +81,8 @@ print(model.summary())
 memory = SequentialMemory(limit=NUM_STEPS, window_length=1)
 # train_policy = BoltzmannQPolicy(tau=0.05)
 train_policy = EpsGreedyQPolicy()
-test_policy = EpsGreedyQPolicy()
-# test_policy = GreedyQPolicy()
+#test_policy = EpsGreedyQPolicy()
+test_policy = GreedyQPolicy()
 
 if DUEL_DQN:
     dqn = DQNAgent(model=model, nb_actions=nb_actions, memory=memory, nb_steps_warmup=100,
