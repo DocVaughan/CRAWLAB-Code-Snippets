@@ -62,12 +62,21 @@ img = aruco.drawDetectedMarkers(img, corners, ids, borderColor=(0, 0, 255, 255))
 # This calibration is for the monocular camera used in the rotors_simulator
 #  ROS package - https://github.com/CRAWlab/rotors_simulator
 # TODO: 10/21/19 - JEV - Provide instructions for generating calibration
-# NOTE; See https://github.com/CRAWlab/camera_calibration for one way to generate
-camera_matrix = np.array([[218.02853116,   0.        , 320.6379542 ],
-                          [  0.        , 217.78473815, 240.27390847],
-                          [  0.        ,   0.        ,   1.        ]])
+# NOTE: See https://github.com/CRAWlab/camera_calibration for one way to generate
+# camera_matrix = np.array([[218.02853116,   0.        , 320.6379542 ],
+#                           [  0.        , 217.78473815, 240.27390847],
+#                           [  0.        ,   0.        ,   1.        ]])
+# 
+# dist_coeffs = np.array([[-0.00894801, 0.00303889, 0.00012614, 0.00035685, -0.00083798]])
 
-dist_coeffs = np.array([[-0.00894801, 0.00303889, 0.00012614, 0.00035685, -0.00083798]])
+# These matrices are for the camera on my iMac
+CAMERA_MATRIX = np.array([[5.06968479e+03, 0.00000000e+00, 5.19942085e+02],
+                          [0.00000000e+00, 5.21560115e+03, 9.10942632e+02],
+                          [0.00000000e+00, 0.00000000e+00, 1.00000000e+00]])
+                          
+DIST_COEFFS = np.array([[-2.34400379e-01,  3.00945461e+01, -2.53342956e-02, 
+                         -9.27051884e-02, -3.25346306e+02]])
+                         
 
 markerLength = 0.1778  # m?? TODO: 10/21/19 - JEV - correct for actual markers
 
