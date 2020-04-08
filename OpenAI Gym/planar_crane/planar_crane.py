@@ -78,16 +78,16 @@ class PlanarCraneEnv(gym.Env):
         
         self.observation_space = spaces.Box(high_limit, low_limit)
 
-        self._seed()
+        self.seed()
         self.viewer = None
         self.state = None
         self.x_accel = 0.0
 
-    def _seed(self, seed=None):
+    def seed(self, seed=None):
         self.np_random, seed = seeding.np_random(seed)
         return [seed]
 
-    def _step(self, action):
+    def step(self, action):
         theta, theta_dot, x, x_dot = self.state
         self.counter = self.counter + 1
         
@@ -140,11 +140,9 @@ class PlanarCraneEnv(gym.Env):
         else:
             done = False
             
-
-            
         return np.array(self.state), reward, done, {}
 
-    def _reset(self):
+    def reset(self):
         # TODO: 07/07/17 - Probably need more randomness in initial conditions
         self.state = np.array([0,#self.np_random.uniform(low=-5*np.pi/180, high=5*np.pi/180),
                                0, #self.np_random.uniform(low=-0.5*np.pi/6, high=0.5*np.pi/6),
@@ -160,7 +158,7 @@ class PlanarCraneEnv(gym.Env):
 
         return np.array(self.state)
 
-    def _render(self, mode='human', close=False):
+    def render(self, mode='human', close=False):
         if close:
             if self.viewer is not None:
                 self.viewer.close()

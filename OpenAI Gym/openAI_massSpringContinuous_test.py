@@ -105,7 +105,8 @@ print(critic.summary())
 # even the metrics!
 memory = SequentialMemory(limit=2*NUM_STEPS, window_length=1)
 # random_process = OrnsteinUhlenbeckProcess(size=nb_actions, theta=.15, mu=0., sigma=.3)
-random_process = OrnsteinUhlenbeckProcess(size=nb_actions, dt = env.tau, theta=0.6, mu=0.0, sigma=0.5, sigma_min=0.15, n_steps_annealing=NUM_STEPS)
+# random_process = OrnsteinUhlenbeckProcess(size=nb_actions, dt = env.tau, theta=0.6, mu=0.0, sigma=0.5, sigma_min=0.15, n_steps_annealing=NUM_STEPS)
+random_process = None  # We should always do the best action in testing
 
 agent = DDPGAgent(nb_actions=nb_actions, actor=actor, critic=critic, critic_action_input=action_input,
                   memory=memory, nb_steps_warmup_critic=100, nb_steps_warmup_actor=100,
