@@ -1,8 +1,10 @@
 #! /usr/bin/env python
 
 ###############################################################################
-# aruco_camera_calibration.py
+# aruco_camera_calibration_Images.py
 #
+# This version captures the images first, rather than using pre-captured images
+# 
 # Script to calibrate a camera using an ArUco grid (ChArUco). Code adapted from
 # that at:
 #  * https://github.com/CRAWlab/camera_calibration
@@ -15,7 +17,7 @@
 #       So, it will likely be ugly on screen. The saved PDFs should look
 #       better.
 #
-# Created: 10/23/19
+# Created: 04/08/20
 #   - Joshua Vaughan
 #   - joshua.vaughan@louisiana.edu
 #   - @doc_vaughan
@@ -57,28 +59,33 @@ board = aruco.CharucoBoard_create(NUM_SQUARES_X,
 
 arucoParams = aruco.DetectorParameters_create()
 
-CALIBRATION_IMAGE_PATH = '/Users/localadmin/Desktop/untitled folder/'
-calibration_image_glob_pattern = CALIBRATION_IMAGE_PATH + '*.jpg'
 
-img_list = []
-calib_filenames = glob.glob(calibration_image_glob_pattern)
-
-print('Using ...', end='')
-
-for index, filename in enumerate(calib_filenames):
-    print(index, '', end='')
-    img = cv2.imread(filename)
-    img_list.append(img)
-    h, w, c = img.shape
-
-print('Calibration images')
 
 counter, corners_list, id_list = [], [], []
+
+# Define the camera capture instance
+cap = cv2.VideoCapture(0)
+
+# number of images in which we've found the corners of the checkerboard
+num_found = 0 
 first = True
 
-for im in img_list:
-    img_gray = cv2.cvtColor(im,cv2.COLOR_RGB2GRAY)
+NUM_IMAGES = 20 # The number of images we want to use for calibration
+
+while num_found < NUM_IMAGES:
+    ret, img = cap.read() # Capture a frame
+
+    img_gray = cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
     corners, ids, rejectedImgPoints = aruco.detectMarkers(img_gray, aruco_dict, parameters=arucoParams)
+    
+    # Draw the corners and ids on the original, color image
+    img = aruco.drawDetectedMarkers(img, 
+                                    corners, 
+                                    ids, 
+                                    borderColor=(0, 0, 255, 255))
+                                    
+    cv2.imshow('img', img)
+    cv2.waitKey(1000) # Display until a key is pressed or 1s passes
     
     if first == True:
         corners_list = corners
@@ -89,6 +96,8 @@ for im in img_list:
         id_list = np.vstack((id_list, ids))
     
     counter.append(len(ids))
+    
+    num_found = num_found + 1 # We found a checkerboard, increment the counter
 
 print('Found {} unique markers'.format(np.unique(ids)))
 
