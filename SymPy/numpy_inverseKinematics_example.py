@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 ###############################################################################
-# inverse_kinematics_example.py
+# numpy_inverseKinematics_example.py
 #
 # This script uses a Jacobian generated in SymPy (sympy_inverseKinematics_example.py)
 #
@@ -67,9 +67,9 @@ initial_position = endpoint_position(link_0, link_1, link_2, link_3, link_4,
 # Define the desired position. 
 # NOTE: We are not doing any checks that this is actually a point the system
 # can reach. In general, we should.
-x_desired = 0.0
-y_desired = 0.1
-z_desired = 0.2
+x_desired = 0.3
+y_desired = 0.0
+z_desired = 0.1
 desired_position = np.array([x_desired, y_desired, z_desired])
 
 # And calculate the error
