@@ -50,16 +50,6 @@ theta0dot, theta1dot, theta2dot, theta3dot = dynamicsymbols('theta_0 theta_1 the
 # Link lengths
 l0, l1, l2, l3, l4 = sympy.symbols('l_0 l_1 l_2 l_3 l_4', real=True, nonzero=True)
 
-# Masses
-m0, m1, m2, m3 = sympy.symbols('m_0 m_1 m_2 m_3', real=True, nonzero=True)
-
-# Moments and products of interia
-I_xy, I_yz, I_zx = sympy.symbols('I_xy I_yz I_zx', real=True, nonzero=True)
-I_xx0, I_yy0, I_zz0 = sympy.symbols('I_xx0 I_yy0 I_zz0', real=True, nonzero=True)
-I_xx1, I_yy1, I_zz1 = sympy.symbols('I_xx1 I_yy1 I_zz1', real=True, nonzero=True)
-I_xx2, I_yy2, I_zz2 = sympy.symbols('I_xx2 I_yy2 I_zz2', real=True, nonzero=True)
-I_xx3, I_yy3, I_zz3 = sympy.symbols('I_xx3 I_yy3 I_zz3', real=True, nonzero=True)
-
 # Time and gravity
 t, g = sympy.symbols('t g', real=True, nonzero=True)
 
@@ -148,7 +138,7 @@ endpoint_position_vector = P4.pos_from(O).express(N).subs([(l0, 0.102),
                                                            (l2, 0.107), 
                                                            (l3, 0.107), 
                                                            (l4, 0.090)])
-                                                           
+
 
 # Define the current joint angles. Note that the Jacobian approximation will
 # only be much good near these points. So, if this method is being used over a
