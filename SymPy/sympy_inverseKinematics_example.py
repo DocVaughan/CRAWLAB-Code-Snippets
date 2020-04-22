@@ -161,8 +161,8 @@ current_position = endpoint_position_vector.subs([(theta0, current_theta0),
 # Define the desired position. 
 # NOTE: We are not doing any checks that this is actually a point the system
 # can reach. In general, we should.
-desired_x = 0.0
-desired_y = 0.0
+desired_x = 0.1
+desired_y = 0.1
 desired_z = 0.2
 
 # Alternately, define the displacement from the current configuration
