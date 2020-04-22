@@ -24,8 +24,8 @@
 #
 # TODO:
 #   * 04/22/20 - JEV - If all initial angles are *exactly* zero *and* any one 
-#                      of the a desired positions is *exactly* zero, the the 
-#                      solution not converge.
+#                      of the a desired positions is *exactly* zero, then the 
+#                      solution will not converge.
 ###############################################################################
 
 
@@ -43,14 +43,8 @@ mechanics_printing(pretty_print=False)
 # Define generalized coordinates
 theta0, theta1, theta2, theta3 = dynamicsymbols('theta_0 theta_1 theta_2 theta_3')
 
-# And torque inputs
-Torq0, Torq1, Torq2, Torq3 = dynamicsymbols('tau_0 tau_1 tau_2 tau_3')
-
 # Define first derivatives of generalized coordinates
 theta0dot, theta1dot, theta2dot, theta3dot = dynamicsymbols('theta_0 theta_1 theta_2 theta_3', 1)
-
-# Define second derivatives of generalized coordinates
-theta0ddot, theta1ddot, theta2ddot, theta3ddot = dynamicsymbols('theta_0 theta_1 theta_2 theta_3', 2)
 
 # Define symbols for other parameters
 # Link lengths
@@ -252,6 +246,7 @@ while position_error > 1e-3:
     error_vector = desired_position - current_position
     position_error = sympy.sqrt(error_vector.dot(error_vector))
 
+
 # Wrap in float() to avoid the sympy Zero type
 x_pos = float(calculated_position.dot(N.x).evalf())
 y_pos = float(calculated_position.dot(N.y).evalf())
@@ -295,7 +290,7 @@ if current_theta2 > np.pi:
     current_theta2 -= (2 * np.pi)
 elif current_theta2 < -np.pi:
     current_theta2 += (2 * np.pi)
-    
+
 if current_theta3 > np.pi:
     current_theta3 -= (2 * np.pi)
 elif current_theta3 < -np.pi:
@@ -314,8 +309,8 @@ y_pos = float(calculated_position.dot(N.y).evalf())
 z_pos = float(calculated_position.dot(N.z).evalf())
 
 print('\nLimited joint angles:     ({:+7.4f}, {:+7.4f}, {:+7.4f}, {:+7.4f}) deg'.format(np.rad2deg(current_theta0),
-                                                                                    np.rad2deg(current_theta1),
-                                                                                    np.rad2deg(current_theta2),
-                                                                                    np.rad2deg(current_theta3)))
-                                                                                  
+                                                                                        np.rad2deg(current_theta1),
+                                                                                        np.rad2deg(current_theta2),
+                                                                                        np.rad2deg(current_theta3)))
+
 print('Revised position:         ({:+7.4f}, {:+7.4f}, {:+7.4f}) m\n'.format(x_pos, y_pos, z_pos))
