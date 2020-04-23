@@ -37,6 +37,8 @@ from sympy.physics.mechanics import mechanics_printing
 # Use basic, non-pretty printing 
 mechanics_printing(pretty_print=False)
 
+DELTA_MAX = np.deg2rad(90.0)
+
 # Define generalized coordinates
 theta0, theta1, theta2, theta3 = dynamicsymbols('theta_0 theta_1 theta_2 theta_3')
 
@@ -227,8 +229,13 @@ while position_error > 1e-3:
     
     if direction.dot(N.z) < 0:
         delta_theta3 = -delta_theta3
-        
-    current_theta3 = current_theta3 + delta_theta3
+    
+    # Add the required change in joint angle to the current angle of the joint  
+    # current_theta3 = current_theta3 + delta_theta3
+    
+    # You can also clip the amount by which you allow the joint to move 
+    # in one iteration. Uncomment below *and* comment the line above to do so.
+    current_theta3 = current_theta3 + np.clip(delta_theta3, -DELTA_MAX, DELTA_MAX)
         
     # Now, "rotate" that link, updating the joint and endpoint positions
     P0_position = P0_vector.subs([(theta0, current_theta0), 
@@ -267,7 +274,12 @@ while position_error > 1e-3:
     if direction.dot(N.z) < 0:
         delta_theta2 = -delta_theta2
         
-    current_theta2 = current_theta2 + delta_theta2
+    # Add the required change in joint angle to the current angle of the joint  
+    # current_theta2 = current_theta2 + delta_theta2
+    
+    # You can also clip the amount by which you allow the joint to move 
+    # in one iteration. Uncomment below *and* comment the line above to do so.
+    current_theta2 = current_theta2 + np.clip(delta_theta2, -DELTA_MAX, DELTA_MAX)
         
     # Now, "rotate" that link, updating the joint and endpoint positions
     P0_position = P0_vector.subs([(theta0, current_theta0), 
@@ -305,7 +317,12 @@ while position_error > 1e-3:
     if direction.dot(N.z) < 0:
         delta_theta1 = -delta_theta1
         
-    current_theta1 = current_theta1 + delta_theta1
+    # Add the required change in joint angle to the current angle of the joint  
+    # current_theta1 = current_theta1 + delta_theta1
+    
+    # You can also clip the amount by which you allow the joint to move 
+    # in one iteration. Uncomment below *and* comment the line above to do so.
+    current_theta1 = current_theta1 + np.clip(delta_theta1, -DELTA_MAX, DELTA_MAX)
         
     # Now, "rotate" that link, updating the joint and endpoint positions
     P0_position = P0_vector.subs([(theta0, current_theta0), 
@@ -343,7 +360,12 @@ while position_error > 1e-3:
     if direction.dot(N.z) < 0:
         delta_theta0 = -delta_theta0
         
-    current_theta0 = current_theta0 + delta_theta0
+        # Add the required change in joint angle to the current angle of the joint  
+    # current_theta0 = current_theta0 + delta_theta0
+    
+    # You can also clip the amount by which you allow the joint to move 
+    # in one iteration. Uncomment below *and* comment the line above to do so.
+    current_theta0 = current_theta0 + np.clip(delta_theta0, -DELTA_MAX, DELTA_MAX)
         
     # Now, "rotate" that link, updating the joint and endpoint positions
     P0_position = P0_vector.subs([(theta0, current_theta0), 
