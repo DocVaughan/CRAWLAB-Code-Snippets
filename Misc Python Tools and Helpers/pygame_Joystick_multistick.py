@@ -39,8 +39,6 @@
 import sys, time
 
 # PyGame for joystick
-# It's best to install via conda:
-#  https://anaconda.org/cogsci/pygame
 import pygame
 
 # DEFINES
@@ -60,8 +58,8 @@ else:
     joy.init()
 print('Joystick found')
 
-while True:
-    try:
+try:
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
                 break
@@ -99,18 +97,12 @@ while True:
 
         # Sleep 0.1s between readings
         time.sleep(0.1)
-# 
-#     except utils.TimeoutError:
-#         continue
 
-    except KeyboardInterrupt:
-        # Catches CTRL-C
-        break
+pfinally:
+    # Program terminated
+    print('Program finished, cleaning up...')
+    joy.quit()  
 
-# Program terminated
-print('Program finished, cleaning up...')
-joy.quit()  
-
-print('Cleanup successful, exiting...')
-time.sleep(1)
-sys.exit()  
+    print('Cleanup successful, exiting...')
+    time.sleep(1)
+    sys.exit()  

@@ -3,11 +3,11 @@
 ###############################################################################
 # pygame_Joystick_Basic.py
 #
-# Basic reading of a joystick for throttle and steering inputs
+# Basic reading of a joystick for throttle and steering inputs. On a PS4 
+# controller, the square button will act as the deadman's witch and the left
+# analog stick will control throttle and steering. In other words, hold the 
+# square to start sending commands, then use the left analog stick to drive.
 #
-# NOTE: Any plotting is set up for output, not viewing on screen.
-#       So, it will likely be ugly on screen. The saved PDFs should look
-#       better.
 #
 # Created: 06/12/18
 #   - Joshua Vaughan
@@ -25,17 +25,13 @@
 import sys, time
 
 # PyGame for joystick
-# It's best to install via conda:
-#  https://anaconda.org/cogsci/pygame
 import pygame
 
-# DEFINES
+# Constants
 VEL_SCALE = -1.0
 ROT_SCALE = 1.0
 ACCEL = 2.0
 
-# MAIN SCRIPT
-#
 pygame.init()
 
 # Joystick connection
@@ -53,17 +49,17 @@ while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
                 break
+        
         if joy.get_button(0):
-            print('axis 1 = {}, axis 2 = {}.'.format(VEL_SCALE*joy.get_axis(1),
-                                                     ROT_SCALE*joy.get_axis(0)))
-#       else:
-#           print(0., 0.)
+            print('axis 1 = {:+.2f} \t axis 2 = {:+.2f}.'.format(VEL_SCALE * joy.get_axis(1),
+                                                                 ROT_SCALE * joy.get_axis(0)))
+
         time.sleep(0.1)
 
-    except utils.TimeoutError:
-        continue
+#     except utils.TimeoutError:
+#         continue
 
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
         # Catches CTRL-C
         break
 
