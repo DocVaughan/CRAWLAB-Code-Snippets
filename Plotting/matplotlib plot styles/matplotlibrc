@@ -30,6 +30,8 @@
 # referring to the module name (which must be in the PYTHONPATH) as
 # 'module://my_backend'
 # backend      : CocoaAgg
+
+# NOTE: This will have to change for non-Mac machines.
 backend      : MacOSX
 
 # If you are using the Qt4Agg backend, you can choose here
@@ -70,6 +72,12 @@ lines.dash_capstyle : round          # butt|round|projecting
 #lines.solid_joinstyle : miter       # miter|round|bevel
 #lines.solid_capstyle : projecting   # butt|round|projecting
 #lines.antialiased : True         # render lines in antialised (no jaggies)
+
+# Revert to matplotlib v1 patters
+lines.dashed_pattern : 6, 6
+lines.dashdot_pattern : 3, 5, 1, 5
+lines.dotted_pattern : 1, 3
+# lines.scale_dashes: False
 
 ### PATCHES
 # Patches are graphical objects that fill 2D space, like polygons or
@@ -194,12 +202,12 @@ text.hinting_factor : 8 # Specifies the amount of softness for hinting in the
 # Note that this "custom" mode is unsupported and may go away in the
 # future.
 #mathtext.cal : cursive
-#mathtext.rm  : serif
+mathtext.rm  : serif
 #mathtext.tt  : monospace
 #mathtext.it  : serif:italic
 #mathtext.bf  : serif:bold
 #mathtext.sf  : sans
-#mathtext.fontset : cm # Should be 'cm' (Computer Modern), 'stix',
+mathtext.fontset : cm # Should be 'cm' (Computer Modern), 'stix',
                        # 'stixsans' or 'custom'
 #mathtext.fallback_to_cm : True  # When True, use symbols from the Computer Modern
                                  # fonts when a symbol can not be found in one of
@@ -223,7 +231,7 @@ axes.grid           : True  # display grid or not
 axes.labelsize      : 22  # fontsize of the x any y labels
 axes.labelweight    : bold  # weight of the x and y labels
 #axes.labelcolor     : black
-#axes.axisbelow      : False   # whether axis gridlines and ticks are below
+axes.axisbelow      : False   # whether axis gridlines and ticks are below
                               # the axes elements (lines, text, etc)
 #axes.formatter.limits : -7, 7 # use scientific notation if log10
                                # of the axis range is smaller than the
@@ -250,6 +258,9 @@ axes.prop_cycle    : cycler('color', ['e41a1c', '377eb8', '4daf4a', '984ea3', 'f
                                             # as list of string colorspecs:
                                             # single letter, long name, or
                                             # web-style hex                                  
+
+axes.spines.top    : False
+axes.spines.right  : False
 
 #polaraxes.grid      : True    # display grid on polar axes
 #axes3d.grid         : True    # display grid on 3d axes
@@ -279,7 +290,7 @@ ytick.labelsize      : 18      # fontsize of the tick labels
 
 ### GRIDS
 grid.color       :   0.75   # grid color
-#grid.linestyle   :   :       # dotted
+grid.linestyle   :   :       # dotted
 #grid.linewidth   :   0.5     # in points
 #grid.alpha       :   1.0     # transparency, between 0.0 and 1.0
 
@@ -305,6 +316,7 @@ legend.borderaxespad : 0.1   # the border between the axes and legend edge in fr
 #legend.columnspacing : 2.    # the border between the axes and legend edge in fraction of fontsize
 # legend.shadow       : False
 #legend.frameon       : True   # whether or not to draw a frame around legend
+legend.framealpha    : None    # opacity of legend frame
 
 ### FIGURE
 # See http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure
@@ -335,6 +347,8 @@ figure.subplot.top     : 0.96    # the top of the subplots of the figure
 ### CONTOUR PLOTS
 #contour.negative_linestyle :  dashed # dashed | solid
 
+
+
 ### Agg rendering
 ### Warning: experimental, 2008/10/10
 #agg.path.chunksize : 0           # 0 to disable; values in the range
@@ -360,10 +374,10 @@ figure.subplot.top     : 0.96    # the top of the subplots of the figure
 # Eg, you may want a higher resolution, or to make the figure
 # background white
 savefig.dpi        : 600      # figure dots per inch
-#savefig.facecolor  : 0.0    # figure facecolor when saving
-#savefig.edgecolor  : 0.0    # figure edgecolor when saving
+#savefig.facecolor  : 0.0     # figure facecolor when saving
+#savefig.edgecolor  : 0.0     # figure edgecolor when saving
 savefig.format     : pdf      # png, ps, pdf, svg
-savefig.bbox       : tight # 'tight' or 'standard'.
+savefig.bbox       : tight     # 'tight' or 'standard'.
 #savefig.pad_inches : 0.1      # Padding to be used when bbox is set to 'tight'
 
 # tk backend params
@@ -387,11 +401,9 @@ savefig.bbox       : tight # 'tight' or 'standard'.
 # svg backend params
 #svg.image_inline : True       # write raster image data directly into the svg file
 #svg.image_noscale : False     # suppress scaling of raster data embedded in SVG
-# svg.fonttype : 'none'         # How to handle SVG fonts:
+# svg.fonttype : none         # How to handle SVG fonts:
 #    'none': Assume fonts are installed on the machine where the SVG will be viewed.
 #    'path': Embed characters as paths -- supported by most SVG renderers
-#    'svgfont': Embed characters as SVG fonts -- supported only by Chrome,
-#               Opera and Safari
 
 # docstring params
 #docstring.hardcopy = False  # set this when you want to generate hardcopy docstring
