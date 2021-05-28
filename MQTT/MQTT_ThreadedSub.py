@@ -26,7 +26,7 @@
 #
 ##########################################################################################
 
-from __future__ import print_function
+# from __future__ import print_function
 
 import paho.mqtt.client as mqtt
 import datetime
@@ -34,7 +34,7 @@ import time
 
 # Constants for MQTT server 
 # ## Eclipse
-HOST = 'iot.eclipse.org'
+HOST = 'test.mosquitto.org'
 PORT = 1883
 USERNAME = None
 PASSWORD = None
@@ -47,7 +47,7 @@ PASSWORD = None
 
 
 # The callback for when the client receives a CONNACK response from the server.
-def on_connect(client, userdata, flags, rc):
+def on_connect(client, userdata, rc):
     print("Connected with result code "+str(rc))
 
     # Subscribing in on_connect() means that if we lose the connection and

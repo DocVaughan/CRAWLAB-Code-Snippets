@@ -30,7 +30,7 @@ import json
 
 # Define the MQTT broker settings
 ## Eclipse
-HOST = 'iot.eclipse.org'
+HOST = 'test.mosquitto.org'
 PORT = 1883
 USERNAME = None
 PASSWORD = None
@@ -82,6 +82,7 @@ while True:
     
         message = {'counter': counter, 'time': timestamp}
         message_string = json.dumps(message)
+        print('Publishing: {}'.format(message_string))
     
         client.publish("CRAWLAB/from_python", message_string, qos=0)
         
