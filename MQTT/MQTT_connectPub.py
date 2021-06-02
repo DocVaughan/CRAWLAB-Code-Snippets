@@ -61,7 +61,7 @@ while True:
     timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 #     send_time = str(timestamp) + ' Count: ' + str(counter)
     send_time = str(counter % 49)
-    client.publish("CRAWLAB/from_python", send_time.encode('utf-8'), qos=1)
+    client.publish("CRAWLAB/from_python", send_time, qos=0)
     print(send_time)
         
     time.sleep(0.1)
