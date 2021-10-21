@@ -29,30 +29,9 @@
 import cv2
 import numpy as np
 import apriltag
-
  
 # We'll do video capture on the webcam
 cap = cv2.VideoCapture(0)
-
-# This calibration is for the monocular camera used in the rotors_simulator
-#  ROS package - https://github.com/CRAWlab/rotors_simulator
-# TODO: 10/21/19 - JEV - Provide instructions for generating calibration
-# NOTE; See https://github.com/CRAWlab/camera_calibration for one way to generate
-# camera_matrix = np.array([[218.02853116,   0.        , 320.6379542 ],
-#                           [  0.        , 217.78473815, 240.27390847],
-#                           [  0.        ,   0.        ,   1.        ]])
-# 
-# dist_coeffs = np.array([[-0.00894801, 0.00303889, 0.00012614, 0.00035685, -0.00083798]])
-
-# These matrices are for the camera on my iMac
-CAMERA_MATRIX = np.array([[5.06968479e+03, 0.00000000e+00, 5.19942085e+02],
-                          [0.00000000e+00, 5.21560115e+03, 9.10942632e+02],
-                          [0.00000000e+00, 0.00000000e+00, 1.00000000e+00]])
-                          
-DIST_COEFFS = np.array([[-2.34400379e-01,  3.00945461e+01, -2.53342956e-02, 
-                         -9.27051884e-02, -3.25346306e+02]])
-                         
-markerLength = 0.1524  # m - markers are 6in 
 
 try:
     while (True):
@@ -62,7 +41,18 @@ try:
         # Our operations on the frame come here
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         
-        detector = apriltag("tagStandard36h11")
+        options = apriltag.DetectorOptions(families='tag36h11',
+                                            border=1,
+                                            nthreads=4,
+                                            quad_decimate=2.0,
+                                            quad_blur=0.0,
+                                            refine_edges=True,
+                                            refine_decode=False,
+                                            refine_pose=False,
+                                            debug=False,
+                                            quad_contours=True)
+        
+        detector = apriltag.Detector(options)
         detections = detector.detect(gray)
         
         # loop over the AprilTag detection results
@@ -88,7 +78,7 @@ try:
             # draw the tag family on the image
             tagFamily = r.tag_family.decode("utf-8")
             cv2.putText(frame, tagFamily, (ptA[0], ptA[1] - 15),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
            
             print("[INFO] tag family: {}".format(tagFamily))
         
